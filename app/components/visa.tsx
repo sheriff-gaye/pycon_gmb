@@ -1,12 +1,41 @@
 "use client"
 
-import  { useState } from 'react';
-import { Plane, FileText, Clock, CheckCircle, AlertCircle,  Globe,  ExternalLink, Phone, Mail } from 'lucide-react';
+import { useState } from 'react';
+import { Plane, FileText, Clock, CheckCircle, AlertCircle, Globe, ExternalLink, Phone, Mail } from 'lucide-react';
+
+interface EmbassyContact {
+  email: string;
+  phone: string;
+  website: string;
+}
+
+interface VisaRequirement {
+  title: string;
+  flag: string;
+  visaFree: string[];
+  visaOnArrival: string[];
+  embassy: EmbassyContact;
+}
+
+interface SupportDocument {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  action: string;
+}
+
+interface ProcessStep {
+  step: string;
+  title: string;
+  description: string;
+}
+
+type CountryTab = 'gambia' | 'senegal';
 
 const VisaSection = () => {
-  const [activeTab, setActiveTab] = useState('gambia');
+  const [activeTab, setActiveTab] = useState<CountryTab>('gambia');
 
-  const visaRequirements = {
+  const visaRequirements: Record<CountryTab, VisaRequirement> = {
     gambia: {
       title: "Visa Requirements for Gambia",
       flag: "🇬🇲",
@@ -43,7 +72,7 @@ const VisaSection = () => {
     }
   };
 
-  const supportDocuments = [
+  const supportDocuments: SupportDocument[] = [
     {
       icon: <FileText className="w-6 h-6" />,
       title: "Conference Invitation Letter",
@@ -70,7 +99,7 @@ const VisaSection = () => {
     }
   ];
 
-  const processSteps = [
+  const processSteps: ProcessStep[] = [
     {
       step: "1",
       title: "Register for Conference",
@@ -181,7 +210,7 @@ const VisaSection = () => {
                 </div>
                 <p className="text-green-700 mb-4 font-medium">Citizens of these countries can enter without a visa:</p>
                 <div className="flex flex-wrap gap-2">
-                  {visaRequirements[activeTab].visaFree.map((country:any, index:any) => (
+                  {visaRequirements[activeTab].visaFree.map((country, index) => (
                     <span key={index} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                       {country}
                     </span>

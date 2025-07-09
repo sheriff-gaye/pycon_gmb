@@ -2,7 +2,7 @@
 
 import About from "../components/about_us";
 
-export const AboutUs = () => {
+ const AboutUs = () => {
   return (
     <div>
       <About />
