@@ -1,4 +1,3 @@
-
 "use client"
 import { useState } from 'react';
 import { 
@@ -9,34 +8,62 @@ import {
   MessageSquare,
   Building,
   CheckCircle,
+  LucideIcon
 } from 'lucide-react';
 
+interface FormData {
+  name: string;
+  email: string;
+  organization: string;
+  message: string;
+  type: string;
+}
+
+interface ContactDetail {
+  label: string;
+  value: string;
+}
+
+interface ContactInfo {
+  icon: LucideIcon;
+  title: string;
+  details: ContactDetail[];
+  color: string;
+}
+
+interface InquiryType {
+  value: string;
+  label: string;
+}
+
+type SubmitStatus = 'success' | 'error' | null;
+
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     organization: '',
     message: '',
     type: 'general'
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null);
 
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
-    //   setSubmitStatus('success');
+      setSubmitStatus('success');
       setFormData({
         name: '',
         email: '',
@@ -50,7 +77,7 @@ const Contact = () => {
     }, 1500);
   };
 
-  const contactInfo = [
+  const contactInfo: ContactInfo[] = [
     {
       icon: Mail,
       title: "Email Us",
@@ -72,11 +99,9 @@ const Contact = () => {
       ],
       color: "green"
     },
-   
-  
   ];
 
-  const inquiryTypes = [
+  const inquiryTypes: InquiryType[] = [
     { value: 'general', label: 'General Inquiry' },
     { value: 'speaker', label: 'Speaker Application' },
     { value: 'sponsor', label: 'Sponsorship' },
@@ -210,8 +235,6 @@ const Contact = () => {
                     </select>
                   </div>
                 </div>
-
-              
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
