@@ -39,7 +39,7 @@ const Hero = () => {
           <div
             className="h-full w-full"
             style={{
-              backgroundImage: `url("/images/test.jpg")`,
+              backgroundImage: `url("/images/heo.png")`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat"
