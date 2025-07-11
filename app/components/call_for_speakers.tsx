@@ -234,7 +234,7 @@ const CallForSpeakers = () => {
               <h3 className="text-xl font-bold text-gray-900">Conference Dates</h3>
             </div>
             <p className="text-gray-600 mb-4">
-              November 26-27, 2025 - Three days of inspiring talks, workshops, networking, 
+              November 28-29, 2025 - Two days of inspiring talks, workshops, networking, 
               and community building in beautiful Banjul.
             </p>
             <div className="bg-purple-50 rounded-lg p-4">
