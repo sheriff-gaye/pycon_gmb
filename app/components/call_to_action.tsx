@@ -93,7 +93,7 @@ const CTA = () => {
                   <span className="text-yellow-600">GMD300</span>
                 </div>
                 <div className="text-slate-500 text-lg font-medium">You save GMD200</div>
-                <div className="text-sm text-slate-400 mt-1">Regular price after Jan 31</div>
+                <div className="text-sm text-slate-400 mt-1">Regular price after September 30</div>
               </div>
               
               <div className="flex items-center bg-slate-100 rounded-2xl px-8 py-6 border border-slate-200">
