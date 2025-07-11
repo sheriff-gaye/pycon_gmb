@@ -28,12 +28,12 @@ const CallForSpeakers = () => {
     {
       icon: Award,
       title: "Recognition",
-      description: "Build your reputation as a thought leader in the Python community"
+      description: "Build your reputation as a thought leader in the Python or tech community"
     },
     {
       icon: Gift,
       title: "Speaker Package",
-      description: "Travel stipend, accommodation, and exclusive speaker dinner"
+      description: "Travel or accommodation stipend, and exclusive speaker dinner"
     }
   ];
 
@@ -68,7 +68,7 @@ const CallForSpeakers = () => {
     { date: "Aug 01, 2025", event: "Call for Speakers Opens", status: "current" },
     { date: "September 30, 2025", event: "Submission Deadline", status: "upcoming" },
     { date: "October 10, 2025", event: "Speaker Notifications", status: "upcoming" },
-    { date: "November 27, 2025", event: "PyCon Senegambia", status: "upcoming" }
+    { date: "November 28-29, 2025", event: "PyCon Senegambia", status: "upcoming" }
   ];
 
   const requirements = [
