@@ -1,7 +1,7 @@
 export const teamMembers = [
     {
       name: "Aji Fama Jobe",
-      role: "Conference Chair",
+      role: "Program Chair",
       location: "Banjul, The Gambia",
       image: "/images/bio/ajifama.jpg",
       bio: "Aji Fama Jobe, founder of BaobabBytes, empowers tech communities in Senegambia through advocacy, AI policy, and inclusive innovation, amplifying diverse voices and mentoring women in technology.",
