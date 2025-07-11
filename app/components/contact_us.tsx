@@ -88,8 +88,8 @@ const Contact = () => {
       icon: Phone,
       title: "Call Us",
       details: [
-        { label: "Gambia Office", value: "+220 3913726" },
-        { label: "Senegal Office", value: "+220 3404520" },
+        { label: "Gambia Office", value: "+220 3404520" },
+        { label: "Senegal Office", value: "+221 773174391" },
       ],
       color: "green"
     },
