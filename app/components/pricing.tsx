@@ -208,7 +208,7 @@ const TicketPricing = () => {
           <div className="inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-200 shadow-lg mb-8">
             <div className="flex items-center">
               <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-              <span className="font-bold text-green-700 text-lg">Early bird pricing ends January 31, 2025</span>
+              <span className="font-bold text-green-700 text-lg">Early bird pricing ends September 30, 2025</span>
             </div>
           </div>
 
