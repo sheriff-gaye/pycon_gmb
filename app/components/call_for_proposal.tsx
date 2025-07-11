@@ -1,3 +1,5 @@
+"use client"
+
 import { 
   FileText, 
   Lightbulb, 
@@ -400,7 +402,12 @@ const CallForProposals = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <button className="group bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 px-8 py-4 rounded-full font-bold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+            <button  onClick={() =>
+                window.open(
+                  "https://sessionize.com/pycon-senegambia/",
+                  "_blank",
+                  "noopener,noreferrer"
+                )} className="group bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 px-8 py-4 rounded-full font-bold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
               Submit Your Proposal
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>

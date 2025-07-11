@@ -14,7 +14,7 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
-      {/* Newsletter section */}
+     
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -29,9 +29,9 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-6 py-3 rounded-full text-gray-900 placeholder-gray-500 focus:outline-none  bg-white"
+                className="flex-1 px-6 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none  bg-white"
               />
-              <button className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-yellow-300 transition-colors flex items-center justify-center">
+              <button className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl font-semibold hover:bg-yellow-300 transition-colors flex items-center justify-center">
                 Subscribe
                 <ArrowRight className="w-4 h-4 ml-2" />
               </button>
@@ -48,7 +48,7 @@ const Footer = () => {
             <div className="lg:col-span-1">
               <div className="flex items-center mb-6">
                 <Image
-                  src="/images/logo2.png"
+                  src="/images/logo.png"
                   alt="logo"
                   height={50}
                   width={200}
@@ -89,23 +89,22 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* https://sessionize.com/pycon-senegambia/ */}
+            
 
-            {/* Quick links */}
             <div>
               <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="#about"
+                    href="/about"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     About
-                  </a>
+                  </a>  
                 </li>
                 <li>
                   <a
-                    href="#speakers"
+                    href="/speakers"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Speakers
@@ -129,10 +128,10 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="#cfp"
+                    href="/proposal"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Call for Papers
+                    Call for Proposals
                   </a>
                 </li>
                 <li>
@@ -168,7 +167,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/volunteers"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Volunteer
@@ -209,18 +208,15 @@ const Footer = () => {
                   <Mail className="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
                     <div className="text-gray-400">
-                      info@pyconsenegambia.org
-                    </div>
-                    <div className="text-gray-400">
-                      speakers@pyconsenegambia.org
+                    pyconsenegambia@gmail.com
                     </div>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <Phone className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
-                    <div className="text-gray-400">+220 XXX XXXX</div>
-                    <div className="text-gray-400">+221 XX XXX XXXX</div>
+                    <div className="text-gray-400">+220 3913726</div>
+                    <div className="text-gray-400">+220 3404520</div>
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -237,7 +233,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom bar */}
+    
       <div className="border-t border-gray-800 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">

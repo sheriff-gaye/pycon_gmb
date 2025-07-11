@@ -17,24 +17,22 @@ const Navbar = () => {
         
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center overflow-hidden">
+                <Link
+                href="/">
               <Image
-                src="/images/logo2.png"
+                src="/images/logo.png"
                 alt="logo"
-                height={50}
-                width={200}
+                height={80}
+                width={80}
               />
+              </Link>
             </div>
           </div>
 
          
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              <Link
-                href="/"
-                className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                Home
-              </Link>
+             
               <Link
                 href="/about"
                 className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
@@ -100,12 +98,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
-            <Link
-              href="/"
-              className="text-gray-900 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-            >
-              Home
-            </Link>
+            
             <Link
               href="/about"
               className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"

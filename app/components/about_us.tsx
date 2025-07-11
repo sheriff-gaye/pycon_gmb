@@ -15,70 +15,10 @@ import {
   UsersIcon
 } from 'lucide-react';
 import Image from 'next/image';
+import { teamMembers } from './about_data';
 
 const About = () => {
-  const teamMembers = [
-    {
-      name: "Fatou Diallo",
-      role: "Conference Chair",
-      location: "Dakar, Senegal",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-      bio: "Senior Python Developer with 8+ years experience. Passionate about building tech communities in West Africa.",
-      twitter: "@fatoudiallo",
-      linkedin: "fatou-diallo",
-      github: "fatoudiallo"
-    },
-    {
-      name: "Mamadou Sall",
-      role: "Technical Lead",
-      location: "Banjul, Gambia",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      bio: "Full-stack developer and Python enthusiast. Leading the tech committee for speaker selection and workshops.",
-      twitter: "@mamadousall",
-      linkedin: "mamadou-sall",
-      github: "mamadousall"
-    },
-    {
-      name: "Aminata Ba",
-      role: "Community Manager",
-      location: "Thiès, Senegal",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face",
-      bio: "Community builder and event organizer. Connecting Python developers across the Senegambia region.",
-      twitter: "@aminataba",
-      linkedin: "aminata-ba",
-      email: "aminata@pyconsenegambia.org"
-    },
-    {
-      name: "Omar Ceesay",
-      role: "Logistics Coordinator",
-      location: "Serekunda, Gambia",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-      bio: "Operations specialist ensuring smooth conference execution. Expert in event planning and vendor management.",
-      twitter: "@omarceesay",
-      linkedin: "omar-ceesay",
-      github: "omarceesay"
-    },
-    {
-      name: "Aïcha Ndoye",
-      role: "Sponsorship Director",
-      location: "Saint-Louis, Senegal",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face",
-      bio: "Business development professional building partnerships with organizations supporting Python education.",
-      twitter: "@aichaNdoye",
-      linkedin: "aicha-ndoye",
-      email: "partnerships@pyconsenegambia.org"
-    },
-    {
-      name: "Lamin Jallow",
-      role: "Marketing Lead",
-      location: "Brikama, Gambia",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face",
-      bio: "Digital marketing strategist spreading the word about PyCon Senegambia across social media and tech communities.",
-      twitter: "@laminjallow",
-      linkedin: "lamin-jallow",
-      github: "laminjallow"
-    }
-  ];
+ 
 
   const stats = [
     { number: "2", label: "Countries United", icon: Globe },
@@ -191,8 +131,8 @@ const About = () => {
               <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <div className="text-center mb-4">
                   <Image
-                  width={24}
-                  height={24}
+                  width={70}
+                  height={70}
                     src={member.image} 
                     alt={member.name}
                     className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-blue-100 group-hover:border-blue-300 transition-colors"
@@ -243,7 +183,12 @@ const About = () => {
           <p className="text-gray-600 mb-6">
             We are always looking for passionate volunteers to help make PyCon Senegambia even better.
           </p>
-          <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+          <button   onClick={() =>
+                window.open(
+                 "https://docs.google.com/forms/d/e/1FAIpQLSeIOD8hC_MxuAyHPcpry7lQwemPypDQVZn2sJ-90yqYo8LtEA/viewform",
+                  "_blank",
+                  "noopener,noreferrer"
+                )}   className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
             Become a Volunteer
           </button>
         </div>

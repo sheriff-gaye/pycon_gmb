@@ -302,7 +302,8 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
             <div>
               <h3 className="text-xl font-bold text-slate-800 mb-2">About {post.author}</h3>
               <p className="text-slate-600 mb-4">
-                {post.author} is a passionate developer and community leader contributing to the growth of the Python ecosystem in West Africa. They bring years of experience in software development and a deep commitment to fostering technical education in the region.
+                {post.author} is a passionate developer and community leader contributing to the growth of the Python ecosystem in West Africa.
+                 They bring years of experience in software development and a deep commitment to fostering technical education in the region.
               </p>
               <div className="flex space-x-3">
                 <button className="text-blue-400 hover:text-blue-600 transition-colors duration-300">
