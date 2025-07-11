@@ -174,7 +174,7 @@ const FAQ = () => {
               <div className="mt-8 flex flex-wrap justify-center gap-8 text-slate-400">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
-                  <span>info@pyconsenegambia.org</span>
+                  <span>pyconsenegambia@gmail.com</span>
                 </div>
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
