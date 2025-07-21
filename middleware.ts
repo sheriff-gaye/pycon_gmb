@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
-const locales = ['en', 'fr', 'wo'];
+const locales = ['en', 'fr'];
 const defaultLocale = 'en';
 
 function getLocale(request: NextRequest): string {
@@ -17,7 +17,7 @@ function getLocale(request: NextRequest): string {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   
-  // Check if there is any supported locale in the pathname
+  // Check if there is any supported locale in the pathname route
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
