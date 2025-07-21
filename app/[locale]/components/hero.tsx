@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { getTranslation } from "@/lib/i18n";
 import {
   Calendar,
   MapPin,
@@ -10,10 +11,14 @@ import {
   Sparkles,
   Globe
 } from "lucide-react";
+import { HeroProps } from "./interfaces/interface";
 
-const Hero = () => {
+
+
+const Hero = ({currentLocale}:HeroProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentStat, setCurrentStat] = useState(0);
+ 
 
   useEffect(() => {
     setIsLoaded(true);
@@ -24,10 +29,10 @@ const Hero = () => {
   }, []);
 
   const stats = [
-    { value: "2", label: "Countries United", color: "text-yellow-400" },
-    { value: "25+", label: "Expert Speakers", color: "text-blue-400" },
-    { value: "500+", label: "Python Developers", color: "text-green-400" },
-    { value: "1", label: "Historic Event", color: "text-purple-400" }
+    { value: "2", label: getTranslation(currentLocale, 'hero.stats.countries'), color: "text-yellow-400" },
+    { value: "25+", label: getTranslation(currentLocale, 'hero.stats.speakers'), color: "text-blue-400" },
+    { value: "500+", label: getTranslation(currentLocale, 'hero.stats.developers'), color: "text-green-400" },
+    { value: "1", label: getTranslation(currentLocale, 'hero.stats.event'), color: "text-purple-400" }
   ];
 
   return (
@@ -36,6 +41,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800"></div>
 
         <div className="absolute inset-0 opacity-30">
+          
           <div
             className="h-full w-full"
             style={{
@@ -93,7 +99,7 @@ const Hero = () => {
           >
             <Star className="w-5 h-5 text-yellow-400 mr-3 animate-pulse" />
             <span className="text-sm font-medium text-yellow-100 tracking-wide">
-              First Ever PyCon in Senegambia
+              {getTranslation(currentLocale, 'hero.badge')}
             </span>
             <div className="ml-3 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
           </div>
@@ -138,19 +144,19 @@ const Hero = () => {
             }`}
           >
             <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-4xl mx-auto leading-relaxed">
-              Building bridges between{" "}
+              {getTranslation(currentLocale, 'hero.subtitle.building')}{" "}
               <span className="font-semibold text-yellow-400 relative">
-                Gambia
+                {getTranslation(currentLocale, 'hero.subtitle.gambia')}
                 <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-yellow-400 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
               </span>{" "}
-              and{" "}
+              {getTranslation(currentLocale, 'hero.subtitle.and')}{" "}
               <span className="font-semibold text-blue-400 relative">
-                Senegal
+                {getTranslation(currentLocale, 'hero.subtitle.senegal')}
                 <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
               </span>
             </p>
             <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
-              Empowering the next generation of Python developers in Senegambia
+              {getTranslation(currentLocale, 'hero.subtitle.empowering')}
             </p>
           </div>
 
@@ -166,19 +172,21 @@ const Hero = () => {
               <Calendar className="w-6 h-6 text-yellow-400 mr-3 group-hover:rotate-12 transition-transform" />
               <div>
                 <span className="text-white font-medium text-lg">
-                  November 27, 2025
+                  {getTranslation(currentLocale, 'hero.event.date')}
                 </span>
-                <div className="text-xs text-gray-400">Mark your calendar!</div>
+                <div className="text-xs text-gray-400">
+                  {getTranslation(currentLocale, 'hero.event.mark')}
+                </div>
               </div>
             </div>
             <div className="group flex items-center bg-white/10 backdrop-blur-md rounded-full px-8 py-4 shadow-xl border border-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 cursor-pointer">
               <MapPin className="w-6 h-6 text-blue-400 mr-3 group-hover:bounce transition-transform" />
               <div>
                 <span className="text-white font-medium text-lg">
-                  Senegambia Region
+                  {getTranslation(currentLocale, 'hero.event.location')}
                 </span>
                 <div className="text-xs text-gray-400">
-                  Two nations, one vision
+                  {getTranslation(currentLocale, 'hero.event.vision')}
                 </div>
               </div>
             </div>
@@ -186,9 +194,11 @@ const Hero = () => {
               <Users className="w-6 h-6 text-green-400 mr-3 group-hover:scale-110 transition-transform" />
               <div>
                 <span className="text-white font-medium text-lg">
-                  500+ Developers
+                  {getTranslation(currentLocale, 'hero.event.attendees')}
                 </span>
-                <div className="text-xs text-gray-400">Growing community</div>
+                <div className="text-xs text-gray-400">
+                  {getTranslation(currentLocale, 'hero.event.community')}
+                </div>
               </div>
             </div>
           </div>
@@ -209,7 +219,7 @@ const Hero = () => {
                 )
               } className="group relative overflow-hidden bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 px-12 py-6 rounded-full text-xl font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:from-yellow-400 hover:to-yellow-500 shadow-lg">
               <span className="relative z-10 flex items-center">
-                Call for Proposals
+                {getTranslation(currentLocale, 'hero.cta.proposals')}
                 <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -225,7 +235,7 @@ const Hero = () => {
               className="group relative overflow-hidden bg-white/10 backdrop-blur-md text-white px-12 py-6 rounded-full text-xl font-bold border-2 border-blue-400/50 hover:shadow-2xl transition-all duration-300 hover:bg-white/20 hover:border-blue-300 hover:scale-105"
             >
               <span className="flex items-center">
-                Call for Speakers
+                {getTranslation(currentLocale, 'hero.cta.speakers')}
                 <Code className="w-6 h-6 ml-3 group-hover:rotate-12 transition-transform" />
               </span>
             </button>

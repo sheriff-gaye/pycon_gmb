@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { Plane, FileText, Clock, CheckCircle, AlertCircle, Globe, ExternalLink, Phone, Mail } from 'lucide-react';
+import { HeroProps } from './interfaces/interface';
+import { getTranslation } from '@/lib/i18n';
 
 interface EmbassyContact {
   email: string;
@@ -32,7 +34,7 @@ interface ProcessStep {
 
 type CountryTab = 'gambia' | 'senegal';
 
-const VisaSection = () => {
+const VisaSection = ({ currentLocale }: HeroProps) => {
   const [activeTab, setActiveTab] = useState<CountryTab>('gambia');
 
   const visaRequirements: Record<CountryTab, VisaRequirement> = {
@@ -129,14 +131,12 @@ const VisaSection = () => {
 
   return (
     <section className="relative py-24 bg-white overflow-hidden">
-      {/* Background decorative elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-yellow-400/8 rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-slate-800/5 rounded-full filter blur-3xl"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/5 rounded-full filter blur-3xl"></div>
       </div>
 
-      {/* Passport pattern overlay */}
       <div className="absolute inset-0 opacity-3">
         <div className="h-full w-full" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23FCD34D' fill-opacity='0.2'%3E%3Crect x='20' y='30' width='60' height='40' rx='4' stroke='%23FCD34D' stroke-width='1' fill='none'/%3E%3Ccircle cx='35' cy='45' r='6' fill='%23FCD34D'/%3E%3Cline x1='50' y1='40' x2='75' y2='40' stroke='%23FCD34D' stroke-width='1'/%3E%3Cline x1='50' y1='50' x2='75' y2='50' stroke='%23FCD34D' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E")`,
@@ -144,26 +144,23 @@ const VisaSection = () => {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-20">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <Plane className="w-4 h-4 text-yellow-600 mr-2" />
-            <span className="text-sm font-semibold text-yellow-800">Travel Information</span>
+            <span className="text-sm font-semibold text-yellow-800"> {getTranslation(currentLocale, 'visa.travel_information')}</span>
           </div>
           
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            <span className="text-slate-800">Visa &</span>
+            <span className="text-slate-800">{getTranslation(currentLocale, 'visa.visa_and')}</span>
             <br />
             <span className="bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
-              Travel Support
+            {getTranslation(currentLocale, 'visa.travel_support')}
             </span>
           </h2>
           <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            We are here to help make your journey to PyCon Senegambia as smooth as possible
+          {getTranslation(currentLocale, 'visa.visa_text')}
           </p>
-        </div>
-
-        {/* Country Tabs */}
+        </div>       
         <div className="flex justify-center mb-12">
           <div className="bg-slate-100 rounded-2xl p-2 inline-flex">
             <button
@@ -174,7 +171,8 @@ const VisaSection = () => {
                   : 'text-slate-600 hover:text-slate-800'
               }`}
             >
-              🇬🇲 Gambia
+                {getTranslation(currentLocale, 'visa.visa_gambia')}
+             
             </button>
             <button
               onClick={() => setActiveTab('senegal')}
@@ -184,7 +182,8 @@ const VisaSection = () => {
                   : 'text-slate-600 hover:text-slate-800'
               }`}
             >
-              🇸🇳 Senegal
+              {getTranslation(currentLocale, 'visa.visa_senegal')}
+            
             </button>
           </div>
         </div>
@@ -218,7 +217,6 @@ const VisaSection = () => {
                 </div>
               </div>
 
-              {/* Visa on Arrival */}
               <div className="bg-yellow-50 rounded-2xl p-6 border border-yellow-200">
                 <div className="flex items-center mb-4">
                   <div className="bg-yellow-500 rounded-xl p-3 mr-4">

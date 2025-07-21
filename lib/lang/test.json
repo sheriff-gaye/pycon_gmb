@@ -1,0 +1,70 @@
+"pricing": {
+  "early_bird_badge": "Early Bird Pricing",
+  "title_part1": "Choose Your",
+  "title_part2": "Perfect Ticket",
+  "subtitle": "Secure your spot at PyCon Senegambia with our flexible pricing options designed for every attendee",
+  "most_popular": "MOST POPULAR",
+  "per_person": "Dalasis per person",
+  "select_ticket": "Select",
+  "early_bird_expires": "Early bird pricing ends September 30, 2025",
+  "tickets": {
+    "student": {
+      "title": "Student",
+      "description": "Perfect for students and academics looking to expand their Python knowledge",
+      "features": [
+        "Full conference access",
+        "Workshop participation",
+        "Networking sessions",
+        "Conference materials",
+        "Student ID required",
+        "Lunch & refreshments"
+      ]
+    },
+    "individual": {
+      "title": "Individual",
+      "description": "Ideal for individual developers and Python enthusiasts",
+      "features": [
+        "Full conference access",
+        "All workshops included",
+        "Networking events",
+        "Premium conference kit",
+        "Certificate of attendance",
+        "Lunch & refreshments",
+        "Priority seating"
+      ]
+    },
+    "corporate": {
+      "title": "Corporate",
+      "description": "Perfect for companies investing in their development teams",
+      "features": [
+        "Full conference access",
+        "VIP workshop access",
+        "Exclusive networking lounge",
+        "Premium conference package",
+        "Company logo recognition",
+        "Lunch & refreshments",
+        "Priority support",
+        "Team building sessions"
+      ]
+    }
+  },
+  "features": {
+    "instant_access": {
+      "title": "Instant Access",
+      "description": "Get your ticket confirmation and event details immediately after purchase"
+    },
+    "group_discounts": {
+      "title": "Group Discounts",
+      "description": "Special rates available for teams of 5 or more. Contact us for details"
+    },
+    "money_back": {
+      "title": "Money Back",
+      "description": "Full refund available up to 30 days before the event starts"
+    }
+  },
+  "payment_features": {
+    "secure_payment": "Secure Payment",
+    "digital_receipts": "Digital Receipts",
+    "mobile_tickets": "Mobile Tickets"
+  }
+}

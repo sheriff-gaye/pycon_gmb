@@ -1,4 +1,4 @@
-import BlogSection from "../components/blog";
+import BlogSection from "@/app/[locale]/components/blog";
 
 
 const Blog=()=>{

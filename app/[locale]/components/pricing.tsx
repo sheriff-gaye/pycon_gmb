@@ -1,9 +1,14 @@
-import { ArrowRight, Check, Users, User, Building2, Star, Zap, Gift, Globe, Award } from 'lucide-react';
+"use client"
 
-const TicketPricing = () => {
+import { getTranslation } from '@/lib/i18n';
+import { ArrowRight, Check, Users, User, Building2, Star, Zap, Gift, Globe, Award } from 'lucide-react';
+import { HeroProps } from './interfaces/interface';
+
+const TicketPricing = ({currentLocale}:HeroProps) => {
+  
   const tickets = [
     {
-      type: "Student",
+      type:  getTranslation(currentLocale, 'pricing.students'),
       price: "300",
       originalPrice: "500",
       icon: User,
@@ -15,19 +20,19 @@ const TicketPricing = () => {
       badgeColor: "bg-slate-800",
       badgeText: "text-white",
      
-      description: "Perfect for students and academics looking to expand their Python knowledge",
+      description:  getTranslation(currentLocale, 'pricing.student.description'),
       features: [
-        "Full conference access",
-        "Workshop participation",
-        "Networking sessions",
-        "Conference materials",
-        "Student ID required",
-        "Lunch & refreshments"
+        getTranslation(currentLocale, 'pricing.student.features.one'),
+        getTranslation(currentLocale, 'pricing.student.features.two'),
+        getTranslation(currentLocale, 'pricing.student.features.three'),
+        getTranslation(currentLocale, 'pricing.student.features.four'),
+        getTranslation(currentLocale, 'pricing.student.features.five'),
+        getTranslation(currentLocale, 'pricing.student.features.six'),
       ],
       popular: false
     },
     {
-      type: "Individual",
+      type:  getTranslation(currentLocale, 'pricing.individual_name'),
       price: "500",
       originalPrice: "750",
       icon: Users,
@@ -41,18 +46,17 @@ const TicketPricing = () => {
       
       description: "Ideal for individual developers and Python enthusiasts",
       features: [
-        "Full conference access",
-        "All workshops included",
-        "Networking events",
-        "Premium conference kit",
-        "Certificate of attendance",
-        "Lunch & refreshments",
-        "Priority seating"
+        getTranslation(currentLocale, 'pricing.individual.features.one'),
+        getTranslation(currentLocale, 'pricing.individual.features.two'),
+        getTranslation(currentLocale, 'pricing.individual.features.three'),
+        getTranslation(currentLocale, 'pricing.individual.features.four'),
+        getTranslation(currentLocale, 'pricing.individual.features.five'),
+        getTranslation(currentLocale, 'pricing.individual.features.six'),
       ],
       popular: true
     },
     {
-      type: "Corporate",
+      type:  getTranslation(currentLocale, 'pricing.corporate_name'),
       price: "1,000",
       originalPrice: "1,500",
       icon: Building2,
@@ -66,14 +70,12 @@ const TicketPricing = () => {
     
       description: "Perfect for companies investing in their development teams",
       features: [
-        "Full conference access",
-        "VIP workshop access",
-        "Exclusive networking lounge",
-        "Premium conference package",
-        "Company logo recognition",
-        "Lunch & refreshments",
-        "Priority support",
-        "Team building sessions"
+        getTranslation(currentLocale, 'pricing.corporate.features.one'),
+        getTranslation(currentLocale, 'pricing.corporate.features.two'),
+        getTranslation(currentLocale, 'pricing.corporate.features.three'),
+        getTranslation(currentLocale, 'pricing.corporate.features.four'),
+        getTranslation(currentLocale, 'pricing.corporate.features.five'),
+        getTranslation(currentLocale, 'pricing.corporate.features.six'),
       ],
       popular: false
     }
@@ -100,18 +102,18 @@ const TicketPricing = () => {
         <div className="text-center mb-20">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <Gift className="w-4 h-4 text-yellow-600 mr-2" />
-            <span className="text-sm font-semibold text-yellow-800">Early Bird Pricing</span>
+            <span className="text-sm font-semibold text-yellow-800"> {getTranslation(currentLocale, 'pricing.early_bird_badge')}</span>
           </div>
           
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            <span className="text-slate-800">Choose Your</span>
+            <span className="text-slate-800">{getTranslation(currentLocale, 'pricing.title_part1')}</span>
             <br />
             <span className="bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
-              Perfect Ticket
+            {getTranslation(currentLocale, 'pricing.title_part2')}
             </span>
           </h2>
           <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            Secure your spot at PyCon Senegambia with our flexible pricing options designed for every attendee
+          {getTranslation(currentLocale, 'pricing.subtitle')}
           </p>
         </div>
 
@@ -182,24 +184,24 @@ const TicketPricing = () => {
             <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
               <Zap className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-bold text-slate-800 mb-2">Instant Access</h4>
-            <p className="text-sm text-slate-600">Get your ticket confirmation and event details immediately after purchase</p>
+            <h4 className="font-bold text-slate-800 mb-2">  {getTranslation(currentLocale, 'pricing.instant_access_title')}</h4>
+            <p className="text-sm text-slate-600"> {getTranslation(currentLocale, 'pricing.instant_access_description')}</p>
           </div>
 
           <div className="text-center bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border border-yellow-200">
             <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
               <Globe className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-bold text-slate-800 mb-2">Group Discounts</h4>
-            <p className="text-sm text-slate-600">Special rates available for teams of 5 or more. Contact us for details</p>
+            <h4 className="font-bold text-slate-800 mb-2"> {getTranslation(currentLocale, 'pricing.group_discounts_title')}</h4>
+            <p className="text-sm text-slate-600"> {getTranslation(currentLocale, 'pricing.group_discounts_description')}</p>
           </div>
 
           <div className="text-center bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-slate-200">
             <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
               <Award className="w-6 h-6 text-white" />
             </div>
-            <h4 className="font-bold text-slate-800 mb-2">Money Back</h4>
-            <p className="text-sm text-slate-600">Full refund available up to 30 days before the event starts</p>
+            <h4 className="font-bold text-slate-800 mb-2">{getTranslation(currentLocale, 'pricing.money_back_title')}</h4>
+            <p className="text-sm text-slate-600">{getTranslation(currentLocale, 'pricing.money_back_description')}</p>
           </div>
         </div>
 
@@ -208,22 +210,22 @@ const TicketPricing = () => {
           <div className="inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-200 shadow-lg mb-8">
             <div className="flex items-center">
               <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-              <span className="font-bold text-green-700 text-lg">Early bird pricing ends September 30, 2025</span>
+              <span className="font-bold text-green-700 text-lg">{getTranslation(currentLocale, 'pricing.early_bird_expires')}</span>
             </div>
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 text-slate-600 text-lg">
             <div className="flex items-center">
               <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-              <span>Secure Payment</span>
+              <span>{getTranslation(currentLocale, 'pricing.secure_payment')}</span>
             </div>
             <div className="flex items-center">
               <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-              <span>Digital Receipts</span>
+              <span>{getTranslation(currentLocale, 'pricing.digital_receipts')}</span>
             </div>
             <div className="flex items-center">
               <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-              <span>Mobile Tickets</span>
+              <span>{getTranslation(currentLocale, 'pricing.mobile_tickets')}</span>
             </div>
           </div>
         </div>

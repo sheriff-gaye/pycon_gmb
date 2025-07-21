@@ -1,56 +1,63 @@
 "use client"
 import  { useState } from 'react';
 import { Plus, Minus, HelpCircle, MapPin, Clock, Users, Ticket, Code, Wifi, Coffee, Award } from 'lucide-react';
+import { getTranslation } from '@/lib/i18n';
+import { HeroProps } from './interfaces/interface';
 
-const FAQ = () => {
+const FAQ = ({currentLocale}:HeroProps) => {
   const [openFAQ, setOpenFAQ] = useState(0);
 
+ 
+ 
+
+ 
   const faqs = [
     {
       icon: <MapPin className="w-5 h-5" />,
-      question: "Where exactly will PyCon Senegambia 2025 be held?",
-      answer: "The conference will be held in the Senegambia region, bridging both Gambia and Senegal. The exact venue will be announced soon, but it will be easily accessible from both countries with transportation arrangements provided."
+      question:  getTranslation(currentLocale, 'faq.question_one'),
+      answer:  getTranslation(currentLocale, 'faq.answer_one')
     },
     {
       icon: <Clock className="w-5 h-5" />,
-      question: "What time does the conference start and end?",
-      answer: "PyCon Senegambia 2025 runs from 8:00 AM to 6:00 PM on November 27, 2025. The day includes registration, keynotes, technical sessions, workshops, networking lunch, and closing ceremony. A detailed schedule will be shared closer to the event date."
+      question:  getTranslation(currentLocale, 'faq.question_two'),
+      answer:  getTranslation(currentLocale, 'faq.answer_two')
     },
     {
       icon: <Users className="w-5 h-5" />,
-      question: "Who should attend PyCon Senegambia?",
-      answer: "This conference is perfect for Python developers, data scientists, AI/ML engineers, students, educators, tech entrepreneurs, and anyone interested in Python programming. Whether you're a beginner or expert, there's something valuable for everyone."
+      question:  getTranslation(currentLocale, 'faq.question_three'),
+      answer:  getTranslation(currentLocale, 'faq.answer_three')
     },
     {
       icon: <Ticket className="w-5 h-5" />,
-      question: "What's included in my conference ticket?",
-      answer: "Your ticket includes access to all talks and workshops, conference materials, networking lunch, coffee breaks, welcome kit with swag, certificate of participation, and access to the exclusive PyCon Senegambia community network."
+      question:  getTranslation(currentLocale, 'faq.question_four'),
+      answer:  getTranslation(currentLocale, 'faq.answer_four')
     },
     {
       icon: <Code className="w-5 h-5" />,
-      question: "What topics and tracks will be covered?",
-      answer: "We'll cover Web Development with Django/Flask, Data Science & AI/ML, Python fundamentals, Cloud & DevOps, Mobile development, Cybersecurity, IoT, and Open Source contributions. Special focus on applications relevant to African tech challenges."
+      question:  getTranslation(currentLocale, 'faq.question_five'),
+      answer:  getTranslation(currentLocale, 'faq.answer_five')
     },
     {
       icon: <Wifi className="w-5 h-5" />,
-      question: "Will there be Wi-Fi and power outlets available?",
-      answer: "Yes! We'll provide high-speed Wi-Fi throughout the venue and ensure plenty of power outlets and charging stations. We recommend bringing your laptop, chargers, and any devices you'll need for workshops."
+      question:  getTranslation(currentLocale, 'faq.question_six'),
+      answer:  getTranslation(currentLocale, 'faq.answer_six')
     },
     {
       icon: <Coffee className="w-5 h-5" />,
-      question: "Are meals and refreshments provided?",
-      answer: "Absolutely! Your ticket includes a welcome breakfast, networking lunch featuring local cuisine, and coffee breaks throughout the day. We'll accommodate dietary restrictions - just let us know during registration."
+      question:  getTranslation(currentLocale, 'faq.question_seven'),
+      answer:  getTranslation(currentLocale, 'faq.answer_seven')
     },
     {
       icon: <Award className="w-5 h-5" />,
-      question: "Can I present or speak at the conference?",
-      answer: "Yes! Our Call for Speakers is open. We welcome proposals for talks, workshops, and lightning talks. This is a great opportunity to share your knowledge with the growing Python community in West Africa. Submission guidelines are available on our website."
+      question:  getTranslation(currentLocale, 'faq.question_eight'),
+      answer:  getTranslation(currentLocale, 'faq.answer_eight')
     }
   ];
 
   const toggleFAQ = (index:number) => {
     setOpenFAQ(openFAQ === index ? -1 : index);
   };
+   
 
   return (
     <section className="relative py-24 bg-white overflow-hidden">
@@ -73,18 +80,18 @@ const FAQ = () => {
         <div className="text-center mb-20">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <HelpCircle className="w-4 h-4 text-yellow-600 mr-2" />
-            <span className="text-sm font-semibold text-yellow-800">Got Questions?</span>
+            <span className="text-sm font-semibold text-yellow-800">  {getTranslation(currentLocale, 'faq.badge')}</span>
           </div>
           
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            <span className="text-slate-800">Frequently Asked</span>
+            <span className="text-slate-800"> {getTranslation(currentLocale, 'faq.title_part1')}</span>
             <br />
             <span className="bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
-              Questions
+            {getTranslation(currentLocale, 'faq.title_part2')}
             </span>
           </h2>
           <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            Everything you need to know about PyCon Senegambia 2025
+          {getTranslation(currentLocale, 'faq.subtitle')}
           </p>
         </div>
 
@@ -154,19 +161,19 @@ const FAQ = () => {
           <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-12 shadow-2xl">
             <div className="max-w-3xl mx-auto">
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Still have questions?
+              {getTranslation(currentLocale, 'faq.still_have_questions_title')}
               </h3>
               <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-                Our team is here to help! Reach out to us and we will get back to you as soon as possible.
+              {getTranslation(currentLocale, 'faq.still_have_questions_subtitle')}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button className="group bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 px-8 py-4 rounded-2xl text-lg font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                  Contact Support
+                {getTranslation(currentLocale, 'faq.button_contact_support')}
                   <HelpCircle className="inline-block w-5 h-5 ml-2 group-hover:rotate-12 transition-transform" />
                 </button>
                 <button className="bg-transparent border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-2xl text-lg font-bold hover:bg-yellow-400 hover:text-slate-900 transition-all duration-300">
-                  Join Our Community
+                {getTranslation(currentLocale, 'faq.button_join_community')}
                 </button>
               </div>
 
@@ -178,7 +185,7 @@ const FAQ = () => {
                 </div>
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
-                  <span>Response within 24 hours</span>
+                  <span> {getTranslation(currentLocale, 'faq.button_join_community')}</span>
                 </div>
               </div>
             </div>

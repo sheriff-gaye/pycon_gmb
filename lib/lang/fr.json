@@ -1,0 +1,276 @@
+{
+  "nav": {
+    "about": "À propos",
+    "visas": "Visas",
+    "blog": "Blog",
+    "speakers": "Orateurs",
+    "proposal": "Proposition",
+    "volunteers": "Bénévoles",
+    "register": "S'inscrire maintenant"
+  },
+  "common": {
+    "language": "Langue"
+  },
+  "hero": {
+    "badge": "Premier PyCon en Sénégambie",
+    "subtitle": {
+      "building": "Construire des ponts entre",
+      "gambia": "Gambie",
+      "and": "et",
+      "senegal": "Sénégal",
+      "empowering": "Autonomiser la prochaine génération de développeurs Python en Sénégambie"
+    },
+    "event": {
+      "date": "27 novembre 2025",
+      "mark": "Marquez votre calendrier !",
+      "location": "Région Sénégambie",
+      "vision": "Deux nations, une vision",
+      "attendees": "500+ Développeurs",
+      "community": "Communauté grandissante"
+    },
+    "cta": {
+      "proposals": "Appel aux Propositions",
+      "speakers": "Appel aux Orateurs"
+    },
+    "stats": {
+      "countries": "Pays Unis",
+      "speakers": "Orateurs Experts",
+      "developers": "Développeurs Python",
+      "event": "Événement Historique"
+    }
+  },
+  "cta": {
+    "badge": "Opportunité à durée limitée",
+    "title_part1": "Ne manquez pas",
+    "title_part2": "Un moment historique",
+    "subtitle": "Faites partie du premier PyCon Sénégambie et contribuez à façonner l'avenir du développement Python en Sénégambie",
+    "feature1_title": "Réseautage avec les pairs",
+    "feature1_description": "Connectez-vous avec plus de 500 développeurs Python de la région Sénégambie et construisez des relations professionnelles durables",
+    "feature2_title": "Apprendre et grandir",
+    "feature2_description": "Assistez à des ateliers de pointe, des conférences inspirantes et des sessions pratiques dirigées par des experts de l'industrie",
+    "feature3_title": "Construire une communauté",
+    "feature3_description": "Contribuez à établir un écosystème Python florissant qui relie la Gambie et le Sénégal, favorisant l'innovation transfrontalière",
+    "early_bird_title": "Offre à durée limitée",
+    "early_bird_subtitle": "Réservez votre place pour l'événement technologique le plus attendu en Sénégambie",
+    "early_bird_badge": "Offre spéciale Early Bird - Économisez 40%",
+    "early_bird_save": "Vous économisez GMD200",
+    "early_bird_regular": "Prix régulier après le 30 septembre",
+    "early_bird_expires": "L'offre expire",
+    "early_bird_date": "30 septembre 2025",
+    "button_get_ticket": "Obtenez votre billet maintenant",
+    "button_learn_more": "En savoir plus",
+    "payment_secure": "Paiement sécurisé",
+    "payment_guarantee": "Garantie de remboursement",
+    "payment_confirmation": "Confirmation instantanée"
+  },
+
+  "footer": {
+    "subscribe_title": "Restez informé avec PyCon Sénégambie",
+    "subscribe_subtitle": "Recevez les dernières nouvelles, annonces des orateurs et offres Early Bird directement dans votre boîte de réception",
+    "subscribe_button": "S'abonner",
+    "subscribe_placeholder": "Entrez votre email",
+    "brand_description": "Construire la communauté Python à travers la Gambie et le Sénégal par la collaboration, l'éducation et l'innovation.",
+    "quick_links_title": "Liens rapides",
+    "quick_links": {
+      "about": "À propos",
+      "speakers": "Orateurs",
+      "schedule": "Programme",
+      "sponsors": "Sponsors",
+      "proposal": "Appel aux propositions",
+      "cfs": "Appel aux sponsors"
+    },
+    "community_title": "Communauté",
+    "community": {
+      "code_of_conduct": "Code de conduite",
+      "diversity": "Diversité et inclusion",
+      "volunteer": "Bénévole",
+      "user_groups": "Groupes d'utilisateurs Python",
+      "mentorship": "Programme de mentorat",
+      "job_board": "Tableau des offres d'emploi"
+    },
+    "contact_title": "Contactez-nous",
+    "contact_email": "pyconsenegambia@gmail.com",
+    "contact_phone1": "+220 3913726",
+    "contact_phone2": "+220 3404520",
+    "contact_location": "Région Sénégambie\nGambie et Sénégal",
+    "copyright": "© 2025 PyCon Sénégambie. Fait avec amour pour la communauté Python",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "cookie": "Politique de cookies",
+    "location": "Gambie • Sénégal"
+  },
+
+  "faq": {
+    "badge": "Des questions ?",
+    "title_part1": "Questions fréquemment",
+    "title_part2": "Posées",
+    "subtitle": "Tout ce que vous devez savoir sur PyCon Sénégambie 2025",
+
+    "question_one": "Où se tiendra exactement PyCon Sénégambie 2025 ?",
+    "answer_one": "La conférence se tiendra dans la région de Sénégambie, reliant la Gambie et le Sénégal. Le lieu exact sera annoncé prochainement, mais il sera facilement accessible depuis les deux pays avec des arrangements de transport fournis.",
+    "question_two": "À quelle heure commence et se termine la conférence ?",
+    "answer_two": "PyCon Sénégambie 2025 se déroulera de 8h00 à 18h00 le 27 novembre 2025. La journée comprend l'inscription, les conférences principales, les sessions techniques, les ateliers, un déjeuner de réseautage et la cérémonie de clôture. Un programme détaillé sera partagé plus près de la date de l'événement.",
+    "question_three": "Qui devrait assister à PyCon Sénégambie ?",
+    "answer_three": "Cette conférence est parfaite pour les développeurs Python, les data scientists, les ingénieurs en IA/ML, les étudiants, les éducateurs, les entrepreneurs technologiques et toute personne intéressée par la programmation Python. Que vous soyez débutant ou expert, il y a quelque chose de précieux pour tout le monde.",
+    "question_four": "Qu'est-ce qui est inclus dans mon billet de conférence ?",
+    "answer_four": "Votre billet comprend l'accès à toutes les conférences et ateliers, le matériel de conférence, un déjeuner de réseautage, des pauses-café, un kit de bienvenue avec des goodies, un certificat de participation et l'accès au réseau communautaire exclusif de PyCon Sénégambie.",
+    "question_five": "Quels sujets et pistes seront couverts ?",
+    "answer_five": "Nous couvrirons le développement Web avec Django/Flask, la science des données et l'IA/ML, les fondamentaux de Python, le Cloud & DevOps, le développement mobile, la cybersécurité, l'IoT et les contributions à l'Open Source. Une attention particulière sera portée aux applications pertinentes pour les défis technologiques africains.",
+    "question_six": "Y aura-t-il du Wi-Fi et des prises de courant disponibles ?",
+    "answer_six": "Oui ! Nous fournirons un Wi-Fi haut débit dans tout le lieu et assurerons de nombreuses prises de courant et stations de recharge. Nous recommandons d'apporter votre ordinateur portable, vos chargeurs et tout appareil nécessaire pour les ateliers.",
+    "question_seven": "Les repas et les rafraîchissements sont-ils fournis ?",
+    "answer_seven": "Absolument ! Votre billet comprend un petit-déjeuner de bienvenue, un déjeuner de réseautage avec une cuisine locale et des pauses-café tout au long de la journée. Nous prendrons en compte les restrictions alimentaires - il suffit de nous le signaler lors de l'inscription.",
+    "question_eight": "Puis-je présenter ou parler à la conférence ?",
+    "answer_eight": "Oui ! Notre appel à orateurs est ouvert. Nous accueillons les propositions de conférences, d'ateliers et de lightning talks. C'est une excellente opportunité pour partager vos connaissances avec la communauté Python en croissance en Afrique de l'Ouest. Les directives de soumission sont disponibles sur notre site web.",
+
+    "still_have_questions_title": "Encore des questions ?",
+    "still_have_questions_subtitle": "Notre équipe est là pour aider ! Contactez-nous et nous vous répondrons dès que possible.",
+    "button_contact_support": "Contacter le support",
+    "button_join_community": "Rejoindre notre communauté",
+    "contact_email": "pyconsenegambia@gmail.com",
+    "contact_response_time": "Réponse dans les 24 heures"
+  },
+  "contact": {
+    "title_part1": "Prenez",
+    "title_part2": "Contact",
+    "subtitle": "Vous avez des questions sur PyCon Sénégambie ? Vous souhaitez parler, sponsoriser ou être bénévole ? Nous serions ravis d'avoir de vos nouvelles !",
+    "email_title": "Envoyez-nous un email",
+    "email_details": [
+      { "label": "Demandes générales", "value": "pyconsenegambia@gmail.com" }
+    ],
+    "phone_title": "Appelez-nous",
+    "phone_details": [
+      { "label": "Bureau Gambie", "value": "+220 3404520" },
+      { "label": "Bureau Sénégal", "value": "+221 773174391" }
+    ],
+    "form_name_label": "Nom complet *",
+    "form_name_placeholder": "Votre nom complet",
+    "form_email_label": "Adresse email *",
+    "form_email_placeholder": "votre.email@exemple.com",
+    "form_inquiry_label": "Type de demande",
+    "form_inquiry_types": [
+      { "value": "general", "label": "Demande générale" },
+      { "value": "speaker", "label": "Candidature d'orateur" },
+      { "value": "sponsor", "label": "Sponsoring" },
+      { "value": "volunteer", "label": "Bénévole" },
+      { "value": "media", "label": "Médias & Presse" },
+      { "value": "partnership", "label": "Partenariat" }
+    ],
+    "form_message_label": "Message *",
+    "form_message_placeholder": "Veuillez fournir des détails sur votre demande...",
+    "form_submit_button": "Envoyer le message",
+    "form_submitting": "Envoi en cours...",
+    "form_success_message": "Merci ! Votre message a été envoyé avec succès."
+  },
+
+  "pricing": {
+    "students": "étudiants",
+    "individual_name": "individuels ",
+    "corporate_name": "les entreprises",
+    "early_bird_badge": "Tarification Early Bird",
+    "title_part1": "Choisissez Votre",
+    "title_part2": "Billet Parfait",
+    "subtitle": "Réservez votre place à PyCon Sénégambie avec nos options de tarification flexibles conçues pour chaque participant",
+    "student": {
+      "description": "Parfait pour les étudiants et les universitaires souhaitant approfondir leurs connaissances en Python",
+      "features": {
+        "one": "Accès complet à la conférence",
+        "two": "Participation aux ateliers",
+        "three": "Sessions de réseautage",
+        "four": "Matériel de conférence",
+        "five": "Carte d'étudiant requise",
+        "six": "Déjeuner et rafraîchissements"
+      }
+    },
+    "individual": {
+      "description": "Idéal pour les développeurs individuels et les passionnés de Python",
+      "features": {
+        "one": "Accès complet à la conférence",
+        "two": "Tous les ateliers inclus",
+        "three": "Événements de réseautage",
+        "four": "Kit de conférence premium",
+        "five": "Certificat de participation",
+        "six": "Déjeuner et rafraîchissements",
+        "seven": "Sièges prioritaires"
+      },
+      "popular_badge": "LE PLUS POPULAIRE"
+    },
+    "corporate": {
+      "description": "Parfait pour les entreprises investissant dans leurs équipes de développement",
+      "features": {
+        "one": "Accès complet à la conférence",
+        "two": "Accès VIP aux ateliers",
+        "three": "Salon de réseautage exclusif",
+        "four": "Forfait de conférence premium",
+        "five": "Reconnaissance du logo de l'entreprise",
+        "six": "Déjeuner et rafraîchissements",
+        "seven": "Support prioritaire",
+        "eight": "Sessions de team building"
+      }
+    },
+    "pricing_per_person": "Dalasis par personne",
+    "button_select": "Sélectionner {type}",
+
+    "instant_access_title": "Accès Instantané",
+    "instant_access_description": "Recevez la confirmation de votre billet et les détails de l'événement immédiatement après l'achat",
+    "group_discounts_title": "Réductions de Groupe",
+    "group_discounts_description": "Tarifs spéciaux disponibles pour les équipes de 5 personnes ou plus. Contactez-nous pour plus de détails",
+    "money_back_title": "Remboursement",
+    "money_back_description": "Remboursement complet disponible jusqu'à 30 jours avant le début de l'événement",
+    "early_bird_expires": "La tarification Early Bird se termine le 30 septembre 2025",
+    "secure_payment": "Paiement Sécurisé",
+    "digital_receipts": "Reçus Numériques",
+    "mobile_tickets": "Billets Mobiles"
+  },
+
+  "about": {
+    "about_us": "À Propos de Nous",
+    "about": "À Propos",
+    "pycon_senegambia": "PyCon Senegambia",
+    "about_text": "La toute première conférence Python réunissant développeurs, data scientists et passionnés de technologie de Gambie et du Sénégal pour apprendre, partager et construire l'avenir de la technologie en Afrique de l'Ouest.",
+    "our_mission": "Notre Mission",
+    "mission_text": "Favoriser une communauté Python dynamique dans la région de la Sénégambie en offrant une plateforme d’échange de connaissances, de réseautage et de collaboration. Nous visons à combler le fossé entre les développeurs gambiens et sénégalais tout en promouvant la diversité et l'inclusion dans la tech.",
+    "our_vision": "Notre Vision",
+    "vision_text": "Établir PyCon Senegambia comme la conférence technologique de référence en Afrique de l’Ouest, inspirant la prochaine génération de développeurs Python et créant des partenariats durables qui stimulent l’innovation et la croissance économique dans la région.",
+    "countries": "Pays Unis",
+    "expected_attendees": "Participants Attendus",
+    "expert_speakers": "Intervenants Experts",
+    "historic_confrence": "Conférence Historique",
+
+    "why_pycon_senegambia": "Pourquoi PyCon Senegambia ?",
+    "why_text": "Découvrez ce qui rend notre conférence unique",
+    "techincal_experience": "Excellence Technique",
+    "techincal_text": "Des intervenants de classe mondiale partageant les dernières techniques Python et les meilleures pratiques",
+    "community_building": "Création de Communauté",
+    "community_text": "Relier les développeurs au-delà des frontières pour bâtir des relations professionnelles durables",
+    "impact": "Impact Régional",
+    "impact_text": "Stimuler l'avancement technologique et la croissance économique en Afrique de l'Ouest",
+    "meet_our_team": "Rencontrez Notre Équipe",
+    "team_text": "Des personnes passionnées de toute la région de la Sénégambie travaillant ensemble pour faire de PyCon Senegambia une expérience inoubliable.",
+
+    "join_team": "Vous souhaitez rejoindre notre équipe ?",
+    "join_team_text": "Nous sommes toujours à la recherche de bénévoles passionnés pour améliorer encore PyCon Senegambia.",
+    "join_btn": "Devenir bénévole",
+
+    "gambia": "Gambie",
+    "senegal": "Sénégal",
+
+    "ajifama": "Aji Fama Jobe, fondatrice de BaobabBytes, renforce les communautés technologiques en Sénégambie à travers le plaidoyer, les politiques en matière d'IA et l’innovation inclusive, en amplifiant les voix diverses et en mentorant les femmes dans la technologie.",
+    "sheriff": "Sheriff est un développeur passionné et un leader communautaire qui contribue à la croissance de l'écosystème Python en Afrique de l'Ouest. Il apporte des années d'expérience en développement logiciel et un engagement profond pour promouvoir l’éducation technique dans la région.",
+    "sonko": "Sheriff Sonko est un développeur logiciel et innovateur numérique qui fait progresser l'IA, la fintech et les politiques numériques en Gambie grâce à l'éducation, au leadership communautaire et à des initiatives technologiques inclusives.",
+    "keita": "Thérèse Keita est une cheffe de file en technologie et cheffe de projet qui fait avancer l'inclusion numérique, l’éducation STEAM et l’IA en Gambie à travers le leadership communautaire, l’engagement politique et l’innovation centrée sur les jeunes.",
+    "seray": "Seray Sidibeh est un passionné de technologie et entrepreneur engagé dans l'IA, le cloud computing et la santé publique, qui autonomise les jeunes grâce au mentorat, à l’innovation et à l’impact communautaire.",
+    "fatou": "Fatou Ndow est une défenseure des technologies, solutionniste et aviatrice en devenir, qui autonomise les femmes dans les STEM grâce au leadership, à l'innovation, au mentorat et à la formation aux compétences numériques en Gambie.",
+    "emma": "Emmanuel Nsikak est un créateur numérique et mentor spécialisé en photographie, montage vidéo et outils Adobe, utilisant le storytelling visuel pour inspirer, enseigner et autonomiser les autres dans le domaine créatif.",
+    "muizz": "Abdul Muizz est un développeur backend et tuteur Python passionné par la création d’API efficaces, le mentorat des débutants et l'organisation d'événements technologiques communautaires avec GDG Banjul et OSCA.",
+    "diop": "Thiaba Diop est responsable d’une équipe mobile et bâtisseuse de communauté, qui soutient les développeurs africains grâce au mentorat, au plaidoyer et à des événements technologiques inclusifs en tant qu'ambassadrice Women Techmakers et organisatrice de GDG Dakar."
+  },
+  "visa": {
+    "travel_information": "Informations de voyage",
+    "visa_and": "Visa et",
+    "travel_support": "Assistance au voyage",
+    "visa_text": "Nous sommes là pour vous aider à rendre votre voyage vers PyCon Senegambia aussi fluide que possible",
+    "visa_gambia": "🇬🇲 Gambie",
+    "visa_senegal": "🇸🇳 Sénégal"
+  }
+}

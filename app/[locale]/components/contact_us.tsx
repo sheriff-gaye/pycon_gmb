@@ -9,6 +9,8 @@ import {
   CheckCircle,
   LucideIcon
 } from 'lucide-react';
+import { getTranslation } from '@/lib/i18n';
+import { HeroProps } from './interfaces/interface';
 
 interface FormData {
   name: string;
@@ -36,7 +38,7 @@ interface InquiryType {
 
 type SubmitStatus = 'success' | 'error' | null;
 
-const Contact = () => {
+const Contact = ({currentLocale}:HeroProps) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -45,6 +47,8 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null);
+
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -110,11 +114,10 @@ const Contact = () => {
         
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Get in <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Touch</span>
+            {getTranslation(currentLocale, 'contact.title_part1')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{getTranslation(currentLocale, 'contact.title_part2')}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Have questions about PyCon Senegambia? Want to speak, sponsor, or volunteer? 
-            We would love to hear from you!
+          {getTranslation(currentLocale, 'contact.subtitle')}
           </p>
         </div>
 
@@ -158,7 +161,7 @@ const Contact = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name *
+                    {getTranslation(currentLocale, 'contact.form_name_label')}
                     </label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -169,14 +172,14 @@ const Contact = () => {
                         onChange={handleInputChange}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="Your full name"
+                        placeholder={getTranslation(currentLocale, 'contact.form_name_placeholder')}
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
+                    {getTranslation(currentLocale, 'contact.form_email_label')}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -187,7 +190,7 @@ const Contact = () => {
                         onChange={handleInputChange}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="your.email@example.com"
+                        placeholder={getTranslation(currentLocale, 'contact.form_email_placeholder')}
                       />
                     </div>
                   </div>
@@ -198,7 +201,7 @@ const Contact = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Inquiry Type
+                    {getTranslation(currentLocale, 'contact.form_inquiry_label')}
                     </label>
                     <select
                       name="type"
@@ -217,7 +220,7 @@ const Contact = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Message *
+                  {getTranslation(currentLocale, 'contact.form_message_label')}
                   </label>
                   <div className="relative">
                     <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
@@ -228,7 +231,7 @@ const Contact = () => {
                       required
                       rows={6}
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
-                      placeholder="Please provide details about your inquiry..."
+                      placeholder=  {getTranslation(currentLocale, 'contact.form_message_placeholder')}
                     />
                   </div>
                 </div>
@@ -248,7 +251,7 @@ const Contact = () => {
                     ) : (
                       <>
                         <Send className="w-4 h-4 mr-2" />
-                        Send Message
+                        {getTranslation(currentLocale, 'contact.form_submit_button')}
                       </>
                     )}
                   </button>

@@ -1,38 +1,31 @@
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Twitter,
-  Linkedin,
-  Instagram,
-  ArrowRight,
-  Heart,
-  Globe
-} from "lucide-react";
-import Image from "next/image";
+"use client";
 
-const Footer = () => {
+import { Mail, Phone, MapPin, Twitter, Linkedin, Instagram, ArrowRight, Heart, Globe } from "lucide-react";
+import Image from "next/image";
+import { getTranslation } from "@/lib/i18n";
+import { HeroProps } from "./interfaces/interface";
+
+const Footer = ({currentLocale}:HeroProps) => {
+
   return (
     <footer className="bg-gray-900 text-white">
-     
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Stay Updated with PyCon Senegambia
+              {getTranslation(currentLocale, "footer.subscribe_title")}
             </h3>
             <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
-              Get the latest news, speaker announcements, and early bird offers
-              delivered to your inbox
+              {getTranslation(currentLocale, "footer.subscribe_subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-6 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none  bg-white"
+                placeholder={getTranslation(currentLocale, "footer.subscribe_placeholder")}
+                className="flex-1 px-6 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none bg-white"
               />
               <button className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl font-semibold hover:bg-yellow-300 transition-colors flex items-center justify-center">
-                Subscribe
+                {getTranslation(currentLocale, "footer.subscribe_button")}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </button>
             </div>
@@ -47,16 +40,10 @@ const Footer = () => {
             {/* Brand section */}
             <div className="lg:col-span-1">
               <div className="flex items-center mb-6">
-                <Image
-                  src="/images/logo.png"
-                  alt="logo"
-                  height={50}
-                  width={200}
-                />
+                <Image src="/images/logo.png" alt="logo" height={50} width={200} />
               </div>
               <p className="text-gray-400 mb-6 leading-relaxed">
-                Building the Python community across Gambia and Senegal through
-                collaboration, education, and innovation.
+                {getTranslation(currentLocale, "footer.brand_description")}
               </p>
 
               {/* Social links */}
@@ -69,7 +56,6 @@ const Footer = () => {
                 >
                   <Twitter className="w-4 h-4" />
                 </a>
-              
                 <a
                   href="https://www.linkedin.com/in/pycon-senegambia-218781373/"
                   target="_blank"
@@ -89,57 +75,58 @@ const Footer = () => {
               </div>
             </div>
 
-            
-
+            {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
+              <h4 className="text-lg font-semibold mb-6">
+                {getTranslation(currentLocale, "footer.quick_links_title")}
+              </h4>
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="/about"
+                    href={`/${currentLocale}/about`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    About
-                  </a>  
-                </li>
-                <li>
-                  <a
-                    href="/speakers"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Speakers
+                    {getTranslation(currentLocale, "footer.quick_links.about")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#schedule"
+                    href={`/${currentLocale}/speakers`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Schedule
+                    {getTranslation(currentLocale, "footer.quick_links.speakers")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#sponsors"
+                    href={`/${currentLocale}/#schedule`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Sponsors
+                    {getTranslation(currentLocale, "footer.quick_links.schedule")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/proposal"
+                    href={`/${currentLocale}/#sponsors`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Call for Proposals
+                    {getTranslation(currentLocale, "footer.quick_links.sponsors")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#cfs"
+                    href={`/${currentLocale}/proposal`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Call for Sponsors
+                    {getTranslation(currentLocale, "footer.quick_links.proposal")}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={`/${currentLocale}/#cfs`}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    {getTranslation(currentLocale, "footer.quick_links.cfs")}
                   </a>
                 </li>
               </ul>
@@ -147,54 +134,56 @@ const Footer = () => {
 
             {/* Community */}
             <div>
-              <h4 className="text-lg font-semibold mb-6">Community</h4>
+              <h4 className="text-lg font-semibold mb-6">
+                {getTranslation(currentLocale, "footer.community_title")}
+              </h4>
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="#"
+                    href={`/${currentLocale}/conduct`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Code of Conduct
+                    {getTranslation(currentLocale, "footer.community.code_of_conduct")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href={`/${currentLocale}/#diversity`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Diversity & Inclusion
+                    {getTranslation(currentLocale, "footer.community.diversity")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/volunteers"
+                    href={`/${currentLocale}/volunteers`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Volunteer
+                    {getTranslation(currentLocale, "footer.community.volunteer")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href={`/${currentLocale}/#user-groups`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Python User Groups
+                    {getTranslation(currentLocale, "footer.community.user_groups")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href={`/${currentLocale}/#mentorship`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Mentorship Program
+                    {getTranslation(currentLocale, "footer.community.mentorship")}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href={`/${currentLocale}/#job-board`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    Job Board
+                    {getTranslation(currentLocale, "footer.community.job_board")}
                   </a>
                 </li>
               </ul>
@@ -202,29 +191,29 @@ const Footer = () => {
 
             {/* Contact info */}
             <div>
-              <h4 className="text-lg font-semibold mb-6">Contact Us</h4>
+              <h4 className="text-lg font-semibold mb-6">
+                {getTranslation(currentLocale, "footer.contact_title")}
+              </h4>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <Mail className="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
                     <div className="text-gray-400">
-                    pyconsenegambia@gmail.com
+                      {getTranslation(currentLocale, "footer.contact_email")}
                     </div>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <Phone className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
-                    <div className="text-gray-400">+220 3913726</div>
-                    <div className="text-gray-400">+220 3404520</div>
+                    <div className="text-gray-400">{getTranslation(currentLocale, "footer.contact_phone1")}</div>
+                    <div className="text-gray-400">{getTranslation(currentLocale, "footer.contact_phone2")}</div>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <MapPin className="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <div className="text-gray-400">
-                    Senegambia Region
-                    <br />
-                    Gambia & Senegal
+                  <div className="text-gray-400 whitespace-pre-line">
+                    {getTranslation(currentLocale, "footer.contact_location")}
                   </div>
                 </li>
               </ul>
@@ -233,40 +222,39 @@ const Footer = () => {
         </div>
       </div>
 
-    
       <div className="border-t border-gray-800 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center text-gray-400 text-sm">
-              <span>© 2025 PyCon Senegambia. Made with</span>
+              <span>{getTranslation(currentLocale, "footer.copyright").replace("love", "")}</span>
               <Heart className="w-4 h-4 text-red-500 mx-1 fill-current" />
-              <span>for the Python community</span>
+              <span>{getTranslation(currentLocale, "footer.copyright").split("love")[1]}</span>
             </div>
 
             <div className="flex items-center space-x-6 text-sm">
               <a
-                href="#"
+                href={`/${currentLocale}/#privacy`}
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                Privacy Policy
+                {getTranslation(currentLocale, "footer.privacy")}
               </a>
               <a
-                href="#"
+                href={`/${currentLocale}/#terms`}
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                Terms of Service
+                {getTranslation(currentLocale, "footer.terms")}
               </a>
               <a
-                href="#"
+                href={`/${currentLocale}/#cookie`}
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                Cookie Policy
+                {getTranslation(currentLocale, "footer.cookie")}
               </a>
             </div>
 
             <div className="flex items-center text-gray-400 text-sm">
               <Globe className="w-4 h-4 mr-2" />
-              <span>🇬🇲 Gambia • 🇸🇳 Senegal</span>
+              <span>{getTranslation(currentLocale, "footer.location")}</span>
             </div>
           </div>
         </div>
