@@ -1,5 +1,4 @@
 "use client"
-
 import { 
   FileText, 
   Lightbulb, 
@@ -18,145 +17,147 @@ import {
   BookOpen,
   MessageSquare
 } from 'lucide-react';
+import { getTranslation } from '@/lib/i18n';
+import { HeroProps } from './interfaces/interface';
 
-const CallForProposals = () => {
+const CallForProposals = ({currentLocale}:HeroProps) => {
   const proposalTypes = [
     {
       icon: Code,
-      title: "Technical Talks",
-      duration: "25-30 minutes",
-      description: "Deep dives into Python libraries, frameworks, best practices, and advanced techniques",
+      title: getTranslation(currentLocale, 'call_for_proposals.technical_talks_title'),
+      duration: getTranslation(currentLocale, 'call_for_proposals.technical_talks_duration'),
+      description: getTranslation(currentLocale, 'call_for_proposals.technical_talks_description'),
       color: "from-blue-500 to-blue-600"
     },
     {
       icon: Users,
-      title: "Community Talks",
-      duration: "20-25 minutes", 
-      description: "Building communities, diversity in tech, mentorship, and career development",
+      title: getTranslation(currentLocale, 'call_for_proposals.community_talks_title'),
+      duration: getTranslation(currentLocale, 'call_for_proposals.community_talks_duration'), 
+      description: getTranslation(currentLocale, 'call_for_proposals.community_talks_description'),
       color: "from-green-500 to-green-600"
     },
     {
       icon: Brain,
-      title: "Case Studies",
-      duration: "25-30 minutes",
-      description: "Real-world Python implementations, lessons learned, and problem-solving approaches",
+      title: getTranslation(currentLocale, 'call_for_proposals.case_studies_title'),
+      duration: getTranslation(currentLocale, 'call_for_proposals.case_studies_duration'),
+      description: getTranslation(currentLocale, 'call_for_proposals.case_studies_description'),
       color: "from-purple-500 to-purple-600"
     },
     {
       icon: TrendingUp,
-      title: "Industry Insights",
-      duration: "20-25 minutes",
-      description: "Python in business, startups, scaling applications, and market trends",
+      title: getTranslation(currentLocale, 'call_for_proposals.industry_insights_title'),
+      duration: getTranslation(currentLocale, 'call_for_proposals.industry_insights_duration'),
+      description: getTranslation(currentLocale, 'call_for_proposals.industry_insights_description'),
       color: "from-yellow-500 to-yellow-600"
     },
     {
       icon: BookOpen,
-      title: "Tutorial Sessions",
-      duration: "90-120 minutes",
-      description: "Hands-on workshops teaching specific skills or technologies step-by-step",
+      title: getTranslation(currentLocale, 'call_for_proposals.tutorial_sessions_title'),
+      duration: getTranslation(currentLocale, 'call_for_proposals.tutorial_sessions_duration'),
+      description: getTranslation(currentLocale, 'call_for_proposals.tutorial_sessions_description'),
       color: "from-red-500 to-red-600"
     },
     {
       icon: Zap,
-      title: "Lightning Talks",
-      duration: "5-10 minutes",
-      description: "Quick, impactful presentations on innovative ideas or interesting discoveries",
+      title: getTranslation(currentLocale, 'call_for_proposals.lightning_talks_title'),
+      duration: getTranslation(currentLocale, 'call_for_proposals.lightning_talks_duration'),
+      description: getTranslation(currentLocale, 'call_for_proposals.lightning_talks_description'),
       color: "from-indigo-500 to-indigo-600"
     }
   ];
 
   const submissionCriteria = [
     {
-      category: "Relevance",
+      category: getTranslation(currentLocale, 'call_for_proposals.criteria_relevance'),
       weight: "25%",
-      description: "How well does your proposal align with PyCon Senegambia's mission and audience?"
+      description: getTranslation(currentLocale, 'call_for_proposals.criteria_relevance_description')
     },
     {
-      category: "Originality",
+      category: getTranslation(currentLocale, 'call_for_proposals.criteria_originality'),
       weight: "25%",
-      description: "Is your content fresh, innovative, or presenting a unique perspective?"
+      description: getTranslation(currentLocale, 'call_for_proposals.criteria_originality_description')
     },
     {
-      category: "Quality",
+      category: getTranslation(currentLocale, 'call_for_proposals.criteria_quality'),
       weight: "25%",
-      description: "Is your proposal well-structured with clear learning objectives and outcomes?"
+      description: getTranslation(currentLocale, 'call_for_proposals.criteria_quality_description')
     },
     {
-      category: "Impact",
+      category: getTranslation(currentLocale, 'call_for_proposals.criteria_impact'),
       weight: "25%",
-      description: "Will your talk inspire, educate, or provide practical value to attendees?"
+      description: getTranslation(currentLocale, 'call_for_proposals.criteria_impact_description')
     }
   ];
 
   const reviewProcess = [
     {
       step: "1",
-      title: "Initial Review",
-      description: "Program committee reviews all submissions for completeness and relevance",
-      timeline: "1 week after deadline"
+      title: getTranslation(currentLocale, 'call_for_proposals.review_process_initial_title'),
+      description: getTranslation(currentLocale, 'call_for_proposals.review_process_initial_description'),
+      timeline: getTranslation(currentLocale, 'call_for_proposals.review_process_initial_timeline')
     },
     {
       step: "2", 
-      title: "Expert Evaluation",
-      description: "Subject matter experts evaluate proposals based on technical merit and quality",
-      timeline: "2 weeks after deadline"
+      title: getTranslation(currentLocale, 'call_for_proposals.review_process_expert_title'),
+      description: getTranslation(currentLocale, 'call_for_proposals.review_process_expert_description'),
+      timeline: getTranslation(currentLocale, 'call_for_proposals.review_process_expert_timeline')
     },
     {
       step: "3",
-      title: "Community Input", 
-      description: "Selected proposals are reviewed by community members for feedback",
-      timeline: "3 weeks after deadline"
+      title: getTranslation(currentLocale, 'call_for_proposals.review_process_community_title'), 
+      description: getTranslation(currentLocale, 'call_for_proposals.review_process_community_description'),
+      timeline: getTranslation(currentLocale, 'call_for_proposals.review_process_community_timeline')
     },
     {
       step: "4",
-      title: "Final Selection",
-      description: "Program committee makes final decisions and notifies all applicants",
-      timeline: "4 weeks after deadline"
+      title: getTranslation(currentLocale, 'call_for_proposals.review_process_final_title'),
+      description: getTranslation(currentLocale, 'call_for_proposals.review_process_final_description'),
+      timeline: getTranslation(currentLocale, 'call_for_proposals.review_process_final_timeline')
     }
   ];
 
   const proposalTips = [
     {
       icon: Target,
-      title: "Be Specific",
-      tip: "Clearly define what attendees will learn and take away from your session"
+      title: getTranslation(currentLocale, 'call_for_proposals.tip_be_specific_title'),
+      tip: getTranslation(currentLocale, 'call_for_proposals.tip_be_specific_description')
     },
     {
       icon: Users,
-      title: "Know Your Audience", 
-      tip: "Tailor your content for Python developers with intermediate to advanced skills"
+      title: getTranslation(currentLocale, 'call_for_proposals.tip_know_audience_title'), 
+      tip: getTranslation(currentLocale, 'call_for_proposals.tip_know_audience_description')
     },
     {
       icon: Star,
-      title: "Show Your Expertise",
-      tip: "Highlight your experience and qualifications related to the topic"
+      title: getTranslation(currentLocale, 'call_for_proposals.tip_show_expertise_title'),
+      tip: getTranslation(currentLocale, 'call_for_proposals.tip_show_expertise_description')
     },
     {
       icon: Code,
-      title: "Include Examples",
-      tip: "Provide code samples, demos, or real-world examples in your proposal"
+      title: getTranslation(currentLocale, 'call_for_proposals.tip_include_examples_title'),
+      tip: getTranslation(currentLocale, 'call_for_proposals.tip_include_examples_description')
     },
     {
       icon: Clock,
-      title: "Mind the Time",
-      tip: "Ensure your content fits the allocated time slot with room for Q&A"
+      title: getTranslation(currentLocale, 'call_for_proposals.tip_mind_time_title'),
+      tip: getTranslation(currentLocale, 'call_for_proposals.tip_mind_time_description')
     },
     {
       icon: Lightbulb,
-      title: "Make it Engaging",
-      tip: "Plan interactive elements, live coding, or audience participation"
+      title: getTranslation(currentLocale, 'call_for_proposals.tip_make_engaging_title'),
+      tip: getTranslation(currentLocale, 'call_for_proposals.tip_make_engaging_description')
     }
   ];
 
   const requiredFields = [
-    "Talk title (max 100 characters)",
-    "Abstract (max 400 words)",
-    "Detailed description (max 1000 words)",
-    "Speaker bio and photo",
-    "Learning objectives (3-5 bullet points)",
-    "Target audience level",
-    "Previous speaking experience",
-    "Additional resources or materials needed"
+    getTranslation(currentLocale, 'call_for_proposals.required_field_1'),
+    getTranslation(currentLocale, 'call_for_proposals.required_field_2'),
+    getTranslation(currentLocale, 'call_for_proposals.required_field_3'),
+    getTranslation(currentLocale, 'call_for_proposals.required_field_4'),
+    getTranslation(currentLocale, 'call_for_proposals.required_field_5'),
+    getTranslation(currentLocale, 'call_for_proposals.required_field_6'),
+    getTranslation(currentLocale, 'call_for_proposals.required_field_7'),
+    getTranslation(currentLocale, 'call_for_proposals.required_field_8')
   ];
 
   return (
@@ -167,21 +168,20 @@ const CallForProposals = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-slate-100 to-slate-200 border border-slate-300 mb-6">
             <FileText className="w-4 h-4 text-slate-600 mr-2" />
-            <span className="text-sm font-semibold text-slate-800">Submissions Open</span>
+            <span className="text-sm font-semibold text-slate-800">{getTranslation(currentLocale, 'call_for_proposals.badge')}</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-            Call for <span className="bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">Proposals</span>
+            {getTranslation(currentLocale, 'call_for_proposals.title_part1')} <span className="bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">{getTranslation(currentLocale, 'call_for_proposals.title_part2')}</span>
           </h2>
           <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            Submit your proposal to present at PyCon Senegambia 2025. We welcome diverse perspectives, 
-            innovative ideas, and practical insights that will enrich our Python community.
+            {getTranslation(currentLocale, 'call_for_proposals.subtitle')}
           </p>
         </div>
 
         {/* Proposal Types */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">Proposal Categories</h3>
+          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">{getTranslation(currentLocale, 'call_for_proposals.proposal_categories_title')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {proposalTypes.map((type, index) => (
               <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
@@ -200,8 +200,8 @@ const CallForProposals = () => {
         <div className="bg-white rounded-2xl p-8 shadow-lg mb-16">
           <div className="text-center mb-8">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Submission Requirements</h3>
-            <p className="text-slate-600">Everything you need to include in your proposal</p>
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.submission_requirements_title')}</h3>
+            <p className="text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.submission_requirements_subtitle')}</p>
           </div>
           
           <div className="max-w-4xl mx-auto">
@@ -222,8 +222,8 @@ const CallForProposals = () => {
         <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-8 mb-16 text-white">
           <div className="text-center mb-8">
             <Award className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-2">How We Evaluate Proposals</h3>
-            <p className="text-slate-300">Our review criteria for selecting the best submissions</p>
+            <h3 className="text-2xl font-bold mb-2">{getTranslation(currentLocale, 'call_for_proposals.evaluation_criteria_title')}</h3>
+            <p className="text-slate-300">{getTranslation(currentLocale, 'call_for_proposals.evaluation_criteria_subtitle')}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
@@ -239,7 +239,7 @@ const CallForProposals = () => {
 
         {/* Review Process */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">Review Process</h3>
+          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">{getTranslation(currentLocale, 'call_for_proposals.review_process_title')}</h3>
           <div className="max-w-5xl mx-auto">
             <div className="relative">
               <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-slate-500 to-slate-700 hidden md:block"></div>
@@ -267,7 +267,7 @@ const CallForProposals = () => {
 
         {/* Proposal Tips */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">Tips for a Winning Proposal</h3>
+          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">{getTranslation(currentLocale, 'call_for_proposals.proposal_tips_title')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {proposalTips.map((tip, index) => (
               <div key={index} className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200 hover:shadow-lg transition-shadow">
@@ -287,15 +287,15 @@ const CallForProposals = () => {
         <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-8 shadow-lg border border-yellow-200 mb-16">
           <div className="text-center mb-8">
             <Clock className="w-16 h-16 text-yellow-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Important Deadlines</h3>
-            <p className="text-slate-600">Mark your calendar for these key dates</p>
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.important_deadlines_title')}</h3>
+            <p className="text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.important_deadlines_subtitle')}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             <div className="text-center bg-white rounded-xl p-6 shadow-md">
-              <div className="text-2xl font-bold text-yellow-600 mb-2">1 Aug- Sep 30</div>
-              <div className="text-slate-900 font-semibold mb-1">Conference</div>
-              <div className="text-slate-500 text-sm">PyCon Senegambia 2025</div>
+              <div className="text-2xl font-bold text-yellow-600 mb-2">{getTranslation(currentLocale, 'call_for_proposals.deadline_conference_date')}</div>
+              <div className="text-slate-900 font-semibold mb-1">{getTranslation(currentLocale, 'call_for_proposals.deadline_conference_title')}</div>
+              <div className="text-slate-500 text-sm">{getTranslation(currentLocale, 'call_for_proposals.deadline_conference_description')}</div>
             </div>
           </div>
         </div>
@@ -305,16 +305,14 @@ const CallForProposals = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <div className="flex items-center mb-6">
               <Globe className="w-8 h-8 text-blue-600 mr-4" />
-              <h3 className="text-xl font-bold text-slate-900">Regional Impact</h3>
+              <h3 className="text-xl font-bold text-slate-900">{getTranslation(currentLocale, 'call_for_proposals.regional_impact_title')}</h3>
             </div>
             <p className="text-slate-600 leading-relaxed mb-4">
-              We are particularly interested in proposals that address the unique challenges and opportunities 
-              of Python development in West Africa, including local case studies, community building, 
-              and solutions for regional tech challenges.
+              {getTranslation(currentLocale, 'call_for_proposals.regional_impact_description')}
             </p>
             <div className="bg-blue-50 rounded-lg p-4">
               <p className="text-sm text-blue-800 font-medium">
-                💡 Bonus consideration for talks that bridge Gambian and Senegalese tech communities
+                💡 {getTranslation(currentLocale, 'call_for_proposals.regional_impact_bonus')}
               </p>
             </div>
           </div>
@@ -322,16 +320,14 @@ const CallForProposals = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <div className="flex items-center mb-6">
               <MessageSquare className="w-8 h-8 text-green-600 mr-4" />
-              <h3 className="text-xl font-bold text-slate-900">First-Time Speakers</h3>
+              <h3 className="text-xl font-bold text-slate-900">{getTranslation(currentLocale, 'call_for_proposals.first_time_speakers_title')}</h3>
             </div>
             <p className="text-slate-600 leading-relaxed mb-4">
-              Never spoken at a conference before? We encourage first-time speakers and provide mentorship 
-              support to help you prepare. Our speaker mentors will guide you through the preparation 
-              process and help you deliver an impactful presentation.
+              {getTranslation(currentLocale, 'call_for_proposals.first_time_speakers_description')}
             </p>
             <div className="bg-green-50 rounded-lg p-4">
               <p className="text-sm text-green-800 font-medium">
-                🌟 Dedicated first-time speaker track with additional support
+                🌟 {getTranslation(currentLocale, 'call_for_proposals.first_time_speakers_bonus')}
               </p>
             </div>
           </div>
@@ -341,53 +337,53 @@ const CallForProposals = () => {
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 shadow-lg border border-purple-200 mb-16">
           <div className="text-center mb-8">
             <Star className="w-16 h-16 text-purple-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Special Interest Areas</h3>
-            <p className="text-slate-600">We are especially looking for proposals in these emerging areas</p>
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.special_interest_title')}</h3>
+            <p className="text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.special_interest_subtitle')}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center bg-white rounded-xl p-6 shadow-md">
               <div className="text-3xl mb-3">🤖</div>
-              <h4 className="font-bold text-slate-900 mb-2">AI & Machine Learning</h4>
-              <p className="text-sm text-slate-600">LLMs, computer vision, NLP applications</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.special_interest_ai_title')}</h4>
+              <p className="text-sm text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.special_interest_ai_description')}</p>
             </div>
             <div className="text-center bg-white rounded-xl p-6 shadow-md">
               <div className="text-3xl mb-3">🌍</div>
-              <h4 className="font-bold text-slate-900 mb-2">Climate Tech</h4>
-              <p className="text-sm text-slate-600">Environmental monitoring, sustainability</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.special_interest_climate_title')}</h4>
+              <p className="text-sm text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.special_interest_climate_description')}</p>
             </div>
             <div className="text-center bg-white rounded-xl p-6 shadow-md">
               <div className="text-3xl mb-3">💰</div>
-              <h4 className="font-bold text-slate-900 mb-2">FinTech Solutions</h4>
-              <p className="text-sm text-slate-600">Mobile payments, blockchain, financial inclusion</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.special_interest_fintech_title')}</h4>
+              <p className="text-sm text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.special_interest_fintech_description')}</p>
             </div>
             <div className="text-center bg-white rounded-xl p-6 shadow-md">
               <div className="text-3xl mb-3">🏥</div>
-              <h4 className="font-bold text-slate-900 mb-2">HealthTech</h4>
-              <p className="text-sm text-slate-600">Digital health, telemedicine, health data</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.special_interest_healthtech_title')}</h4>
+              <p className="text-sm text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.special_interest_healthtech_description')}</p>
             </div>
           </div>
         </div>
 
         {/* FAQ Section */}
         <div className="bg-white rounded-2xl p-8 shadow-lg mb-16">
-          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Frequently Asked Questions</h3>
+          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">{getTranslation(currentLocale, 'call_for_proposals.faq_title')}</h3>
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="border-l-4 border-blue-500 pl-6">
-              <h4 className="font-bold text-slate-900 mb-2">Can I submit multiple proposals?</h4>
-              <p className="text-slate-600">Yes, you can submit up to 3 proposals, but please ensure each one is high-quality and unique.</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.faq_multiple_proposals_question')}</h4>
+              <p className="text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.faq_multiple_proposals_answer')}</p>
             </div>
             <div className="border-l-4 border-green-500 pl-6">
-              <h4 className="font-bold text-slate-900 mb-2">Do you provide travel support?</h4>
-              <p className="text-slate-600">Yes, selected speakers from outside Banjul will receive travel stipend and accommodation support.</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.faq_travel_support_question')}</h4>
+              <p className="text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.faq_travel_support_answer')}</p>
             </div>
             <div className="border-l-4 border-purple-500 pl-6">
-              <h4 className="font-bold text-slate-900 mb-2">What language should I present in?</h4>
-              <p className="text-slate-600">All presentations should be in English, but we welcome speakers who want to include local language elements.</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.faq_language_question')}</h4>
+              <p className="text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.faq_language_answer')}</p>
             </div>
             <div className="border-l-4 border-yellow-500 pl-6">
-              <h4 className="font-bold text-slate-900 mb-2">Can I present remotely?</h4>
-              <p className="text-slate-600">We prefer in-person presentations, but exceptional remote presentations will be considered on a case-by-case basis.</p>
+              <h4 className="font-bold text-slate-900 mb-2">{getTranslation(currentLocale, 'call_for_proposals.faq_remote_question')}</h4>
+              <p className="text-slate-600">{getTranslation(currentLocale, 'call_for_proposals.faq_remote_answer')}</p>
             </div>
           </div>
         </div>
@@ -395,30 +391,28 @@ const CallForProposals = () => {
         {/* CTA Section */}
         <div className="text-center bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-12 shadow-lg text-white">
           <Lightbulb className="w-16 h-16 text-yellow-400 mx-auto mb-6" />
-          <h3 className="text-3xl font-bold mb-4">Ready to Share Your Ideas?</h3>
+          <h3 className="text-3xl font-bold mb-4">{getTranslation(currentLocale, 'call_for_proposals.cta_title')}</h3>
           <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            Submit your proposal today and be part of the inaugural PyCon Senegambia. 
-            Help us build a stronger Python community across West Africa.
+            {getTranslation(currentLocale, 'call_for_proposals.cta_subtitle')}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <button  onClick={() =>
+            <button onClick={() =>
                 window.open(
                   "https://sessionize.com/pycon-senegambia/",
                   "_blank",
                   "noopener,noreferrer"
                 )} className="group bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 px-8 py-4 rounded-full font-bold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-              Submit Your Proposal
+              {getTranslation(currentLocale, 'call_for_proposals.cta_submit_button')}
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
             
             <button className="group bg-transparent border-2 border-slate-400 text-slate-300 px-8 py-4 rounded-full font-semibold hover:bg-slate-700 hover:border-slate-300 transition-all duration-300 flex items-center justify-center">
-              Download Guidelines
+              {getTranslation(currentLocale, 'call_for_proposals.cta_guidelines_button')}
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
           
-         
         </div>
       </div>
     </section>

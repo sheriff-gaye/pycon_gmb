@@ -24,7 +24,7 @@ const About = ({ currentLocale }: HeroProps) => {
       location: getTranslation(currentLocale, "about.gambia"),
       image: "/images/bio/sonko.jpg",
       bio: getTranslation(currentLocale, "about.sonko"),
-      linkedin: ""
+      linkedin: "sheriff-ahmed-fadil-sonko-541a7a218"
     },
     {
       name: "Sheriff Gaye",
@@ -49,7 +49,7 @@ const About = ({ currentLocale }: HeroProps) => {
       location: getTranslation(currentLocale, "about.gambia"),
       image: "/images/bio/keita.jpg",
       bio: getTranslation(currentLocale, "about.keita"),
-      linkedin: ""
+      linkedin: "therese-k-keita-4b1799142"
     },
     {
       name: "Seray Sidibeh",
@@ -61,11 +61,11 @@ const About = ({ currentLocale }: HeroProps) => {
     },
     {
       name: "Fatou Ndow",
-      role: "Social media and content lead",
+      role: "Social Media & Content Lead",
       location: getTranslation(currentLocale, "about.gambia"),
       image: "/images/bio/fatou.png",
       bio: getTranslation(currentLocale, "about.fatou"),
-      linkedin: ""
+      linkedin: "fatou-ndow-8841b1242"
     },
     {
       name: "Emmanuel Nsikak",
@@ -78,20 +78,20 @@ const About = ({ currentLocale }: HeroProps) => {
 
     {
       name: "Abdul Muizz Ikumapayi",
-      role: "Speakers and talk leads",
+      role: "Speakers & talk Lead",
       location: getTranslation(currentLocale, "about.gambia"),
       image: "/images/bio/abdul.png",
       bio: getTranslation(currentLocale, "about.muizz"),
-      linkedin: ""
+      linkedin: "abdul-muizz-ikumapayi"
     },
 
     {
       name: "Thiaba Diop",
-      role: "Senegal Representative",
+      role: "Talk & Speakers Co Lead",
       location: getTranslation(currentLocale, "about.senegal"),
       image: "/images/bio/diop.jpg",
       bio: getTranslation(currentLocale, "about.diop"),
-      linkedin: ""
+      linkedin: "thiaba-diop"
     }
   ];
 

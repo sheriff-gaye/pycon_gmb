@@ -24,172 +24,255 @@ import {
   Video,
   Headphones
 } from 'lucide-react';
+import { getTranslation } from '@/lib/i18n';
+import { HeroProps } from './interfaces/interface';
 
-const CallForVolunteers = () => {
+const CallForVolunteers = ({currentLocale}:HeroProps) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const volunteerPositions = [
     {
       id: 1,
-      title: "Logistics and Venue Support",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_1_title'),
       category: "logistics",
       icon: ClipboardList,
-      commitment: "6-8 hours",
-      location: "Throughout Venue",
-      description: "Help coordinate venue logistics, manage supplies, and ensure smooth operations throughout the conference.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_1_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_1_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_1_description'),
       responsibilities: [
-        "Assist with venue setup and breakdown",
-        "Coordinate equipment and supply distribution",
-        "Manage venue logistics and space allocation",
-        "Support event flow and attendee guidance"
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_responsibility_4')
       ],
-      skills: ["Organization", "Problem-solving", "Physical coordination", "Attention to detail"],
-      benefits: ["Free conference pass", "Volunteer t-shirt", "Event management experience"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_1_benefit_3')
+      ]
     },
     {
       id: 2,
-      title: "Speakers, Runners, and Workshop Support",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_2_title'),
       category: "coordination",
       icon: Megaphone,
-      commitment: "Full conference",
-      location: "Speaker Areas & Workshop Rooms",
-      description: "Provide dedicated support to speakers and workshop facilitators, ensuring they have everything needed for successful sessions.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_2_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_2_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_2_description'),
       responsibilities: [
-        "Escort speakers to their sessions",
-        "Assist with presentation setup and materials",
-        "Coordinate workshop logistics and attendee flow",
-        "Manage speaker schedules and requirements"
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_responsibility_4')
       ],
-      skills: ["Communication", "Organization", "People management", "Flexibility"],
-      benefits: ["Speaker dinner invitation", "Premium swag", "Direct networking with speakers"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_2_benefit_3')
+      ]
     },
     {
       id: 3,
-      title: "Crowd Control and Guest Support",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_3_title'),
       category: "logistics",
       icon: Users,
-      commitment: "Full conference",
-      location: "Throughout venue",
-      description: "Manage attendee flow, assist with crowd control during popular sessions, and provide general guest support.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_3_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_3_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_3_description'),
       responsibilities: [
-        "Guide attendees to appropriate sessions and areas",
-        "Manage crowd flow during breaks and meals",
-        "Provide general information and assistance",
-        "Handle queue management for popular sessions"
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_responsibility_4')
       ],
-      skills: ["People skills", "Crowd management", "Problem-solving", "Patience"],
-      benefits: ["All meals included", "Networking opportunities", "Leadership experience"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_3_benefit_3')
+      ]
     },
     {
       id: 4,
-      title: "Social Media and Content Creation",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_4_title'),
       category: "marketing",
       icon: Camera,
-      commitment: "Flexible shifts",
-      location: "Throughout venue",
-      description: "Create engaging content, manage social media presence, and capture the conference experience for online audiences.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_4_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_4_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_4_description'),
       responsibilities: [
-        "Create real-time social media content",
-        "Photograph sessions and networking events",
-        "Interview attendees and speakers",
-        "Manage live social media updates and engagement"
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_responsibility_4')
       ],
-      skills: ["Social media", "Content creation", "Photography", "Creative writing"],
-      benefits: ["Professional portfolio pieces", "Creator networking", "Social media training"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_4_benefit_3')
+      ]
     },
     {
       id: 5,
-      title: "Technical Support (Audio/Visual, Live Stream, etc)",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_5_title'),
       category: "technical",
       icon: Monitor,
-      commitment: "8-10 hours",
-      location: "All Conference Rooms",
-      description: "Ensure smooth technical operations including audio/visual equipment, live streaming, and technical troubleshooting.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_5_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_5_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_5_description'),
       responsibilities: [
-        "Set up and monitor audio-visual equipment",
-        "Manage live streaming and recording systems",
-        "Troubleshoot technical issues during sessions",
-        "Coordinate with speakers on technical requirements"
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_responsibility_4')
       ],
-      skills: ["Technical knowledge", "Equipment handling", "Problem-solving", "Live streaming"],
-      benefits: ["Technical workshop access", "AV equipment training", "Tech industry networking"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_5_benefit_3')
+      ]
     },
     {
       id: 6,
-      title: "Grants",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_6_title'),
       category: "coordination",
       icon: DollarSign,
-      commitment: "4-6 hours",
-      location: "Registration Area",
-      description: "Assist with grant program coordination, application processing, and support for grant recipients.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_6_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_6_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_6_description'),
       responsibilities: [
-        "Process grant applications and documentation",
-        "Coordinate with grant recipients",
-        "Assist with financial aid distribution",
-        "Support grant program logistics"
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_responsibility_4')
       ],
-      skills: ["Administrative skills", "Attention to detail", "Communication", "Confidentiality"],
-      benefits: ["Administrative experience", "Grant program knowledge", "Professional references"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_6_benefit_3')
+      ]
     },
     {
       id: 7,
-      title: "Website Development",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_7_title'),
       category: "technical",
       icon: Code,
-      commitment: "Remote/Flexible",
-      location: "Remote & On-site",
-      description: "Support website updates, technical improvements, and digital infrastructure during the conference.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_7_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_7_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_7_description'),
       responsibilities: [
-        "Implement website updates and fixes",
-        "Maintain conference digital platforms",
-        "Support online registration systems",
-        "Assist with technical documentation"
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_responsibility_4')
       ],
-      skills: ["Web development", "HTML/CSS/JavaScript", "Problem-solving", "Version control"],
-      benefits: ["Open source contributions", "Technical mentorship", "Developer networking"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_7_benefit_3')
+      ]
     },
     {
       id: 8,
-      title: "Photography and Videography",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_8_title'),
       category: "marketing",
       icon: Video,
-      commitment: "Flexible shifts",
-      location: "Throughout venue",
-      description: "Capture high-quality photos and videos of the conference for promotional and archival purposes.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_8_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_8_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_8_description'),
       responsibilities: [
-        "Photograph key moments and sessions",
-        "Record video content for promotional use",
-        "Edit and process visual content",
-        "Coordinate with speakers for photo permissions"
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_responsibility_4')
       ],
-      skills: ["Photography", "Video editing", "Creative eye", "Equipment handling"],
-      benefits: ["Professional portfolio work", "Equipment access", "Media industry contacts"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_8_benefit_3')
+      ]
     },
     {
       id: 9,
-      title: "Registration and Help Desk",
+      title: getTranslation(currentLocale, 'call_for_volunteers.position_9_title'),
       category: "logistics",
       icon: Headphones,
-      commitment: "6-8 hours",
-      location: "Conference Entrance & Help Desk",
-      description: "Manage attendee registration, provide information, and serve as the first point of contact for conference support.",
+      commitment: getTranslation(currentLocale, 'call_for_volunteers.position_9_commitment'),
+      location: getTranslation(currentLocale, 'call_for_volunteers.position_9_location'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.position_9_description'),
       responsibilities: [
-        "Check-in attendees and distribute materials",
-        "Provide conference information and assistance",
-        "Handle registration issues and questions",
-        "Coordinate with other volunteer teams"
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_responsibility_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_responsibility_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_responsibility_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_responsibility_4')
       ],
-      skills: ["Customer service", "Communication", "Problem-solving", "Multi-tasking"],
-      benefits: ["Customer service experience", "Conference networking", "Communication skills development"]
+      skills: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_skill_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_skill_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_skill_3'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_skill_4')
+      ],
+      benefits: [
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_benefit_1'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_benefit_2'),
+        getTranslation(currentLocale, 'call_for_volunteers.position_9_benefit_3')
+      ]
     }
   ];
 
   const categories = [
-    { id: 'all', label: 'All Positions', count: volunteerPositions.length },
-    { id: 'technical', label: 'Technical', count: volunteerPositions.filter(p => p.category === 'technical').length },
-    { id: 'logistics', label: 'Logistics', count: volunteerPositions.filter(p => p.category === 'logistics').length },
-    { id: 'coordination', label: 'Coordination', count: volunteerPositions.filter(p => p.category === 'coordination').length },
-    { id: 'marketing', label: 'Marketing', count: volunteerPositions.filter(p => p.category === 'marketing').length }
+    { id: 'all', label: getTranslation(currentLocale, 'call_for_volunteers.category_all_label'), count: volunteerPositions.length },
+    { id: 'technical', label: getTranslation(currentLocale, 'call_for_volunteers.category_technical_label'), count: volunteerPositions.filter(p => p.category === 'technical').length },
+    { id: 'logistics', label: getTranslation(currentLocale, 'call_for_volunteers.category_logistics_label'), count: volunteerPositions.filter(p => p.category === 'logistics').length },
+    { id: 'coordination', label: getTranslation(currentLocale, 'call_for_volunteers.category_coordination_label'), count: volunteerPositions.filter(p => p.category === 'coordination').length },
+    { id: 'marketing', label: getTranslation(currentLocale, 'call_for_volunteers.category_marketing_label'), count: volunteerPositions.filter(p => p.category === 'marketing').length }
   ];
 
   const filteredPositions = selectedCategory === 'all' 
@@ -199,33 +282,33 @@ const CallForVolunteers = () => {
   const volunteerBenefits = [
     {
       icon: Gift,
-      title: "Conference Access",
-      description: "Full access to all sessions, workshops, and networking events"
+      title: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_conference_access_title'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_conference_access_description')
     },
     {
       icon: Star,
-      title: "Exclusive Swag",
-      description: "Special volunteer t-shirt, badge, and limited edition merchandise"
+      title: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_exclusive_swag_title'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_exclusive_swag_description')
     },
     {
       icon: Users,
-      title: "Networking Priority",
-      description: "Access to volunteer-only events and direct contact with speakers"
+      title: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_networking_title'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_networking_description')
     },
     {
       icon: Award,
-      title: "Recognition",
-      description: "Certificate of participation and LinkedIn recommendations"
+      title: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_recognition_title'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_recognition_description')
     },
     {
       icon: Heart,
-      title: "Community Impact",
-      description: "Be part of building the Python community in West Africa"
+      title: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_community_impact_title'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_community_impact_description')
     },
     {
       icon: Zap,
-      title: "Skill Development",
-      description: "Gain experience in event management and technical skills"
+      title: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_skill_development_title'),
+      description: getTranslation(currentLocale, 'call_for_volunteers.volunteer_benefits_skill_development_description')
     }
   ];
 
@@ -237,29 +320,28 @@ const CallForVolunteers = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <HandHeart className="w-4 h-4 text-yellow-600 mr-2" />
-            <span className="text-sm font-semibold text-yellow-800">Join Our Mission</span>
+            <span className="text-sm font-semibold text-yellow-800">{getTranslation(currentLocale, 'call_for_volunteers.badge')}</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Call for <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Volunteers</span>
+            {getTranslation(currentLocale, 'call_for_volunteers.title_part1')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{getTranslation(currentLocale, 'call_for_volunteers.title_part2')}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
-            Help us create history! Join our volunteer team and be part of the inaugural PyCon Senegambia. 
-            Make lasting connections while contributing to the growth of the Python community in West Africa.
+            {getTranslation(currentLocale, 'call_for_volunteers.subtitle')}
           </p>
           
           <div className="flex flex-wrap justify-center gap-8 text-lg">
             <div className="flex items-center text-gray-700">
               <Calendar className="w-5 h-5 mr-2 text-blue-600" />
-              <span>Multiple volunteer opportunities available</span>
+              <span>{getTranslation(currentLocale, 'call_for_volunteers.opportunities')}</span>
             </div>
             <div className="flex items-center text-gray-700">
               <Clock className="w-5 h-5 mr-2 text-purple-600" />
-              <span>Flexible time commitments</span>
+              <span>{getTranslation(currentLocale, 'call_for_volunteers.commitment')}</span>
             </div>
             <div className="flex items-center text-gray-700">
               <Globe className="w-5 h-5 mr-2 text-yellow-600" />
-              <span>Open to all skill levels</span>
+              <span>{getTranslation(currentLocale, 'call_for_volunteers.skill_levels')}</span>
             </div>
           </div>
         </div>
@@ -267,8 +349,8 @@ const CallForVolunteers = () => {
         {/* Why Volunteer */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-white">
           <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-4">Why Volunteer with Us?</h3>
-            <p className="text-blue-100 text-lg">Discover the amazing benefits of joining our volunteer team</p>
+            <h3 className="text-3xl font-bold mb-4">{getTranslation(currentLocale, 'call_for_volunteers.why_volunteer_title')}</h3>
+            <p className="text-blue-100 text-lg">{getTranslation(currentLocale, 'call_for_volunteers.why_volunteer_subtitle')}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -325,7 +407,7 @@ const CallForVolunteers = () => {
 
               <div className="space-y-4 mb-6">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Key Responsibilities:</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.key_responsibilities')}</h4>
                   <ul className="space-y-1">
                     {position.responsibilities.slice(0, 3).map((resp, index) => (
                       <li key={index} className="flex items-start text-sm text-gray-600">
@@ -337,7 +419,7 @@ const CallForVolunteers = () => {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Skills Needed:</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.skills_needed')}</h4>
                   <div className="flex flex-wrap gap-2">
                     {position.skills.map((skill, index) => (
                       <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
@@ -349,7 +431,7 @@ const CallForVolunteers = () => {
               </div>
 
               <div className="border-t border-gray-100 pt-4">
-                <h4 className="font-semibold text-gray-900 mb-2">Benefits:</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.benefits')}</h4>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {position.benefits.map((benefit, index) => (
                     <span key={index} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
@@ -364,7 +446,7 @@ const CallForVolunteers = () => {
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                 >
-                  Apply for This Position
+                  {getTranslation(currentLocale, 'call_for_volunteers.apply_button')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </a>
               </div>
@@ -374,48 +456,48 @@ const CallForVolunteers = () => {
 
         {/* Application Process */}
         <div className="bg-white rounded-2xl p-8 shadow-lg mb-16">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">How to Apply</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">{getTranslation(currentLocale, 'call_for_volunteers.application_process_title')}</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">1</span>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Choose Position</h4>
-              <p className="text-gray-600 text-sm">Select the volunteer role that matches your interests and skills</p>
+              <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_1_title')}</h4>
+              <p className="text-gray-600 text-sm">{getTranslation(currentLocale, 'call_for_volunteers.application_step_1_description')}</p>
             </div>
             
             <div className="text-center">
               <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">2</span>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Fill Application</h4>
-              <p className="text-gray-600 text-sm">Complete our simple online application form with your details</p>
+              <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_2_title')}</h4>
+              <p className="text-gray-600 text-sm">{getTranslation(currentLocale, 'call_for_volunteers.application_step_2_description')}</p>
             </div>
             
             <div className="text-center">
               <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">3</span>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Quick Interview</h4>
-              <p className="text-gray-600 text-sm">Brief chat with our volunteer coordinator to discuss your role</p>
+              <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_3_title')}</h4>
+              <p className="text-gray-600 text-sm">{getTranslation(currentLocale, 'call_for_volunteers.application_step_3_description')}</p>
             </div>
             
             <div className="text-center">
               <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">4</span>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Get Started</h4>
-              <p className="text-gray-600 text-sm">Receive your volunteer pack and join our pre-event orientation</p>
+              <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_4_title')}</h4>
+              <p className="text-gray-600 text-sm">{getTranslation(currentLocale, 'call_for_volunteers.application_step_4_description')}</p>
             </div>
           </div>
         </div>
 
         {/* Call to Action */}
         <div className="text-center bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-2xl p-8 shadow-lg">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">Ready to Make a Difference?</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">{getTranslation(currentLocale, 'call_for_volunteers.cta_title')}</h3>
           <p className="text-gray-800 mb-6 text-lg">
-            Join our amazing team of volunteers and help create an unforgettable experience for the Python community in West Africa.
+            {getTranslation(currentLocale, 'call_for_volunteers.cta_subtitle')}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -426,15 +508,14 @@ const CallForVolunteers = () => {
               className="bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
             >
               <HandHeart className="w-5 h-5 mr-2" />
-              Apply Now
+              {getTranslation(currentLocale, 'call_for_volunteers.cta_apply_button')}
               <ArrowRight className="w-5 h-5 ml-2" />
             </a>
             
             <button className="bg-white text-gray-900 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 border-2 border-gray-900">
-              Questions? Contact Us
+              {getTranslation(currentLocale, 'call_for_volunteers.cta_contact_button')}
             </button>
           </div>
-         
         </div>
       </div>
     </section>

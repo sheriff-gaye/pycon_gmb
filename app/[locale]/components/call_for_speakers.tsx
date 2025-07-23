@@ -1,3 +1,4 @@
+"use client"
 import { 
   Mic, 
   Users, 
@@ -12,71 +13,119 @@ import {
   Target,
   Gift
 } from 'lucide-react';
+import { getTranslation } from '@/lib/i18n';
+import { HeroProps } from './interfaces/interface';
 
-const CallForSpeakers = () => {
+const CallForSpeakers = ({currentLocale}:HeroProps) => {
   const speakerBenefits = [
     {
       icon: Globe,
-      title: "Global Exposure",
-      description: "Share your expertise with 500+ developers from across West Africa"
+      title: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_global_exposure_title'),
+      description: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_global_exposure_description')
     },
     {
       icon: Users,
-      title: "Community Impact",
-      description: "Inspire the next generation of Python developers in the region"
+      title: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_community_impact_title'),
+      description: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_community_impact_description')
     },
     {
       icon: Award,
-      title: "Recognition",
-      description: "Build your reputation as a thought leader in the Python or tech community"
+      title: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_recognition_title'),
+      description: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_recognition_description')
     },
     {
       icon: Gift,
-      title: "Speaker Package",
-      description: "Travel or accommodation stipend, and exclusive speaker dinner"
+      title: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_package_title'),
+      description: getTranslation(currentLocale, 'call_for_speakers.speaker_benefits_package_description')
     }
   ];
 
   const trackTopics = [
     {
-      category: "Core Python",
-      topics: ["Python 3.12+ Features", "Performance Optimization", "Async Programming", "Best Practices"]
+      category: getTranslation(currentLocale, 'call_for_speakers.track_topic_core_python_category'),
+      topics: [
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_core_python_topic_1'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_core_python_topic_2'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_core_python_topic_3'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_core_python_topic_4')
+      ]
     },
     {
-      category: "Web Development",
-      topics: ["Django & FastAPI", "Flask Applications", "API Design", "Microservices"]
+      category: getTranslation(currentLocale, 'call_for_speakers.track_topic_web_development_category'),
+      topics: [
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_web_development_topic_1'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_web_development_topic_2'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_web_development_topic_3'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_web_development_topic_4')
+      ]
     },
     {
-      category: "Data Science",
-      topics: ["Machine Learning", "Data Analysis", "Pandas & NumPy", "Visualization"]
+      category: getTranslation(currentLocale, 'call_for_speakers.track_topic_data_science_category'),
+      topics: [
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_data_science_topic_1'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_data_science_topic_2'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_data_science_topic_3'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_data_science_topic_4')
+      ]
     },
     {
-      category: "DevOps & Cloud",
-      topics: ["Docker & Kubernetes", "CI/CD Pipelines", "Cloud Deployment", "Infrastructure as Code"]
+      category: getTranslation(currentLocale, 'call_for_speakers.track_topic_devops_cloud_category'),
+      topics: [
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_devops_cloud_topic_1'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_devops_cloud_topic_2'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_devops_cloud_topic_3'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_devops_cloud_topic_4')
+      ]
     },
     {
-      category: "Community & Career",
-      topics: ["Open Source Contribution", "Tech Leadership", "Career Growth", "Diversity in Tech"]
+      category: getTranslation(currentLocale, 'call_for_speakers.track_topic_community_career_category'),
+      topics: [
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_community_career_topic_1'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_community_career_topic_2'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_community_career_topic_3'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_community_career_topic_4')
+      ]
     },
     {
-      category: "Emerging Tech",
-      topics: ["AI & LLMs", "Blockchain", "IoT with Python", "Cybersecurity"]
+      category: getTranslation(currentLocale, 'call_for_speakers.track_topic_emerging_tech_category'),
+      topics: [
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_emerging_tech_topic_1'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_emerging_tech_topic_2'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_emerging_tech_topic_3'),
+        getTranslation(currentLocale, 'call_for_speakers.track_topic_emerging_tech_topic_4')
+      ]
     }
   ];
 
   const timeline = [
-    { date: "Aug 01, 2025", event: "Call for Speakers Opens", status: "current" },
-    { date: "September 30, 2025", event: "Submission Deadline", status: "upcoming" },
-    { date: "October 10, 2025", event: "Speaker Notifications", status: "upcoming" },
-    { date: "November 28-29, 2025", event: "PyCon Senegambia", status: "upcoming" }
+    { 
+      date: getTranslation(currentLocale, 'call_for_speakers.timeline_1_date'), 
+      event: getTranslation(currentLocale, 'call_for_speakers.timeline_1_event'), 
+      status: "current" 
+    },
+    { 
+      date: getTranslation(currentLocale, 'call_for_speakers.timeline_2_date'), 
+      event: getTranslation(currentLocale, 'call_for_speakers.timeline_2_event'), 
+      status: "upcoming" 
+    },
+    { 
+      date: getTranslation(currentLocale, 'call_for_speakers.timeline_3_date'), 
+      event: getTranslation(currentLocale, 'call_for_speakers.timeline_3_event'), 
+      status: "upcoming" 
+    },
+    { 
+      date: getTranslation(currentLocale, 'call_for_speakers.timeline_4_date'), 
+      event: getTranslation(currentLocale, 'call_for_speakers.timeline_4_event'), 
+      status: "upcoming" 
+    }
   ];
 
   const requirements = [
-    "Original content not presented elsewhere",
-    "Engaging and practical for Python developers",
-    "Clear learning objectives and takeaways",
-    "Interactive elements or live coding preferred",
-    "Suitable for intermediate to advanced level"
+    getTranslation(currentLocale, 'call_for_speakers.requirement_1'),
+    getTranslation(currentLocale, 'call_for_speakers.requirement_2'),
+    getTranslation(currentLocale, 'call_for_speakers.requirement_3'),
+    getTranslation(currentLocale, 'call_for_speakers.requirement_4'),
+    getTranslation(currentLocale, 'call_for_speakers.requirement_5')
   ];
 
   return (
@@ -87,15 +136,14 @@ const CallForSpeakers = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-200 border border-blue-300 mb-6">
             <Mic className="w-4 h-4 text-blue-600 mr-2" />
-            <span className="text-sm font-semibold text-blue-800">Now Accepting Applications</span>
+            <span className="text-sm font-semibold text-blue-800">{getTranslation(currentLocale, 'call_for_speakers.badge')}</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Call for <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Speakers</span>
+            {getTranslation(currentLocale, 'call_for_speakers.title_part1')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{getTranslation(currentLocale, 'call_for_speakers.title_part2')}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Share your Python expertise at the inaugural PyCon Senegambia. We are looking for passionate speakers 
-            to inspire, educate, and connect with developers across West Africa.
+            {getTranslation(currentLocale, 'call_for_speakers.subtitle')}
           </p>
         </div>
 
@@ -114,32 +162,32 @@ const CallForSpeakers = () => {
 
         {/* Talk Formats */}
         <div className="bg-white rounded-2xl p-8 shadow-lg mb-16">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Talk Formats We are Looking For</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">{getTranslation(currentLocale, 'call_for_speakers.talk_formats_title')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
               <Clock className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Lightning Talks</h4>
-              <p className="text-gray-600 mb-3">5-10 minutes</p>
-              <p className="text-sm text-gray-500">Quick, impactful presentations on focused topics</p>
+              <h4 className="text-xl font-bold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_speakers.talk_format_lightning_title')}</h4>
+              <p className="text-gray-600 mb-3">{getTranslation(currentLocale, 'call_for_speakers.talk_format_lightning_duration')}</p>
+              <p className="text-sm text-gray-500">{getTranslation(currentLocale, 'call_for_speakers.talk_format_lightning_description')}</p>
             </div>
             <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
               <Mic className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Standard Talks</h4>
-              <p className="text-gray-600 mb-3">25-30 minutes</p>
-              <p className="text-sm text-gray-500">In-depth presentations with Q&A session</p>
+              <h4 className="text-xl font-bold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_speakers.talk_format_standard_title')}</h4>
+              <p className="text-gray-600 mb-3">{getTranslation(currentLocale, 'call_for_speakers.talk_format_standard_duration')}</p>
+              <p className="text-sm text-gray-500">{getTranslation(currentLocale, 'call_for_speakers.talk_format_standard_description')}</p>
             </div>
             <div className="text-center p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl">
               <Users className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Workshops</h4>
-              <p className="text-gray-600 mb-3">90-120 minutes</p>
-              <p className="text-sm text-gray-500">Hands-on, interactive learning experiences</p>
+              <h4 className="text-xl font-bold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_speakers.talk_format_workshops_title')}</h4>
+              <p className="text-gray-600 mb-3">{getTranslation(currentLocale, 'call_for_speakers.talk_format_workshops_duration')}</p>
+              <p className="text-sm text-gray-500">{getTranslation(currentLocale, 'call_for_speakers.talk_format_workshops_description')}</p>
             </div>
           </div>
         </div>
 
         {/* Track Topics */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">Track Topics</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">{getTranslation(currentLocale, 'call_for_speakers.track_topics_title')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {trackTopics.map((track, index) => (
               <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
@@ -161,8 +209,8 @@ const CallForSpeakers = () => {
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 mb-16 text-white">
           <div className="text-center mb-8">
             <Target className="w-16 h-16 text-yellow-300 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-2">Speaker Requirements</h3>
-            <p className="text-blue-100">What we are looking for in proposals</p>
+            <h3 className="text-2xl font-bold mb-2">{getTranslation(currentLocale, 'call_for_speakers.requirements_title')}</h3>
+            <p className="text-blue-100">{getTranslation(currentLocale, 'call_for_speakers.requirements_subtitle')}</p>
           </div>
           
           <div className="max-w-3xl mx-auto">
@@ -179,7 +227,7 @@ const CallForSpeakers = () => {
 
         {/* Timeline */}
         <div className="bg-white rounded-2xl p-8 shadow-lg mb-16">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Important Dates</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">{getTranslation(currentLocale, 'call_for_speakers.timeline_title')}</h3>
           <div className="max-w-4xl mx-auto">
             <div className="relative">
               <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600"></div>
@@ -215,15 +263,14 @@ const CallForSpeakers = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <div className="flex items-center mb-6">
               <MapPin className="w-8 h-8 text-blue-600 mr-4" />
-              <h3 className="text-xl font-bold text-gray-900">Event Location</h3>
+              <h3 className="text-xl font-bold text-gray-900">{getTranslation(currentLocale, 'call_for_speakers.location_title')}</h3>
             </div>
             <p className="text-gray-600 mb-4">
-              Banjul, The Gambia - The perfect bridge between Gambia and Senegal, bringing together 
-              developers from across the Senegambia region.
+              {getTranslation(currentLocale, 'call_for_speakers.location_description')}
             </p>
             <div className="bg-blue-50 rounded-lg p-4">
               <p className="text-sm text-blue-800 font-medium">
-                🏨 Accommodation and travel support available for selected speakers
+                🏨 {getTranslation(currentLocale, 'call_for_speakers.location_bonus')}
               </p>
             </div>
           </div>
@@ -231,15 +278,14 @@ const CallForSpeakers = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <div className="flex items-center mb-6">
               <Calendar className="w-8 h-8 text-purple-600 mr-4" />
-              <h3 className="text-xl font-bold text-gray-900">Conference Dates</h3>
+              <h3 className="text-xl font-bold text-gray-900">{getTranslation(currentLocale, 'call_for_speakers.dates_title')}</h3>
             </div>
             <p className="text-gray-600 mb-4">
-              November 28-29, 2025 - Two days of inspiring talks, workshops, networking, 
-              and community building in beautiful Banjul.
+              {getTranslation(currentLocale, 'call_for_speakers.dates_description')}
             </p>
             <div className="bg-purple-50 rounded-lg p-4">
               <p className="text-sm text-purple-800 font-medium">
-                🎤 Speaker dinner and exclusive networking events included
+                🎤 {getTranslation(currentLocale, 'call_for_speakers.dates_bonus')}
               </p>
             </div>
           </div>
@@ -248,25 +294,23 @@ const CallForSpeakers = () => {
         {/* CTA Section */}
         <div className="text-center bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-12 shadow-lg border border-yellow-200">
           <Star className="w-16 h-16 text-yellow-600 mx-auto mb-6" />
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">Ready to Inspire?</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">{getTranslation(currentLocale, 'call_for_speakers.cta_title')}</h3>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Submit your speaker proposal and help make PyCon Senegambia an unforgettable experience 
-            for the Python community in West Africa.
+            {getTranslation(currentLocale, 'call_for_speakers.cta_subtitle')}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-              Submit Your Proposal
+              {getTranslation(currentLocale, 'call_for_speakers.cta_submit_button')}
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
             
             <button className="group bg-transparent border-2 border-gray-800 text-gray-800 px-8 py-4 rounded-full font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 flex items-center justify-center">
-              Speaker Guidelines
+              {getTranslation(currentLocale, 'call_for_speakers.cta_guidelines_button')}
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
           
-         
         </div>
       </div>
     </section>

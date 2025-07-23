@@ -8,7 +8,9 @@ import {
   Tag, Share2, Heart, Bookmark, Twitter, Facebook, Linkedin,
   ThumbsUp, Send
 } from 'lucide-react';
-import { blogPosts, featuredPost } from '../data';
+import { getTranslation } from '@/lib/i18n';
+import { HeroProps } from '../../components/interfaces/interface';
+import { getBlogData } from '../blog_data';
 
 interface BlogPost {
   id: number;
@@ -27,71 +29,52 @@ interface BlogPost {
   featured?: boolean;
 }
 
-interface SingleBlogPostProps {
+interface SingleBlogPostProps extends HeroProps {
   post: BlogPost;
 }
 
-const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
+const SingleBlogPost = ({ post, currentLocale }: SingleBlogPostProps) => {
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
 
-  // Generate full content based on post data
   const generateContent = (post: BlogPost) => {
-    // This is a sample content generator - replace with actual content from your CMS/database
     const contentTemplates = {
       'building-future-pycon-senegambia-shaping-west-africa-tech-landscape': `
-        <p class="text-lg leading-relaxed mb-6">The tech landscape in West Africa is experiencing unprecedented growth, and at the heart of this transformation lies a vibrant community of Python developers who are pushing boundaries and creating innovative solutions for local and global challenges.</p>
-        
-        <p class="text-lg leading-relaxed mb-6">When we first conceptualized PyCon Senegambia, our vision was simple yet ambitious: create a platform where developers, innovators, and thought leaders from Gambia and Senegal could come together to share knowledge, collaborate, and build the future of technology in our region.</p>
-        
-        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">The Genesis of PyCon Senegambia</h2>
-        
-        <p class="text-lg leading-relaxed mb-6">The idea was born from countless conversations with local developers who expressed a desire for a world-class Python conference right here in West Africa. We recognized that while our region has immense talent, many developers lacked access to the kind of high-quality technical content and networking opportunities that conferences like PyCon US or EuroPython provide.</p>
-        
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_building_future_p1')}</p>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_building_future_p2')}</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">${getTranslation(currentLocale, 'blog.content_building_future_h2_1')}</h2>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_building_future_p3')}</p>
         <blockquote class="border-l-4 border-yellow-400 pl-6 py-4 my-8 bg-yellow-50 italic text-lg">
-          "Technology is not just about code; it's about community, collaboration, and creating solutions that matter to our people." - Conference Vision Statement
+          ${getTranslation(currentLocale, 'blog.content_building_future_quote')}
         </blockquote>
-        
-        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">Building Bridges Across Borders</h2>
-        
-        <p class="text-lg leading-relaxed mb-6">One of the most exciting aspects of PyCon Senegambia is its cross-border nature. By bringing together developers from both Gambia and Senegal, we're fostering collaboration that transcends national boundaries and creates a unified tech ecosystem in the Senegambia region.</p>
-        
-        <p class="text-lg leading-relaxed mb-6">Join us as we build the future, one line of Python code at a time.</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">${getTranslation(currentLocale, 'blog.content_building_future_h2_2')}</h2>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_building_future_p4')}</p>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_building_future_p5')}</p>
       `,
       'getting-started-django-west-african-developer-guide': `
-        <p class="text-lg leading-relaxed mb-6">Django has become one of the most popular web frameworks for Python developers worldwide, and for good reason. Its "batteries included" philosophy and rapid development capabilities make it perfect for building robust web applications that can serve the African market.</p>
-        
-        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">Why Django for African Markets?</h2>
-        
-        <p class="text-lg leading-relaxed mb-6">When building applications for the African market, we face unique challenges: varying internet connectivity, mobile-first users, and the need for applications that work well on lower-spec devices. Django's efficiency and scalability make it an excellent choice for addressing these challenges.</p>
-        
-        <p class="text-lg leading-relaxed mb-6">In this guide, we'll explore how to leverage Django's features to build applications that truly serve our communities.</p>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_django_p1')}</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">${getTranslation(currentLocale, 'blog.content_django_h2_1')}</h2>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_django_p2')}</p>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_django_p3')}</p>
       `,
-      // Add more content templates as needed
       'default': `
         <p class="text-lg leading-relaxed mb-6">${post.excerpt}</p>
-        
-        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">Introduction</h2>
-        
-        <p class="text-lg leading-relaxed mb-6">This article explores the fascinating world of ${post.category.toLowerCase()} development in the context of West African technology innovation. As we continue to build our tech ecosystem, understanding these concepts becomes increasingly important for developers in our region.</p>
-        
-        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">Key Concepts</h2>
-        
-        <p class="text-lg leading-relaxed mb-6">The principles discussed in this article are fundamental to understanding modern development practices. By applying these concepts, developers can create more efficient, scalable, and maintainable applications.</p>
-        
-        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">Conclusion</h2>
-        
-        <p class="text-lg leading-relaxed mb-6">As we continue to grow our developer community in Senegambia, sharing knowledge and best practices becomes essential. We hope this article provides valuable insights for your development journey.</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">${getTranslation(currentLocale, 'blog.content_default_h2_1')}</h2>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_default_p1')}</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">${getTranslation(currentLocale, 'blog.content_default_h2_2')}</h2>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_default_p2')}</p>
+        <h2 class="text-2xl font-bold text-slate-800 mb-4 mt-8">${getTranslation(currentLocale, 'blog.content_default_h2_3')}</h2>
+        <p class="text-lg leading-relaxed mb-6">${getTranslation(currentLocale, 'blog.content_default_p3')}</p>
       `
     };
     
     return contentTemplates[post.slug as keyof typeof contentTemplates] || contentTemplates.default;
   };
 
-  // Get related posts (exclude current post)
+  const { featuredPost, blogPosts } = getBlogData(currentLocale);
   const allPosts = [featuredPost, ...blogPosts];
   const relatedPosts = allPosts
     .filter(p => p.id !== post.id)
@@ -124,7 +107,6 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
 
   const handleCommentSubmit = () => {
     if (comment.trim()) {
-      // Handle comment submission here
       console.log('Comment submitted:', comment);
       setComment('');
     }
@@ -140,7 +122,6 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Back Navigation */}
       <div className="bg-slate-50 border-b border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button 
@@ -148,12 +129,11 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
             className="flex items-center text-slate-600 hover:text-yellow-600 transition-colors duration-300"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Blog
+            {getTranslation(currentLocale, 'blog.back_to_blog')}
           </button>
         </div>
       </div>
 
-      {/* Hero Section */}
       <div className="relative">
         <div className="aspect-[2/1] relative">
           <Image
@@ -165,7 +145,6 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
           />
         </div>
         
-        {/* Floating Action Buttons */}
         <div className="absolute top-6 right-6 flex space-x-3">
           <button
             onClick={() => setIsBookmarked(!isBookmarked)}
@@ -181,9 +160,7 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
         </div>
       </div>
 
-      {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Article Header */}
         <header className="mb-12">
           <div className="mb-6">
             <span className="inline-flex items-center px-4 py-2 rounded-full bg-yellow-100 text-yellow-800 text-sm font-medium">
@@ -196,7 +173,6 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
             {post.title}
           </h1>
 
-          {/* Author Info */}
           <div className="flex items-center justify-between flex-wrap gap-6 pb-8 border-b border-slate-200">
             <div className="flex items-center">
               <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center mr-4">
@@ -204,7 +180,7 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
               </div>
               <div>
                 <div className="font-bold text-lg text-slate-800">{post.author}</div>
-                <div className="text-slate-600">{post.authorRole || 'Contributing Writer'}</div>
+                <div className="text-slate-600">{post.authorRole || getTranslation(currentLocale, 'blog.default_author_role')}</div>
               </div>
             </div>
             
@@ -225,15 +201,13 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
           </div>
         </header>
 
-        {/* Article Body */}
         <div 
           className="prose prose-lg max-w-none mb-12"
           dangerouslySetInnerHTML={{ __html: generateContent(post) }}
         />
 
-        {/* Tags */}
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Tags</h3>
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">{getTranslation(currentLocale, 'blog.tags_label')}</h3>
           <div className="flex flex-wrap gap-3">
             {post.tags.map((tag, index) => (
               <span
@@ -246,7 +220,6 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
           </div>
         </div>
 
-        {/* Engagement Actions */}
         <div className="flex items-center justify-between py-6 border-t border-b border-slate-200 mb-8">
           <div className="flex items-center space-x-6">
             <button
@@ -271,7 +244,7 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
           </div>
 
           <div className="flex items-center space-x-3">
-            <span className="text-slate-600 text-sm">Share:</span>
+            <span className="text-slate-600 text-sm">{getTranslation(currentLocale, 'blog.share_label')}</span>
             <button
               onClick={() => handleShare('twitter')}
               className="p-2 text-slate-600 hover:text-blue-400 transition-colors duration-300"
@@ -293,17 +266,15 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
           </div>
         </div>
 
-        {/* Author Bio */}
         <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 mb-12">
           <div className="flex items-start space-x-6">
             <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center flex-shrink-0">
               <User className="w-10 h-10 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2">About {post.author}</h3>
+              <h3 className="text-xl font-bold text-slate-800 mb-2">{getTranslation(currentLocale, 'blog.about_author')}</h3>
               <p className="text-slate-600 mb-4">
-                {post.author} is a passionate developer and community leader contributing to the growth of the Python ecosystem in West Africa.
-                 They bring years of experience in software development and a deep commitment to fostering technical education in the region.
+                {getTranslation(currentLocale, 'blog.author_bio')}
               </p>
               <div className="flex space-x-3">
                 <button className="text-blue-400 hover:text-blue-600 transition-colors duration-300">
@@ -317,18 +288,16 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
           </div>
         </div>
 
-        {/* Comments Section */}
         {showComments && (
           <div className="mb-12">
-            <h3 className="text-2xl font-bold text-slate-800 mb-6">Comments ({post.comments})</h3>
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">{getTranslation(currentLocale, 'blog.comments_label')}</h3>
             
-            {/* Comment Form */}
             <div className="mb-8">
               <div className="bg-slate-50 rounded-2xl p-6">
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share your thoughts..."
+                  placeholder={getTranslation(currentLocale, 'blog.comment_placeholder')}
                   className="w-full h-32 bg-white border border-slate-200 rounded-xl p-4 focus:border-yellow-400 focus:outline-none resize-none"
                 />
                 <div className="flex justify-end mt-4">
@@ -337,13 +306,12 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
                     className="flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-xl font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300"
                   >
                     <Send className="w-4 h-4 mr-2" />
-                    Post Comment
+                    {getTranslation(currentLocale, 'blog.post_comment')}
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Sample Comments */}
             <div className="space-y-6">
               {[1, 2, 3].map((commentId) => (
                 <div key={commentId} className="bg-slate-50 rounded-2xl p-6">
@@ -353,11 +321,11 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
-                        <span className="font-semibold text-slate-800">Community Member</span>
-                        <span className="text-slate-500 text-sm">2 hours ago</span>
+                        <span className="font-semibold text-slate-800">{getTranslation(currentLocale, 'blog.comment_author')}</span>
+                        <span className="text-slate-500 text-sm">{getTranslation(currentLocale, 'blog.comment_time')}</span>
                       </div>
                       <p className="text-slate-600 mb-3">
-                        Great article! Looking forward to more content like this from the PyCon Senegambia community.
+                        {getTranslation(currentLocale, 'blog.sample_comment')}
                       </p>
                       <button className="flex items-center text-slate-500 hover:text-yellow-600 transition-colors duration-300">
                         <ThumbsUp className="w-4 h-4 mr-1" />
@@ -371,9 +339,8 @@ const SingleBlogPost = ({ post }: SingleBlogPostProps) => {
           </div>
         )}
 
-        {/* Related Posts */}
         <div>
-          <h3 className="text-2xl font-bold text-slate-800 mb-8">Related Articles</h3>
+          <h3 className="text-2xl font-bold text-slate-800 mb-8">{getTranslation(currentLocale, 'blog.related_articles')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {relatedPosts.map((relatedPost) => (
               <article key={relatedPost.id} className="group bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl overflow-hidden border border-slate-200 hover:border-yellow-300 hover:shadow-lg transition-all duration-300 cursor-pointer">

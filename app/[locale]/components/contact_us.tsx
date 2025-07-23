@@ -82,7 +82,7 @@ const Contact = ({currentLocale}:HeroProps) => {
       icon: Mail,
       title: "Email Us",
       details: [
-        { label: "General Inquiries", value: "pyconsenegambia@gmail.com" },
+        { label: "General Inquiries", value: "info@pyconsenegambia.org" },
        
         
       ],

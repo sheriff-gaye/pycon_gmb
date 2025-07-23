@@ -15,19 +15,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+    icons: {
+        icon: '/images/logo.png',
+    },
   title: "Pycon Senegambia",
   description: "Pycon Senegambia",
 };
 
-// Mark the component as async
 export default async function RootLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>; // Use Promise for params
+  params: Promise<{ locale: string }>; 
 }) {
-  // Await the params to get the locale
   const { locale } = await params;
 
   return (
