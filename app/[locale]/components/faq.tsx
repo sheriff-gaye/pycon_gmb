@@ -3,6 +3,7 @@ import  { useState } from 'react';
 import { Plus, Minus, HelpCircle, MapPin, Clock, Users, Ticket, Code, Wifi, Coffee, Award } from 'lucide-react';
 import { getTranslation } from '@/lib/i18n';
 import { HeroProps } from './interfaces/interface';
+import Link from 'next/link';
 
 const FAQ = ({currentLocale}:HeroProps) => {
   const [openFAQ, setOpenFAQ] = useState(0);
@@ -164,13 +165,13 @@ const FAQ = ({currentLocale}:HeroProps) => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="group bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 px-8 py-4 rounded-2xl text-lg font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                <Link href="#contact" className="group bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 px-8 py-4 rounded-2xl text-lg font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 {getTranslation(currentLocale, 'faq.button_contact_support')}
                   <HelpCircle className="inline-block w-5 h-5 ml-2 group-hover:rotate-12 transition-transform" />
-                </button>
-                <button className="bg-transparent border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-2xl text-lg font-bold hover:bg-yellow-400 hover:text-slate-900 transition-all duration-300">
+                </Link>
+                <Link href="https://pyconsenegambia.slack.com/join/shared_invite/zt-38jswri9v-1nlya0Sc2OU9xiis3gi3cw#/shared-invite/email" className="bg-transparent border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-2xl text-lg font-bold hover:bg-yellow-400 hover:text-slate-900 transition-all duration-300">
                 {getTranslation(currentLocale, 'faq.button_join_community')}
-                </button>
+                </Link>
               </div>
 
               {/* Contact info */}

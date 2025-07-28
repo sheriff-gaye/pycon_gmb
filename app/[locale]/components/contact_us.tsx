@@ -7,6 +7,7 @@ import {
   User,
   MessageSquare,
   CheckCircle,
+  AlertCircle,
   LucideIcon
 } from 'lucide-react';
 import { getTranslation } from '@/lib/i18n';
@@ -47,8 +48,7 @@ const Contact = ({currentLocale}:HeroProps) => {
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null);
-
-  
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -60,21 +60,42 @@ const Contact = ({currentLocale}:HeroProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
+    setErrorMessage('');
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        message: '',
-        type: 'general'
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-      
-      // Reset status after 5 seconds
-      setTimeout(() => setSubmitStatus(null), 5000);
-    }, 1500);
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '',
+          email: '',
+          message: '',
+          type: 'general'
+        });
+        
+        // Reset status after 5 seconds
+        setTimeout(() => setSubmitStatus(null), 5000);
+      } else {
+        setSubmitStatus('error');
+        setErrorMessage(result.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      setErrorMessage('Network error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo: ContactInfo[] = [
@@ -83,8 +104,6 @@ const Contact = ({currentLocale}:HeroProps) => {
       title: "Email Us",
       details: [
         { label: "General Inquiries", value: "info@pyconsenegambia.org" },
-       
-        
       ],
       color: "blue"
     },
@@ -109,7 +128,7 @@ const Contact = ({currentLocale}:HeroProps) => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50" id="contact">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-16">
@@ -157,6 +176,13 @@ const Contact = ({currentLocale}:HeroProps) => {
                 </div>
               )}
 
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
+                  <AlertCircle className="w-5 h-5 text-red-600 mr-3" />
+                  <span className="text-red-700">{errorMessage}</span>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -196,9 +222,6 @@ const Contact = ({currentLocale}:HeroProps) => {
                   </div>
                 </div>
 
-               
-                 
-
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                     {getTranslation(currentLocale, 'contact.form_inquiry_label')}
@@ -216,7 +239,6 @@ const Contact = ({currentLocale}:HeroProps) => {
                       ))}
                     </select>
                   </div>
-                
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
