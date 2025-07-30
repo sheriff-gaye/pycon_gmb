@@ -123,9 +123,8 @@ You can unsubscribe at any time by clicking the unsubscribe link in our emails.
     });
 
   } catch (error) {
-    console.error('Newsletter subscription error:', error);
     return NextResponse.json(
-      { error: 'Failed to process subscription' },
+      { error: `Failed to process subscription ${error}` },
       { status: 500 }
     );
   }
