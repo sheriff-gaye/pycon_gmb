@@ -2,10 +2,60 @@
 
 import { Mail, Phone, MapPin, Twitter, Linkedin, Instagram, ArrowRight, Heart, Globe } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import { getTranslation } from "@/lib/i18n";
 import { HeroProps } from "./interfaces/interface";
 
 const Footer = ({currentLocale}:HeroProps) => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email) {
+      setMessage('Please enter your email address');
+      setMessageType('error');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('Successfully subscribed to newsletter!');
+        setMessageType('success');
+        setEmail('');
+      } else {
+        setMessage(data.error || 'Failed to subscribe');
+        setMessageType('error');
+      }
+    } catch (error) {
+      setMessage(`Something went wrong. Please try again. ${error}`);
+      setMessageType('error');
+    }
+
+    setIsSubmitting(false);
+    
+    // Clear message after 5 seconds
+    setTimeout(() => {
+      setMessage('');
+      setMessageType('');
+    }, 5000);
+  };
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -18,17 +68,38 @@ const Footer = ({currentLocale}:HeroProps) => {
             <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
               {getTranslation(currentLocale, "footer.subscribe_subtitle")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder={getTranslation(currentLocale, "footer.subscribe_placeholder")}
-                className="flex-1 px-6 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none bg-white"
-              />
-              <button className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl font-semibold hover:bg-yellow-300 transition-colors flex items-center justify-center">
-                {getTranslation(currentLocale, "footer.subscribe_button")}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </button>
-            </div>
+            
+            <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={getTranslation(currentLocale, "footer.subscribe_placeholder")}
+                  disabled={isSubmitting}
+                  className="flex-1 px-6 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none bg-white disabled:opacity-50"
+                  
+                />
+                <button 
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl font-semibold hover:bg-yellow-300 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Subscribing...' : getTranslation(currentLocale, "footer.subscribe_button")}
+                  {!isSubmitting && <ArrowRight className="w-4 h-4 ml-2" />}
+                </button>
+              </div>
+              
+              {message && (
+                <div className={`mt-4 p-3 rounded-lg text-sm ${
+                  messageType === 'success' 
+                    ? 'bg-green-500 bg-opacity-20 text-green-100 border border-green-400' 
+                    : 'bg-red-500 bg-opacity-20 text-red-100 border border-red-400'
+                }`}>
+                  {message}
+                </div>
+              )}
+            </form>
           </div>
         </div>
       </div>
@@ -57,7 +128,7 @@ const Footer = ({currentLocale}:HeroProps) => {
                   <Twitter className="w-4 h-4" />
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/pycon-senegambia-218781373/"
+                  href="https://www.linkedin.com/company/pycon-senegambia"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
@@ -97,22 +168,8 @@ const Footer = ({currentLocale}:HeroProps) => {
                     {getTranslation(currentLocale, "footer.quick_links.speakers")}
                   </a>
                 </li>
-                <li>
-                  <a
-                    href={`/${currentLocale}/#schedule`}
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    {getTranslation(currentLocale, "footer.quick_links.schedule")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={`/${currentLocale}/#sponsors`}
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    {getTranslation(currentLocale, "footer.quick_links.sponsors")}
-                  </a>
-                </li>
+               
+               
                 <li>
                   <a
                     href={`/${currentLocale}/proposal`}
@@ -123,7 +180,7 @@ const Footer = ({currentLocale}:HeroProps) => {
                 </li>
                 <li>
                   <a
-                    href={`/${currentLocale}/#cfs`}
+                    href={`/${currentLocale}/sponsorship`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     {getTranslation(currentLocale, "footer.quick_links.cfs")}
@@ -162,30 +219,17 @@ const Footer = ({currentLocale}:HeroProps) => {
                     {getTranslation(currentLocale, "footer.community.volunteer")}
                   </a>
                 </li>
+
                 <li>
                   <a
-                    href={`/${currentLocale}/#user-groups`}
+                    href={`/${currentLocale}/blog`}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    {getTranslation(currentLocale, "footer.community.user_groups")}
+                    {getTranslation(currentLocale, "footer.quick_links.blog")}
                   </a>
                 </li>
-                <li>
-                  <a
-                    href={`/${currentLocale}/#mentorship`}
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    {getTranslation(currentLocale, "footer.community.mentorship")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={`/${currentLocale}/#job-board`}
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    {getTranslation(currentLocale, "footer.community.job_board")}
-                  </a>
-                </li>
+              
+               
               </ul>
             </div>
 

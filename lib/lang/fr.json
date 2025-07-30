@@ -79,7 +79,9 @@
       "schedule": "Programme",
       "sponsors": "Sponsors",
       "proposal": "Appel aux propositions",
-      "cfs": "Appel aux sponsors"
+      "cfs": "Appel aux sponsors",
+      "blog": "Blog"
+
     },
     "community_title": "Communauté",
     "community": {
@@ -948,5 +950,27 @@
     "cta_description": "Votre parrainage ne soutient pas seulement un événement, il investit dans l'avenir de la technologie en Afrique de l'Ouest. Ensemble, nous pouvons construire une communauté Python florissante qui perdure pour les générations.",
     "cta_become_sponsor": "Devenir sponsor aujourd'hui",
     "cta_download_kit": "Télécharger le kit de parrainage"
-  }
+  },
+    "registration": {
+      "header": {
+        "title": "Inscrivez-vous pour PyCon Senegambia 2025",
+        "subtitle": "Rejoignez notre liste de diffusion pour rester informé des détails de la conférence"
+      },
+      "form": {
+        "name_label": "Nom complet",
+        "name_placeholder": "Entrez votre nom complet",
+        "email_label": "Adresse e-mail",
+        "email_placeholder": "Entrez votre adresse e-mail",
+        "error_empty_fields": "Veuillez remplir tous les champs",
+        "success_message": "Inscription réussie pour PyCon Senegambia 2025 !",
+        "error_failed": "Échec de l'inscription",
+        "error_generic": "Une erreur s'est produite. Veuillez réessayer",
+        "button_submitting": "Inscription en cours...",
+        "button_submit": "S'inscrire maintenant"
+      },
+      "footer": {
+        "consent": "En vous inscrivant, vous acceptez de recevoir des mises à jour sur PyCon Senegambia 2025. Vous pouvez vous désinscrire à tout moment."
+      }
+    }
+  
 }

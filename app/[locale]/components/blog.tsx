@@ -24,7 +24,59 @@ const BlogSection = ({ currentLocale }: HeroProps) => {
     ? blogPosts
     : blogPosts.filter(post => post.category.toLowerCase() === getTranslation(currentLocale, `blog.category_${categories.findIndex(c => c.id === activeCategory) + 1}_name`).toLowerCase());
 
-  return (
+  
+    const [email, setEmail] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+  
+    const handleNewsletterSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      
+      if (!email) {
+        setMessage('Please enter your email address');
+        setMessageType('error');
+        return;
+      }
+  
+      setIsSubmitting(true);
+      setMessage('');
+  
+      try {
+        const response = await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
+  
+        const data = await response.json();
+  
+        if (response.ok) {
+          setMessage('Successfully subscribed to newsletter!');
+          setMessageType('success');
+          setEmail('');
+        } else {
+          setMessage(data.error || 'Failed to subscribe');
+          setMessageType('error');
+        }
+      } catch (error) {
+        setMessage(`Something went wrong. Please try again. ${error}`);
+        setMessageType('error');
+      }
+  
+      setIsSubmitting(false);
+      
+      // Clear message after 5 seconds
+      setTimeout(() => {
+        setMessage('');
+        setMessageType('');
+      }, 5000);
+    };
+  
+  
+    return (
     <section className="relative py-24 bg-white overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-yellow-400/10 rounded-full filter blur-3xl"></div>
@@ -232,17 +284,31 @@ const BlogSection = ({ currentLocale }: HeroProps) => {
               <h3 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">{getTranslation(currentLocale, 'blog.newsletter_title')}</h3>
               <p className="text-xl text-slate-600 mb-8">{getTranslation(currentLocale, 'blog.newsletter_description')}</p>
             </div>
-
+            <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
                 type="email"
+                value={email}
+                disabled={isSubmitting}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder={getTranslation(currentLocale, 'blog.email_placeholder')}
                 className="flex-1 px-6 py-4 rounded-2xl border-2 border-slate-200 focus:border-yellow-400 focus:outline-none text-lg"
               />
-              <button className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-8 py-4 rounded-2xl font-bold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-lg">
-                {getTranslation(currentLocale, 'blog.subscribe')}
+              <button    disabled={isSubmitting} className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-8 py-4 rounded-2xl font-bold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-lg">
+              {isSubmitting ? 'Subscribing...' : getTranslation(currentLocale, "footer.subscribe_button")}
+            
               </button>
             </div>
+            {message && (
+                <div className={`mt-4 p-3 rounded-lg text-sm ${
+                  messageType === 'success' 
+                    ? 'bg-green-500 bg-opacity-20 text-green-100 border border-green-400' 
+                    : 'bg-red-500 bg-opacity-20 text-red-100 border border-red-400'
+                }`}>
+                  {message}
+                </div>
+              )}
+            </form>
           </div>
         </div>
       </div>
