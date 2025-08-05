@@ -3,10 +3,10 @@
 import { Mail, CheckCircle, XCircle, ArrowLeft, Home } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { HeroProps } from "../components/interfaces/interface";
+import { useSearchParams, useRouter, useParams } from "next/navigation";
 
-const UnsubscribePage = ({ currentLocale }: HeroProps) => {
+
+const UnsubscribePage = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
@@ -15,9 +15,10 @@ const UnsubscribePage = ({ currentLocale }: HeroProps) => {
   
   const searchParams = useSearchParams();
   const router = useRouter();
+  const params = useParams();
+  const currentLocale = params?.locale as string || 'en';
 
   useEffect(() => {
-    // Pre-fill email if provided in URL params
     const emailParam = searchParams.get('email');
     if (emailParam) {
       setEmail(decodeURIComponent(emailParam));
