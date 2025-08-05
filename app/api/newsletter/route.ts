@@ -14,16 +14,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      );
-    }
-
-    
+   
     const contactParams = {
       email: email,
       unsubscribed: false,
