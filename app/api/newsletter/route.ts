@@ -47,6 +47,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+   
+    const unsubscribeUrl = `${'https://pyconsenegambia.org'}/unsubscribe?email=${encodeURIComponent(email)}`;
+
     try {
       await resend.emails.send({
         from: 'PyConSeneGambia <noreply@pyconsenegambia.org>',
@@ -86,8 +89,26 @@ export async function POST(request: NextRequest) {
                 </a>
               </div>
               
-              <p style="font-size: 14px; color: #666; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
-                You can unsubscribe at any time by clicking the unsubscribe link in our emails.
+              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0;">
+                <h3 style="color: #333; margin-top: 0;">Stay Connected</h3>
+                <p style="font-size: 14px; color: #666; margin: 10px 0;">
+                  Follow us on social media for real-time updates:
+                </p>
+                <div style="text-align: center;">
+                  <a href="https://x.com/PyconSenegambia" style="color: #1da1f2; text-decoration: none; margin: 0 10px;">Twitter</a>
+                  <a href="https://www.linkedin.com/company/pycon-senegambia" style="color: #0077b5; text-decoration: none; margin: 0 10px;">LinkedIn</a>
+                  <a href="https://www.instagram.com/pyconsenegambia/" style="color: #e4405f; text-decoration: none; margin: 0 10px;">Instagram</a>
+                </div>
+              </div>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eee;">
+              <p style="font-size: 12px; color: #666; margin: 0;">
+                You received this email because you subscribed to PyConSeneGambia newsletter.
+                <br>
+                <a href="${unsubscribeUrl}" style="color: #666; text-decoration: underline;">
+                  Unsubscribe from this list
+                </a>
               </p>
             </div>
           </div>
@@ -108,7 +129,14 @@ You'll be the first to know about:
 
 Visit our website: https://pyconsenegambia.org
 
-You can unsubscribe at any time by clicking the unsubscribe link in our emails.
+Stay Connected:
+Follow us on social media for real-time updates:
+- Twitter: https://x.com/PyconSenegambia
+- LinkedIn: https://www.linkedin.com/company/pycon-senegambia
+- Instagram: https://www.instagram.com/pyconsenegambia/
+
+You received this email because you subscribed to PyConSeneGambia newsletter.
+Unsubscribe: ${unsubscribeUrl}
         `
       });
     } catch (emailError) {

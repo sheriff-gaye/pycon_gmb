@@ -212,6 +212,14 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 {getTranslation(locale, 'nav.about')}
               </Link>
               <Link
+                  href={`/${locale}/sponsorship`}
+                  className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
+                  onClick={closeMenu}
+                >
+                 
+                  {getTranslation(locale, 'nav.sponsorship')}
+                </Link>
+              <Link
                 href={`/${locale}/visas`}
                 className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                 onClick={closeMenu}
