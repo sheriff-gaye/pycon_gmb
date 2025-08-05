@@ -140,7 +140,6 @@ Unsubscribe: ${unsubscribeUrl}
         `
       });
     } catch (emailError) {
-      // Don't fail the subscription if welcome email fails
       console.error('Welcome email failed:', emailError);
     }
 
