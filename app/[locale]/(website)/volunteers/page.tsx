@@ -1,7 +1,7 @@
 "use client";
 
-import CallForVolunteers from "@/app/[locale]/components/call_for_volunteers";
 import { usePathname } from "next/navigation";
+import CallForVolunteers from "../components/call_for_volunteers";
 
 const Volunteers = () => {
   const pathname = usePathname();

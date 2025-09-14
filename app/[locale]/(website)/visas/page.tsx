@@ -1,7 +1,7 @@
 "use client"
 
-import VisaSection from "@/app/[locale]/components/visa";
 import { usePathname } from "next/navigation";
+import VisaSection from "../components/visa";
 
 const Visas = () => {
   const pathname = usePathname();
