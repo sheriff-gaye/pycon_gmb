@@ -6,7 +6,7 @@ import {
   LucideIcon,
   Users,
   Ticket,
-  BookText,
+  
  
 } from "lucide-react";
 import SiderBarItem from "./sidebar-item";
@@ -34,11 +34,11 @@ const admin: Route[] = [
     label: "Members",
     href: "/dashboard/members"
   },
-   {
-    icon:BookText ,
-    label: "Blog",
-    href: "/dashboard/blog"
-  },
+  //  {
+  //   icon:BookText ,
+  //   label: "Blog",
+  //   href: "/dashboard/blog"
+  // },
   {
     icon: Server,
     label: "System Logs",
