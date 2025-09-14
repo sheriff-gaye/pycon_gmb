@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { getTranslation } from "@/lib/i18n";
-import Logo from "../../../public/images/logo.png"
 import { HeroProps } from "./interfaces/interface";
 import RegistrationModal from "./register_modal";
 
@@ -54,7 +53,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 <div className="flex-shrink-0 flex items-center overflow-hidden">
                   <Link href="/">
                     <Image
-                      src={Logo}
+                      src="/images/logo.png"
                       alt="logo"
                       height={80}
                       width={80}
@@ -87,7 +86,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
               <div className="flex-shrink-0 flex items-center overflow-hidden">
                   <Link href="/">
                 <Image
-                  src={Logo}
+                  src="/images/logo.png"
                   alt="logo"
                   height={80}
                   width={80}

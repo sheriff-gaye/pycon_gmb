@@ -1,7 +1,7 @@
 "use client"
 
-import BlogSection from "@/app/[locale]/components/blog";
 import { usePathname } from "next/navigation";
+import BlogSection from "../components/blog";
 
 
 const Blog=()=>{

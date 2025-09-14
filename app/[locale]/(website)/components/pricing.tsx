@@ -19,7 +19,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
       iconColor: "text-white",
       badgeColor: "bg-slate-800",
       badgeText: "text-white",
-     
+      paymentUrl: "https://checkout.modempay.com/pay/18dc30916ca05efd0afecd0f4c50aa349ad92b8473662ef75e7ee557fd7a698c",
       description:  getTranslation(currentLocale, 'pricing.student.description'),
       features: [
         getTranslation(currentLocale, 'pricing.student.features.one'),
@@ -43,7 +43,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
       iconColor: "text-white",
       badgeColor: "bg-yellow-400",
       badgeText: "text-slate-800",
-      
+      paymentUrl: "https://checkout.modempay.com/pay/c525b517328a8e215de41078ab92c733524e20e247d12d6966de61edf5255d2b",
       description: "Ideal for individual developers and Python enthusiasts",
       features: [
         getTranslation(currentLocale, 'pricing.individual.features.one'),
@@ -67,7 +67,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
       iconColor: "text-white",
       badgeColor: "bg-slate-800",
       badgeText: "text-white",
-    
+      paymentUrl: "https://checkout.modempay.com/pay/28beccdb1415fd8a5cdc4320fc1beb7603fa9312ae51beee536d0ca3cef4a77c",
       description: "Perfect for companies investing in their development teams",
       features: [
         getTranslation(currentLocale, 'pricing.corporate.features.one'),
@@ -167,12 +167,17 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
                 </div>
 
                 {/* CTA Button */}
-                <button className={`group w-full ${ticket.popular ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500' : 'bg-transparent border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white'} px-8 py-4 rounded-2xl text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl`}>
+                <a 
+                  href={ticket.paymentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group w-full ${ticket.popular ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500' : 'bg-transparent border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white'} px-8 py-4 rounded-2xl text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block text-center`}
+                >
                   <div className="flex items-center justify-center">
                     Select {ticket.type}
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </div>
-                </button>
+                </a>
               </div>
             );
           })}

@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model TicketPurchase {
+  id                   String   @id @default(cuid())
+  ticketType           TicketType
+  amount               Float
+  currency             String
+  customerName         String
+  customerEmail        String
+  customerPhone        String
+  paymentStatus        PaymentStatus
+  transactionReference String   @unique
+  paymentIntentId      String
+  modemPayChargeId     String   @unique
+  paymentMethod        String
+  testMode             Boolean  @default(false)
+  paymentMetadata      Json?    // Store additional payment metadata
+  customFields         Json?    // Store custom field values
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@map("ticket_purchases")
+}
+
+enum TicketType {
+  STUDENTS
+  INDIVIDUAL
+  CORPORATE
+
+  @@map("ticket_type")
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+
+  @@map("payment_status")
+}
+
+
+
+
+model PaymentLinks {
+  id        String   @id @default(uuid())
+  type      String
+  paymentUrl String
+  linkId    String   @unique
+  status    String
+  createdAt DateTime
+  updatedAt DateTime
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+model Category {
+  id    String @id @default(cuid())
+  name  String @unique
+  slug  String @unique
+
+  // Relationship to blog posts
+  posts BlogPost[] @relation("BlogPostCategory")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  content     String    @db.Text // Using Text for longer content
+  image       String?   // Optional image URL
+  readTime    Int       // Read time in minutes
+  date        DateTime  @default(now())
+  isFeatured  Boolean   @default(false)
+  
+  // Category relationship
+  categoryId  String
+  category    Category  @relation("BlogPostCategory", fields: [categoryId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("blog_posts")
+}
