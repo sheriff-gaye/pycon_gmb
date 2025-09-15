@@ -1,2 +1,3 @@
-app/generated/prisma/runtime/*
-app/generated/prisma/wasm.js
+app/generated/prisma/**
+.next/**
+node_modules/**

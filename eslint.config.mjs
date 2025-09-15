@@ -10,8 +10,25 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  
+  ...compat.extends("next/core-web-vitals", "plugin:@typescript-eslint/recommended"),
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parser: require("@typescript-eslint/parser"),
+      parserOptions: {
+        project: "./tsconfig.json",
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unused-expressions": "error",
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-this-alias": "error",
+      "@typescript-eslint/no-require-imports": "error",
+    },
+  },
+  {
+    ignores: ["app/generated/prisma/**", ".next/**", "node_modules/**"],
+  },
 ];
 
 export default eslintConfig;
