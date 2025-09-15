@@ -1,0 +1,2 @@
+app/generated/prisma/runtime/*
+app/generated/prisma/wasm.js
