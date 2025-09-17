@@ -1,4 +1,9 @@
 {
+  "sponsors": {
+  "title": "Nos Sponsors",
+  "subtitle": "Merci à nos formidables sponsors qui rendent PyCon Senegambia possible"
+}
+,
   "nav": {
     "about": "À propos",
     "visas": "Visas",

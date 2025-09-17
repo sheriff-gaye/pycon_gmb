@@ -19,7 +19,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
       iconColor: "text-white",
       badgeColor: "bg-slate-800",
       badgeText: "text-white",
-      paymentUrl: "https://test.checkout.modempay.com/pay/17ffa19ebc4e8ee3a687bc89bd86b0ef442d75ea30ba89778accac48b75ddb0f",
+      paymentUrl: "https://checkout.modempay.com/pay/18dc30916ca05efd0afecd0f4c50aa349ad92b8473662ef75e7ee557fd7a698c",
       description:  getTranslation(currentLocale, 'pricing.student.description'),
       features: [
         getTranslation(currentLocale, 'pricing.student.features.one'),
@@ -43,7 +43,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
       iconColor: "text-white",
       badgeColor: "bg-yellow-400",
       badgeText: "text-slate-800",
-      paymentUrl: "https://test.checkout.modempay.com/pay/fd14c4f1574f9d679f3ec0d688bb43541afc38dbb7edf98afe6e48ab5b8373e8",
+      paymentUrl: "https://checkout.modempay.com/pay/c525b517328a8e215de41078ab92c733524e20e247d12d6966de61edf5255d2b",
       description: "Ideal for individual developers and Python enthusiasts",
       features: [
         getTranslation(currentLocale, 'pricing.individual.features.one'),
@@ -67,7 +67,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
       iconColor: "text-white",
       badgeColor: "bg-slate-800",
       badgeText: "text-white",
-      paymentUrl: "https://test.checkout.modempay.com/pay/65abf775f04cb979930ab872a126aff34fa2e20f755d3c5ba1255fa8bb1c4d99",
+      paymentUrl: "https://checkout.modempay.com/pay/28beccdb1415fd8a5cdc4320fc1beb7603fa9312ae51beee536d0ca3cef4a77c",
       description: "Perfect for companies investing in their development teams",
       features: [
         getTranslation(currentLocale, 'pricing.corporate.features.one'),
