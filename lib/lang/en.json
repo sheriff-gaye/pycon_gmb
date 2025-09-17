@@ -1,4 +1,10 @@
 {
+  "sponsors":{
+    "title":"Our Sponsors",
+    "subtitle": "Thank you to our amazing sponsors who make PyCon Senegambia possible"
+
+
+  },
   "nav": {
     "about": "About",
     "visas": "Visas",
@@ -442,7 +448,7 @@
     "timeline_4_event": "PyCon Senegambia",
     "location_title": "Event Location",
     "location_description": "Banjul, The Gambia - The perfect bridge between Gambia and Senegal, bringing together developers from across the Senegambia region.",
-    "location_bonus": "Accommodation and travel support available for selected speakers",
+    "location_bonus": "Event location will be shared before the event",
     "dates_title": "Conference Dates",
     "dates_description": "November 28-29, 2025 - Two days of inspiring talks, workshops, networking, and community building in beautiful Banjul.",
     "dates_bonus": "Speaker dinner and exclusive networking events included",

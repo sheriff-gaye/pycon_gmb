@@ -61,7 +61,6 @@ const RegistrationModal = ({
         setMessage(data.error || getTranslation(currentLocale, "registration.form.error_failed"));
         setMessageType("error");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setMessage(getTranslation(currentLocale, "registration.form.error_generic"));
       setMessageType("error");

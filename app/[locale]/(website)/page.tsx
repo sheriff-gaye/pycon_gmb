@@ -5,6 +5,7 @@ import Contact from "./components/contact_us";
 import FAQ from "./components/faq";
 import Hero from "./components/hero";
 import TicketPricing from "./components/pricing";
+import Sponsors from "./components/sponsors";
 
 export default function Home() {
 
@@ -15,6 +16,7 @@ export default function Home() {
     <div>
      
       <Hero currentLocale={currentLocale}/>
+      <Sponsors  currentLocale={currentLocale}/>
       <CTA currentLocale={currentLocale}/>
       <TicketPricing currentLocale={currentLocale}/>
       <FAQ currentLocale={currentLocale}/>
