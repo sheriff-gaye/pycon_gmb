@@ -25,7 +25,7 @@ const Sponsors = ({ currentLocale }: SponsorsProps) => {
   const sponsors: Sponsor[] = [
     {
       id: "1",
-      name: "Soni Transfe",
+      name: "Soni Transfer",
       logo: "/images/sponsors/download.png",
       website: "https://sonitransfer.com"
     },
