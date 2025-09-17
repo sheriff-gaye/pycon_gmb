@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "setup:payment-links": "npx tsx scripts/paymentLinks.ts",
     "sync:payment-links": "curl -X POST http://localhost:3000/api/payment-links/sync"
   },
