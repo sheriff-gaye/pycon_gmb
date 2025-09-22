@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import SideBar from "./components/sidebar";
 import NavBar from "./components/dashboard-navbar";
+import { ModalProvider } from "@/providers/modal-providers";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <SideBar />
         </div>
         <main className="md:pl-56 pt-[80px] h-full">
+          <ModalProvider/>
           {children}
           <Toaster richColors />
         </main>

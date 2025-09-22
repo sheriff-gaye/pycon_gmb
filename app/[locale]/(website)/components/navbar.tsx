@@ -126,13 +126,13 @@ const Navbar = ({currentLocale}: HeroProps) => {
                   {getTranslation(locale, 'nav.blog')}
                 </Link>
 
-                 <Link
+                 {/* /* <Link
                   href={`/${locale}/shop`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   {/* {getTranslation(locale, 'nav.proposal')} */}
-                  Shop
-                </Link>
+                  {/* Shop */}
+                {/* </Link>  */} 
                 <Link
                   href={`/${locale}/speakers`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"

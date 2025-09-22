@@ -8,9 +8,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model TicketPurchase {
-  id                   String   @id @default(cuid())
+  id                   String        @id @default(cuid())
   ticketType           TicketType
   amount               Float
   currency             String
@@ -18,15 +17,15 @@ model TicketPurchase {
   customerEmail        String
   customerPhone        String
   paymentStatus        PaymentStatus
-  transactionReference String   @unique
+  transactionReference String        @unique
   paymentIntentId      String
-  modemPayChargeId     String   @unique
+  modemPayChargeId     String        @unique
   paymentMethod        String
-  testMode             Boolean  @default(false)
-  paymentMetadata      Json?    // Store additional payment metadata
-  customFields         Json?    // Store custom field values
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  testMode             Boolean       @default(false)
+  paymentMetadata      Json? // Store additional payment metadata
+  customFields         Json? // Store custom field values
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
 
   @@map("ticket_purchases")
 }
@@ -48,50 +47,35 @@ enum PaymentStatus {
   @@map("payment_status")
 }
 
-
-
-
 model PaymentLinks {
-  id        String   @id @default(uuid())
-  type      String
+  id         String   @id @default(uuid())
+  type       String
   paymentUrl String
-  linkId    String   @unique
-  status    String
-  createdAt DateTime
-  updatedAt DateTime
+  linkId     String   @unique
+  status     String
+  createdAt  DateTime
+  updatedAt  DateTime
 }
 
+model Sponsor {
+  id          String  @id @default(cuid())
+  name        String
+  logo        String  @db.Text
+  website     String?
+  description String? 
+  isActive    Boolean @default(true)
+  order       Int     @default(0)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  @@map("sponsors")
+}
 
 model Category {
-  id    String @id @default(cuid())
-  name  String @unique
-  slug  String @unique
+  id   String @id @default(cuid())
+  name String @unique
+  slug String @unique
 
   // Relationship to blog posts
   posts BlogPost[] @relation("BlogPostCategory")
@@ -103,20 +87,20 @@ model Category {
 }
 
 model BlogPost {
-  id          String    @id @default(cuid())
-  title       String
-  content     String    @db.Text // Using Text for longer content
-  image       String?   // Optional image URL
-  readTime    Int       // Read time in minutes
-  date        DateTime  @default(now())
-  isFeatured  Boolean   @default(false)
-  
+  id         String   @id @default(cuid())
+  title      String
+  content    String   @db.Text // Using Text for longer content
+  image      String? // Optional image URL
+  readTime   Int // Read time in minutes
+  date       DateTime @default(now())
+  isFeatured Boolean  @default(false)
+
   // Category relationship
-  categoryId  String
-  category    Category  @relation("BlogPostCategory", fields: [categoryId], references: [id])
-  
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  categoryId String
+  category   Category @relation("BlogPostCategory", fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("blog_posts")
 }

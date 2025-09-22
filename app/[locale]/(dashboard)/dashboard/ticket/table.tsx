@@ -93,7 +93,7 @@ const TicketPurchasesTable: React.FC<TicketPurchasesTableProps> = ({ purchases }
           Ticket Purchases
         </CardTitle>
         <CardDescription>
-          Manage PyCon Senegambia 2024 ticket purchases.
+          Manage PyCon Senegambia 2025 ticket purchases.
           <span className="text-blue-600 ml-2">
             {filteredPurchases.length !== purchases.length ? (
               <>Showing {filteredPurchases.length} of {purchases.length} purchases</>
