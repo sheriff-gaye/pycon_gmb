@@ -38,7 +38,7 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
   const sponsorshipTiers = [
     {
       tier: getTranslation(currentLocale, "sponsorship.tier_bronze"),
-      price: "D2,000 - D4,999",
+      price: "D10,000",
       icon: Medal,
       color: "from-amber-600 to-orange-600",
       bgColor: "from-amber-50 to-orange-50",
@@ -53,7 +53,7 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
     },
     {
       tier: getTranslation(currentLocale, "sponsorship.tier_silver"),
-      price: "D5,000 - D9,999",
+      price: "D15,000",
       icon: Award,
       color: "from-gray-500 to-slate-600",
       bgColor: "from-gray-50 to-slate-50",
@@ -71,7 +71,7 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
     },
     {
       tier: getTranslation(currentLocale, "sponsorship.tier_gold"),
-      price: "D10,000 - D19,999",
+      price: "D25,000",
       icon: Trophy,
       color: "from-yellow-500 to-amber-500",
       bgColor: "from-yellow-50 to-amber-50",
@@ -89,7 +89,7 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
     },
     {
       tier: getTranslation(currentLocale, "sponsorship.tier_platinum"),
-      price: "D20,000+",
+      price: "D35,000+",
       icon: Crown,
       color: "from-purple-600 to-indigo-600",
       bgColor: "from-purple-50 to-indigo-50",
@@ -170,8 +170,8 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
       icon: Smartphone,
       details: {
         [getTranslation(currentLocale, "sponsorship.provider")]:
-          "Orange Money / Wave",
-        [getTranslation(currentLocale, "sponsorship.number")]: "+220 123 4567",
+          "Wave",
+        [getTranslation(currentLocale, "sponsorship.number")]: "+220 7148444",
         [getTranslation(currentLocale, "sponsorship.name")]:
           "PyCon Senegambia Org"
       }
@@ -411,7 +411,7 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
               </div>
               <div className="flex items-center text-gray-700">
                 <Phone className="w-5 h-5 text-purple-600 mr-3" />
-                <span className="font-medium">+220 123 4567</span>
+                <span className="font-medium">+220 3913726</span>
               </div>
             </div>
           </div>
@@ -430,15 +430,12 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="group bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+            <a href="https://gofund.me/bb798053" className="group bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
               {getTranslation(currentLocale, "sponsorship.cta_become_sponsor")}
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
 
-            <button className="group bg-transparent border-2 border-gray-800 text-gray-800 px-8 py-4 rounded-full font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 flex items-center justify-center">
-              {getTranslation(currentLocale, "sponsorship.cta_download_kit")}
-              <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </button>
+           
           </div>
         </div>
       </div>

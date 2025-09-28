@@ -18,7 +18,13 @@ export async function getTickets() {
 export async function numberofTickets() {
 
     try {
-        return await db.ticketPurchase.count();
+        return await db.ticketPurchase.count(
+            {
+                where: {
+                    paymentStatus: 'COMPLETED'
+                }
+            }
+        );
 
     } catch (error) {
         console.error('Error fetching ticket purchases:', error);
@@ -38,7 +44,7 @@ export async function getTotalSuccessfulAmount() {
                 paymentStatus: 'COMPLETED'
             }
         });
-        
+
         return result._sum.amount || 0;
     } catch (error) {
         console.error('Error calculating successful ticket amount:', error);

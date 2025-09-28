@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { getTranslation } from "@/lib/i18n";
 import { getActiveSponsors } from "@/app/actions/sponsors";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Sponsor {
   id: string;
@@ -16,6 +17,7 @@ interface Sponsor {
   createdAt: Date;
   updatedAt: Date;
 }
+
 interface SponsorsProps {
   currentLocale: string;
 }
@@ -61,16 +63,22 @@ const Sponsors = ({ currentLocale }: SponsorsProps) => {
     return (
       <section className="bg-slate-900 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto"></div>
-            <p className="text-gray-400 mt-4">Loading sponsors...</p>
+          <div className="text-center mb-12">
+            <Skeleton className="h-8 md:h-10 w-64 mx-auto mb-4 bg-slate-800" />
+            <Skeleton className="h-4 w-96 max-w-2xl mx-auto bg-slate-800" />
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="flex justify-center">
+                <Skeleton className="h-12 md:h-16 w-full bg-slate-800" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
     );
   }
-
-
 
   if (sponsors.length === 0) {
     return null; 
@@ -102,7 +110,6 @@ const Sponsors = ({ currentLocale }: SponsorsProps) => {
           {sponsors.map((sponsor, index) => (
             <div
               key={sponsor.id}
-              // className="group bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 transform hover:scale-105 cursor-pointer"
               onClick={() => handleSponsorClick(sponsor)}
               style={{
                 animationDelay: `${index * 100}ms`
@@ -114,7 +121,6 @@ const Sponsors = ({ currentLocale }: SponsorsProps) => {
                 width={200}
                 height={200}
                 className="h-12 md:h-16 w-full object-contain filter brightness-90 group-hover:brightness-100 transition-all duration-300"
-              
               />
               
               <div className="fallback hidden items-center justify-center h-12 md:h-16 text-center">

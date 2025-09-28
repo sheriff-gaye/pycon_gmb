@@ -1,4 +1,5 @@
 import { countContacts } from "@/app/actions/list-newsletters"
+import { getActiveSponsorsCount } from "@/app/actions/sponsors";
 import { getTotalSuccessfulAmount, numberofTickets } from "@/app/actions/tickets-purchase";
 import {
     Card,
@@ -14,6 +15,7 @@ const DashbaordCards=()=>{
 
   const ticktes=numberofTickets();
   const ticketSales=getTotalSuccessfulAmount();
+  const sponsors= getActiveSponsorsCount();
 
     return(
     
@@ -27,23 +29,23 @@ const DashbaordCards=()=>{
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{membersCount}</div>
-                <p className="text-xs text-muted-foreground">
+                {/* <p className="text-xs text-muted-foreground">
                   +10.1% from last month
-                </p>
+                </p> */}
               </CardContent>
             </Card>
             <Card x-chunk="dashboard-01-chunk-1">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Tickets Purchased
+                  Successful Tickets Purchased
                 </CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{ticktes}</div>
-                <p className="text-xs text-muted-foreground">
+                {/* <p className="text-xs text-muted-foreground">
                   +180.1% from last month
-                </p>
+                </p> */}
               </CardContent>
             </Card>
             <Card x-chunk="dashboard-01-chunk-2">
@@ -53,21 +55,21 @@ const DashbaordCards=()=>{
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{ticketSales}</div>
-                <p className="text-xs text-muted-foreground">
+                {/* <p className="text-xs text-muted-foreground">
                   +19% from last month
-                </p>
+                </p> */}
               </CardContent>
             </Card>
             <Card x-chunk="dashboard-01-chunk-3">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Audience</CardTitle>
+                <CardTitle className="text-sm font-medium">Total Sponsors</CardTitle>
                 <Activity className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">73</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-bold">{sponsors}</div>
+                {/* <p className="text-xs text-muted-foreground">
                   +201 since last hour
-                </p>
+                </p> */}
               </CardContent>
             </Card>
           </div>

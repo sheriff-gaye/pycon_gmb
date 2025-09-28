@@ -2,6 +2,9 @@
 
 import { db } from "@/lib/db";
 
+
+
+
 export async function getAllSponsors() {
   try {
    
@@ -67,5 +70,18 @@ export async function getActiveSponsors() {
       data: [],
       count: 0
     };
+  }
+}
+
+
+export async function getActiveSponsorsCount() {
+  try {
+    return await db.sponsor.count({
+      where: {
+        isActive: true
+      }
+    });
+  } catch (error) {
+    return [];
   }
 }

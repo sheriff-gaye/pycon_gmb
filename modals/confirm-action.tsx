@@ -12,20 +12,62 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ConfirmAction, useConfirmModal } from "@/hooks/confirm";
 import { Trash2, UserX, UserCheck } from "lucide-react";
-import { useState } from "react";
+import { useState, ReactNode } from "react";
+
+// Define types for the confirm action modal
+export type ConfirmAction = 'delete' | 'deactivate' | 'activate';
+
+interface ModalData {
+  userId: string;
+  userName: string;
+  action: ConfirmAction;
+}
+
+// Mock hook for demonstration - replace with your actual hook implementation
+interface UseConfirmModalReturn {
+  isOpen: boolean;
+  data: ModalData | null;
+  onClose: () => void;
+}
+
+// You'll need to implement this hook or import it from your actual location
+const useConfirmModal = (): UseConfirmModalReturn => {
+  // This is a placeholder - implement your actual logic here
+  const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState<ModalData | null>(null);
+
+  const onClose = () => {
+    setIsOpen(false);
+    setData(null);
+  };
+
+  return {
+    isOpen,
+    data,
+    onClose
+  };
+};
 
 interface ConfirmActionModalProps {
   onConfirm: (userId: string, action: ConfirmAction) => Promise<void>;
 }
 
-const ConfirmActionModal = ({ onConfirm }: ConfirmActionModalProps) => {
-  const { isOpen, data, onClose } = useConfirmModal();
-  const [isLoading, setIsLoading] = useState(false);
-  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+interface ModalConfig {
+  title: string;
+  description: ReactNode;
+  confirmText: string;
+  confirmClass: string;
+  icon: ReactNode;
+  requiresInput: boolean;
+}
 
-  const handleConfirm = async () => {
+const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({ onConfirm }) => {
+  const { isOpen, data, onClose } = useConfirmModal();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState<string>("");
+
+  const handleConfirm = async (): Promise<void> => {
     if (!data) return;
     
     setIsLoading(true);
@@ -39,12 +81,12 @@ const ConfirmActionModal = ({ onConfirm }: ConfirmActionModalProps) => {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setDeleteConfirmText("");
     onClose();
   };
 
-  const getModalConfig = (action: ConfirmAction) => {
+  const getModalConfig = (action: ConfirmAction): ModalConfig => {
     switch (action) {
       case 'delete':
         return {
@@ -69,7 +111,7 @@ const ConfirmActionModal = ({ onConfirm }: ConfirmActionModalProps) => {
             <>
               Are you sure you want to deactivate the user{' '}
               <span className="font-semibold">{data?.userName}</span>?
-            
+              The user will not be able to access their account until reactivated.
             </>
           ),
           confirmText: 'Deactivate',
@@ -82,10 +124,10 @@ const ConfirmActionModal = ({ onConfirm }: ConfirmActionModalProps) => {
         return {
           title: 'Activate User',
           description: (
-            <>
+                          <>
               Are you sure you want to activate the user{' '}
               <span className="font-semibold">{data?.userName}</span>?
-             
+              The user will regain access to their account.
             </>
           ),
           confirmText: 'Activate',
