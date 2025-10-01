@@ -17,7 +17,6 @@ import {
   CreditCard,
   Smartphone,
   Copy,
-  ExternalLink,
   Mail,
   Phone
 } from "lucide-react";
@@ -58,7 +57,7 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
       color: "from-gray-500 to-slate-600",
       bgColor: "from-gray-50 to-slate-50",
       borderColor: "border-gray-200",
-      popular: true,
+     
       benefits: [
         getTranslation(currentLocale, "sponsorship.silver_benefit_1"),
         getTranslation(currentLocale, "sponsorship.silver_benefit_2"),
@@ -72,6 +71,7 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
     {
       tier: getTranslation(currentLocale, "sponsorship.tier_gold"),
       price: "D25,000",
+       popular: true,
       icon: Trophy,
       color: "from-yellow-500 to-amber-500",
       bgColor: "from-yellow-50 to-amber-50",
@@ -156,13 +156,12 @@ const Sponsorship = ({ currentLocale }: HeroProps) => {
       icon: CreditCard,
       details: {
         [getTranslation(currentLocale, "sponsorship.bank_name")]:
-          "Access Bank Gambia",
+          "Ecobank Account",
         [getTranslation(currentLocale, "sponsorship.account_name")]:
-          "PyCon Senegambia",
+          "Cube - The Gambia",
         [getTranslation(currentLocale, "sponsorship.account_number")]:
-          "0123456789",
-        [getTranslation(currentLocale, "sponsorship.swift_code")]: "ABNGMGBA",
-        [getTranslation(currentLocale, "sponsorship.sort_code")]: "050001"
+          "6248006819",
+       
       }
     },
     {

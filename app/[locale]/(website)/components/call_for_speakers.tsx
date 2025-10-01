@@ -134,9 +134,9 @@ const CallForSpeakers = ({currentLocale}:HeroProps) => {
         
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-200 border border-blue-300 mb-6">
-            <Mic className="w-4 h-4 text-blue-600 mr-2" />
-            <span className="text-sm font-semibold text-blue-800">{getTranslation(currentLocale, 'call_for_speakers.badge')}</span>
+         <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-red-100 to-orange-200 border border-red-300 mb-6">
+            <Mic className="w-4 h-4 text-red-600 mr-2" />
+            <span className="text-sm font-semibold text-red-800">{getTranslation(currentLocale, 'call_for_speakers.badge')}</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">

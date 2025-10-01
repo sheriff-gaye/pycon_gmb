@@ -1,9 +1,7 @@
 {
-  "sponsors":{
-    "title":"Our Sponsors",
+  "sponsors": {
+    "title": "Our Sponsors",
     "subtitle": "Thank you to our amazing sponsors who make PyCon Senegambia possible"
-
-
   },
   "nav": {
     "about": "About",
@@ -27,10 +25,13 @@
       "senegal": "Senegal",
       "empowering": "Empowering the next generation of Python developers in Senegambia"
     },
+
+    
     "event": {
-      "date": "November 27, 2025",
+      "date": "November 27-28, 2025",
       "mark": "Mark your calendar!",
-      "location": "Senegambia Region",
+      "location": "QCity, Banjul",
+       "venue_detail": "Premium Conference Venue",
       "vision": "Two nations, one vision",
       "attendees": "500+ Developers",
       "community": "Growing community"
@@ -85,7 +86,7 @@
       "sponsors": "Sponsors",
       "proposal": "Call for Proposals",
       "cfs": "Call for Sponsors",
-      "blog":"Blog"
+      "blog": "Blog"
     },
     "community_title": "Community",
     "community": {
@@ -184,9 +185,10 @@
         "one": "Full conference access",
         "two": "Workshop participation",
         "three": "Networking sessions",
-        "five": "Conference materials",
-        "six": "Student ID required",
-        "seven": "Lunch & refreshments"
+        "four": "Career pipeline: connect with Senegalese startups & Gambian tech orgs scouting interns/entry-level hires",
+        "five": "Fast skills boost: hands-on Python, Data, AI, and Cloud workshops mapped to regional job demand",
+        "six": "Portfolio & visibility: résumé/GitHub reviews, lightning talks, and poster sessions",
+        "seven": "Scholarships: financial aid or travel grants for students from smaller towns"
       }
     },
     "individual": {
@@ -194,25 +196,24 @@
       "features": {
         "one": "Full conference access",
         "two": "All workshops included",
-        "three": "Networking events",
-        "four": "Premium conference kit",
-        "five": "Certificate of attendance",
-        "six": "Lunch & refreshments",
-        "seven": "Priority seating"
+        "three": "Up-skilling in high-value areas (AI, Cloud, DevOps, REST APIs) in demand across Senegal & regional startups",
+        "four": "Networking with hiring managers and founders from Dakar, Banjul, and beyond (consulting gigs & remote job opportunities)",
+        "five": "Showcasing: chance to demo a side project, join sprints, or present to attract collaborators",
+        "six": "Access to intermediate/advanced sessions tailored for working professionals",
+        "seven": "Career growth support: portfolio reviews, feedback on projects, and exposure to potential clients"
       },
       "popular_badge": "MOST POPULAR"
     },
     "corporate": {
       "description": "Perfect for companies investing in their development teams",
       "features": {
-        "one": "Full conference access",
-        "two": "VIP workshop access",
-        "three": "Exclusive networking lounge",
-        "four": "Premium conference package",
-        "five": "Company logo recognition",
-        "six": "Lunch & refreshments",
-        "seven": "Priority support",
-        "eight": "Team building sessions"
+        "one": "Full conference access for two company representatives",
+        "two": "All workshops included (for two staff)",
+        "three": "Access to curated CV pool for faster hiring after the event",
+        "four": "Market intelligence: gather feedback from Python developers and startups on products or services",
+        "five": "Networking with regional founders",
+        "six": "Exclusive access to the 'Employer Zone' at the career corner to engage directly with candidates",
+        "seven": "Product demo opportunities: showcase your company's tools, platforms, or solutions"
       }
     },
     "pricing_per_person": "Dalasis per person",
@@ -377,10 +378,10 @@
     "cta_guidelines_button": "Download Guidelines"
   },
   "call_for_speakers": {
-    "badge": "Now Accepting Applications",
+    "badge": "Applications Closed",
     "title_part1": "Call for",
     "title_part2": "Speakers",
-    "subtitle": "Share your Python expertise at the inaugural PyCon Senegambia. We are looking for passionate speakers to inspire, educate, and connect with developers across West Africa.",
+    "subtitle": "Thank you for your interest in speaking at PyCon Senegambia. The call for speakers has now closed. We received amazing proposals and will notify selected speakers by October 10, 2025.",
     "speaker_benefits_global_exposure_title": "Global Exposure",
     "speaker_benefits_global_exposure_description": "Share your expertise with 500+ developers from across West Africa",
     "speaker_benefits_community_impact_title": "Community Impact",
@@ -452,8 +453,9 @@
     "dates_title": "Conference Dates",
     "dates_description": "November 28-29, 2025 - Two days of inspiring talks, workshops, networking, and community building in beautiful Banjul.",
     "dates_bonus": "Speaker dinner and exclusive networking events included",
-    "cta_title": "Ready to Inspire?",
-    "cta_subtitle": "Submit your speaker proposal and help make PyCon Senegambia an unforgettable experience for the Python community in West Africa.",
+    "cta_title": "Call for Speakers Closed",
+    "cta_subtitle": "Thank you to everyone who submitted proposals! Selected speakers will be notified soon. Stay tuned for our speaker lineup announcement.",
+    "cta_closed_button": "View Speaker Guidelines",
     "cta_submit_button": "Submit Your Proposal",
     "cta_guidelines_button": "Speaker Guidelines"
   },
@@ -951,28 +953,25 @@
     "cta_download_kit": "Download Sponsor Kit"
   },
 
-
-  
-    "registration": {
-      "header": {
-        "title": "Register for PyCon Senegambia 2025",
-        "subtitle": "Join our mailing list to stay updated with conference details"
-      },
-      "form": {
-        "name_label": "Full Name",
-        "name_placeholder": "Enter your full name",
-        "email_label": "Email Address",
-        "email_placeholder": "Enter your email address",
-        "error_empty_fields": "Please fill in all fields",
-        "success_message": "Successfully registered for PyCon Senegambia 2025!",
-        "error_failed": "Failed to register",
-        "error_generic": "Something went wrong. Please try again",
-        "button_submitting": "Registering...",
-        "button_submit": "Register Now"
-      },
-      "footer": {
-        "consent": "By registering, you agree to receive updates about PyCon Senegambia 2025. You can unsubscribe at any time."
-      }
+  "registration": {
+    "header": {
+      "title": "Register for PyCon Senegambia 2025",
+      "subtitle": "Join our mailing list to stay updated with conference details"
+    },
+    "form": {
+      "name_label": "Full Name",
+      "name_placeholder": "Enter your full name",
+      "email_label": "Email Address",
+      "email_placeholder": "Enter your email address",
+      "error_empty_fields": "Please fill in all fields",
+      "success_message": "Successfully registered for PyCon Senegambia 2025!",
+      "error_failed": "Failed to register",
+      "error_generic": "Something went wrong. Please try again",
+      "button_submitting": "Registering...",
+      "button_submit": "Register Now"
+    },
+    "footer": {
+      "consent": "By registering, you agree to receive updates about PyCon Senegambia 2025. You can unsubscribe at any time."
     }
-  
+  }
 }
