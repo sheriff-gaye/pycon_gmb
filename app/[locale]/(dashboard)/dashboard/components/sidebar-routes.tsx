@@ -7,6 +7,7 @@ import {
   Users,
   Ticket,
   Handshake,
+  ListCheckIcon,
   
  
 } from "lucide-react";
@@ -40,11 +41,11 @@ const admin: Route[] = [
     label: "Sponsors",
     href: "/dashboard/sponsors"
   },
-  //  {
-  //   icon:BookText ,
-  //   label: "Blog",
-  //   href: "/dashboard/blog"
-  // },
+   {
+    icon:ListCheckIcon ,
+    label: "Products",
+    href: "/dashboard/products"
+  },
   {
     icon: Server,
     label: "System Logs",

@@ -104,3 +104,101 @@ model BlogPost {
 
   @@map("blog_posts")
 }
+
+
+
+// Add these models to your existing schema.prisma file
+
+model Order {
+  id                   String      @id @default(cuid())
+  customerName         String
+  customerEmail        String
+  customerPhone        String
+  totalAmount          Float
+  currency             String      @default("GMD")
+  status               OrderStatus @default(PENDING)
+  
+  // Payment Details
+  paymentIntentId      String?     @unique
+  paymentLink          String?
+  modemPayChargeId     String?     @unique
+  transactionReference String?
+  paymentMethod        String?
+  expiresAt            DateTime?
+  paidAt               DateTime?
+  
+  // Shipping
+  shippingAddress      String?     // JSON string
+  
+  // Relations
+  items                OrderItem[]
+  
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+
+  @@index([customerEmail])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  productId   String
+  productName String
+  quantity    Int
+  price       Float
+  subtotal    Float
+  
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// Update your existing Product model to add the relation:
+model Product {
+  id            String          @id @default(cuid())
+  name          String
+  description   String
+  price         Float
+  originalPrice Float?
+  image         String
+  category      ProductCategory
+  inStock       Boolean         @default(true)
+  rating        Float           @default(0)
+  reviews       Int             @default(0)
+  featured      Boolean         @default(false)
+  isActive      Boolean         @default(true)
+  order         Int             @default(0)
+  
+  // Add this relation
+  orderItems    OrderItem[]
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([category])
+  @@index([featured])
+  @@index([isActive])
+}
+
+enum ProductCategory {
+  APPAREL
+  ACCESSORIES
+  TECH
+  BOOKS
+  STICKERS
+}

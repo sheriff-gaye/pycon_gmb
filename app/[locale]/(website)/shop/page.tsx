@@ -1,125 +1,81 @@
 "use client"
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ShoppingCart, Plus, Minus, Star, Filter, Grid, List, X, Package, CreditCard, Truck, Check } from 'lucide-react';
-import { z } from 'zod';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getActiveProducts } from '@/app/actions/products';
 
-// Zod schemas for validation
-const ProductSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1),
-  description: z.string(),
-  price: z.number().positive(),
-  originalPrice: z.number().positive().optional(),
-  image: z.string().url(),
-  category: z.enum(['apparel', 'accessories', 'tech', 'books', 'stickers']),
-  inStock: z.boolean(),
-  rating: z.number().min(0).max(5),
-  reviews: z.number().min(0),
-  featured: z.boolean().optional()
-});
+type ProductCategory = 'APPAREL' | 'ACCESSORIES' | 'TECH' | 'BOOKS' | 'STICKERS';
 
-const CartItemSchema = z.object({
-  productId: z.string(),
-  quantity: z.number().positive(),
-  product: ProductSchema
-});
+type Product = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  originalPrice: number | null;
+  image: string;
+  category: ProductCategory;
+  inStock: boolean;
+  rating: number;
+  reviews: number;
+  featured: boolean;
+  isActive: boolean;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-const CartSchema = z.object({
-  items: z.array(CartItemSchema),
-  total: z.number().min(0)
-});
+type CartItem = {
+  productId: string;
+  quantity: number;
+  product: Product;
+};
 
-type Product = z.infer<typeof ProductSchema>;
-type CartItem = z.infer<typeof CartItemSchema>;
-type Cart = z.infer<typeof CartSchema>;
+type Cart = {
+  items: CartItem[];
+  total: number;
+};
 
 const Shop = () => {
-  // Sample products data
-  const products: Product[] = [
-    {
-      id: '1',
-      name: 'PyCon Senegambia 2024 T-Shirt',
-      description: 'Premium cotton t-shirt with exclusive PyCon Senegambia design',
-      price: 25,
-      originalPrice: 35,
-      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop',
-      category: 'apparel',
-      inStock: true,
-      rating: 4.8,
-      reviews: 124,
-      featured: true
-    },
-    {
-      id: '2',
-      name: 'Python Logo Hoodie',
-      description: 'Comfortable hoodie perfect for coding sessions',
-      price: 45,
-      originalPrice: 60,
-      image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop',
-      category: 'apparel',
-      inStock: true,
-      rating: 4.9,
-      reviews: 89
-    },
-    {
-      id: '3',
-      name: 'PyCon Coffee Mug',
-      description: 'Start your day with Python and coffee',
-      price: 12,
-      image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=400&h=400&fit=crop',
-      category: 'accessories',
-      inStock: true,
-      rating: 4.6,
-      reviews: 203
-    },
-    {
-      id: '4',
-      name: 'Python Sticker Pack',
-      description: 'Collection of 10 premium Python and PyCon stickers',
-      price: 8,
-      originalPrice: 12,
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
-      category: 'stickers',
-      inStock: true,
-      rating: 4.7,
-      reviews: 156,
-      featured: true
-    },
-    {
-      id: '5',
-      name: 'Python Programming Book',
-      description: 'Advanced Python techniques by conference speakers',
-      price: 32,
-      image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=400&fit=crop',
-      category: 'books',
-      inStock: true,
-      rating: 4.9,
-      reviews: 67
-    },
-    {
-      id: '6',
-      name: 'USB Python Drive',
-      description: '32GB USB drive with Python resources and conference materials',
-      price: 18,
-      originalPrice: 25,
-      image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&h=400&fit=crop',
-      category: 'tech',
-      inStock: false,
-      rating: 4.5,
-      reviews: 43
-    }
-  ];
-
-  // State management
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [cart, setCart] = useState<Cart>({ items: [], total: 0 });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('featured');
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [checkoutForm, setCheckoutForm] = useState({
+    customerName: '',
+    customerEmail: '',
+    customerPhone: ''
+  });
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
 
-  // Cart functions
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const result = await getActiveProducts();
+        
+        if (result.success && result.data) {
+          setProducts(result.data);
+        } else {
+          setError(result.error || 'Failed to load products');
+        }
+      } catch (err) {
+        setError('An error occurred while loading products');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const addToCart = useCallback((product: Product, quantity: number = 1) => {
     setCart(prevCart => {
       const existingItem = prevCart.items.find(item => item.productId === product.id);
@@ -145,10 +101,8 @@ const Shop = () => {
       return { items: updatedItems, total };
     });
 
-    // Show "Added" state
     setAddedItems(prev => new Set(prev).add(product.id));
     
-    // Reset after 2 seconds
     setTimeout(() => {
       setAddedItems(prev => {
         const newSet = new Set(prev);
@@ -185,7 +139,46 @@ const Shop = () => {
     });
   }, [removeFromCart]);
 
-  // Filter and sort products
+  const handleCheckout = async () => {
+    if (!checkoutForm.customerName || !checkoutForm.customerEmail || !checkoutForm.customerPhone) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    setIsCheckingOut(true);
+
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: cart.items.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity
+          })),
+          ...checkoutForm
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log("test here", data);
+
+      if (data.success) {
+        window.location.href = data.data.paymentLink;
+      } else {
+        alert(data.error || 'Checkout failed');
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert('An error occurred during checkout');
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
   const filteredProducts = products
     .filter(product => selectedCategory === 'all' || product.category === selectedCategory)
     .sort((a, b) => {
@@ -204,11 +197,11 @@ const Shop = () => {
 
   const categories = [
     { value: 'all', label: 'All Items' },
-    { value: 'apparel', label: 'Apparel' },
-    { value: 'accessories', label: 'Accessories' },
-    { value: 'tech', label: 'Tech' },
-    { value: 'books', label: 'Books' },
-    { value: 'stickers', label: 'Stickers' }
+    { value: 'APPAREL', label: 'Apparel' },
+    { value: 'ACCESSORIES', label: 'Accessories' },
+    { value: 'TECH', label: 'Tech' },
+    { value: 'BOOKS', label: 'Books' },
+    { value: 'STICKERS', label: 'Stickers' }
   ];
 
   const sortOptions = [
@@ -220,17 +213,28 @@ const Shop = () => {
 
   const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
+  if (error) {
+    return (
+      <section className="relative py-24 bg-gradient-to-br from-slate-50 via-white to-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
+              <p className="text-red-600 font-semibold">{error}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative py-24 bg-gradient-to-br from-slate-50 via-white to-slate-50 overflow-hidden">
-      {/* Background decorative elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-yellow-400/10 rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-blue-500/5 rounded-full filter blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/5 rounded-full filter blur-3xl"></div>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <Package className="w-4 h-4 text-yellow-600 mr-2" />
@@ -244,12 +248,8 @@ const Shop = () => {
               Conference Souvenirs
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            Take home a piece of PyCon Senegambia with our exclusive merchandise collection
-          </p>
         </div>
 
-        {/* Filters and Controls */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8 p-6 bg-white rounded-2xl shadow-lg border border-slate-200">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
@@ -311,128 +311,112 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-          {filteredProducts.map((product) => (
-            <div key={product.id} className={`group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-200 overflow-hidden ${viewMode === 'list' ? 'flex' : ''}`}>
-              {product.featured && (
-                <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold">
-                  FEATURED
+        {loading ? (
+          <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                <Skeleton className="aspect-square w-full" />
+                <div className="p-6">
+                  <Skeleton className="h-6 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4 mb-4" />
+                  <Skeleton className="h-12 w-full rounded-xl" />
                 </div>
-              )}
-
-              <div className={`${viewMode === 'list' ? 'w-48 flex-shrink-0' : 'aspect-square'} relative overflow-hidden`}>
-                <img 
-                  src={product.image} 
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                {!product.inStock && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <span className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold">
-                      Out of Stock
-                    </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+            {filteredProducts.map((product) => (
+              <div key={product.id} className={`group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-200 overflow-hidden ${viewMode === 'list' ? 'flex' : ''}`}>
+                {product.featured && (
+                  <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold">
+                    FEATURED
                   </div>
                 )}
-              </div>
 
-              <div className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                    {product.category}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                    <span className="text-sm text-slate-600">{product.rating}</span>
-                    <span className="text-xs text-slate-400">({product.reviews})</span>
-                  </div>
+                <div className={`${viewMode === 'list' ? 'w-48 flex-shrink-0' : 'aspect-square'} relative overflow-hidden`}>
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {!product.inStock && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <span className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold">
+                        Out of Stock
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-yellow-600 transition-colors">
-                  {product.name}
-                </h3>
-                <p className="text-slate-600 mb-4 leading-relaxed">
-                  {product.description}
-                </p>
-
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-slate-800">D{product.price}</span>
-                    {product.originalPrice && (
-                      <span className="text-slate-400 line-through">D{product.originalPrice}</span>
+                <div className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                      {product.category.toLowerCase()}
+                    </span>
+                    {product.reviews > 0 && (
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span className="text-sm text-slate-600">{product.rating.toFixed(1)}</span>
+                      </div>
                     )}
                   </div>
+
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-slate-600 mb-4">
+                    {product.description}
+                  </p>
+
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="text-2xl font-bold text-slate-800">D{product.price.toFixed(2)}</span>
+                    {product.originalPrice && (
+                      <span className="text-slate-400 line-through">D{product.originalPrice.toFixed(2)}</span>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => addToCart(product)}
+                    disabled={!product.inStock}
+                    className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                      product.inStock
+                        ? addedItems.has(product.id)
+                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                          : 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500 shadow-lg'
+                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    }`}
+                  >
+                    {product.inStock ? (
+                      <div className="flex items-center justify-center gap-2">
+                        {addedItems.has(product.id) ? (
+                          <>
+                            <Check className="w-4 h-4" />
+                            Added to Cart
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-4 h-4" />
+                            Add to Cart
+                          </>
+                        )}
+                      </div>
+                    ) : (
+                      'Out of Stock'
+                    )}
+                  </button>
                 </div>
-
-                <button
-                  onClick={() => addToCart(product)}
-                  disabled={!product.inStock}
-                  className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                    product.inStock
-                      ? addedItems.has(product.id)
-                        ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
-                        : 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500 shadow-lg hover:shadow-xl'
-                      : 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                  }`}
-                >
-                  {product.inStock ? (
-                    <div className="flex items-center justify-center gap-2">
-                      {addedItems.has(product.id) ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          Added to Cart
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="w-4 h-4" />
-                          Add to Cart
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    'Out of Stock'
-                  )}
-                </button>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Additional Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="text-center bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
-            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
-              <Truck className="w-6 h-6 text-white" />
-            </div>
-            <h4 className="font-bold text-slate-800 mb-2">Free Shipping</h4>
-            <p className="text-sm text-slate-600">Free delivery for orders over D100</p>
+            ))}
           </div>
-
-          <div className="text-center bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
-              <CreditCard className="w-6 h-6 text-white" />
-            </div>
-            <h4 className="font-bold text-slate-800 mb-2">Secure Payment</h4>
-            <p className="text-sm text-slate-600">SSL encrypted secure checkout</p>
-          </div>
-
-          <div className="text-center bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
-            <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
-              <Package className="w-6 h-6 text-white" />
-            </div>
-            <h4 className="font-bold text-slate-800 mb-2">Premium Quality</h4>
-            <p className="text-sm text-slate-600">Carefully selected materials and designs</p>
-          </div>
-        </div>
+        )}
       </div>
 
-      {/* Cart Sidebar */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setIsCartOpen(false)}></div>
           <div className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-xl">
             <div className="flex flex-col h-full">
-              {/* Cart Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-200">
                 <h3 className="text-2xl font-bold text-slate-800">Shopping Cart</h3>
                 <button
@@ -443,7 +427,6 @@ const Shop = () => {
                 </button>
               </div>
 
-              {/* Cart Items */}
               <div className="flex-1 overflow-y-auto p-6">
                 {cart.items.length === 0 ? (
                   <div className="text-center py-12">
@@ -461,7 +444,7 @@ const Shop = () => {
                         />
                         <div className="flex-1">
                           <h4 className="font-semibold text-slate-800">{item.product.name}</h4>
-                          <p className="text-slate-600">D{item.product.price}</p>
+                          <p className="text-slate-600">D{item.product.price.toFixed(2)}</p>
                           <div className="flex items-center gap-2 mt-2">
                             <button
                               onClick={() => updateQuantity(item.productId, item.quantity - 1)}
@@ -490,16 +473,62 @@ const Shop = () => {
                 )}
               </div>
 
-              {/* Cart Footer */}
               {cart.items.length > 0 && (
                 <div className="border-t border-slate-200 p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-xl font-bold text-slate-800">Total:</span>
-                    <span className="text-2xl font-bold text-slate-800">D{cart.total.toFixed(2)}</span>
-                  </div>
-                  <button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-xl font-bold text-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    Proceed to Checkout
-                  </button>
+                  {!showCheckoutForm ? (
+                    <>
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="text-xl font-bold text-slate-800">Total:</span>
+                        <span className="text-2xl font-bold text-slate-800">D{cart.total.toFixed(2)}</span>
+                      </div>
+                      <button 
+                        onClick={() => setShowCheckoutForm(true)}
+                        className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-xl font-bold text-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-lg"
+                      >
+                        Proceed to Checkout
+                      </button>
+                    </>
+                  ) : (
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-lg mb-4">Customer Information</h4>
+                      <input
+                        type="text"
+                        placeholder="Full Name"
+                        value={checkoutForm.customerName}
+                        onChange={(e) => setCheckoutForm({...checkoutForm, customerName: e.target.value})}
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      />
+                      <input
+                        type="email"
+                        placeholder="Email Address"
+                        value={checkoutForm.customerEmail}
+                        onChange={(e) => setCheckoutForm({...checkoutForm, customerEmail: e.target.value})}
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      />
+                      <input
+                        type="tel"
+                        placeholder="Phone Number"
+                        value={checkoutForm.customerPhone}
+                        onChange={(e) => setCheckoutForm({...checkoutForm, customerPhone: e.target.value})}
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setShowCheckoutForm(false)}
+                          className="flex-1 bg-slate-200 text-slate-700 py-3 rounded-lg font-semibold hover:bg-slate-300 transition-colors"
+                        >
+                          Back
+                        </button>
+                        <button
+                          onClick={handleCheckout}
+                          disabled={isCheckingOut}
+                          className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isCheckingOut ? 'Processing...' : 'Complete Payment'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
