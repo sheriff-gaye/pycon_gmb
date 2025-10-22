@@ -10,52 +10,26 @@ import {
   Ticket,
   Sparkles,
   Globe,
-  Clock,
-  TrendingUp,
-  Zap
+  TrendingUp
 } from "lucide-react";
 import { HeroProps } from "./interfaces/interface";
 
 const Hero = ({currentLocale}: HeroProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentStat, setCurrentStat] = useState(0);
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
 
   useEffect(() => {
     setIsLoaded(true);
     const interval = setInterval(() => {
-      setCurrentStat((prev) => (prev + 1) % 4);
+      setCurrentStat((prev) => (prev + 1) % 3);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const countdown = setInterval(() => {
-      const earlyBirdEnd = new Date("2025-10-20T23:59:59").getTime();
-      const now = new Date().getTime();
-      const distance = earlyBirdEnd - now;
-
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((distance % (1000 * 60)) / 1000)
-      });
-    }, 1000);
-
-    return () => clearInterval(countdown);
   }, []);
 
   const stats = [
     { value: "2", label: getTranslation(currentLocale, 'hero.stats.countries'), color: "text-yellow-400" },
     { value: "25+", label: getTranslation(currentLocale, 'hero.stats.speakers'), color: "text-blue-400" },
-    { value: "500+", label: getTranslation(currentLocale, 'hero.stats.developers'), color: "text-green-400" },
-    { value: "50%", label: "Early Bird Discount", color: "text-purple-400" }
+    { value: "500+", label: getTranslation(currentLocale, 'hero.stats.developers'), color: "text-green-400" }
   ];
 
   return (
@@ -112,15 +86,15 @@ const Hero = ({currentLocale}: HeroProps) => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
         <div className="text-center">
-          {/* Early bird badge - prominent and eye-catching */}
+          {/* Event badge */}
           <div
             className={`inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-yellow-500/20 to-blue-500/20 backdrop-blur-md border border-yellow-400/40 mb-8 shadow-2xl transform transition-all duration-1000 ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
             }`}
           >
-            <Zap className="w-5 h-5 text-yellow-400 mr-3 animate-pulse" />
+           
             <span className="text-sm font-medium text-yellow-100 tracking-wide">
-              🎉 Early Bird Tickets Available Now
+              Join Senegambia's Premier Python Conference
             </span>
             <div className="ml-3 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
           </div>
@@ -171,39 +145,6 @@ const Hero = ({currentLocale}: HeroProps) => {
             </p>
           </div>
 
-          {/* Countdown timer - premium design */}
-          <div
-            className={`mb-12 transform transition-all duration-1000 delay-1000 ${
-              isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-            }`}
-          >
-            <div className="inline-block bg-gradient-to-br from-green-900/50 to-green-900/50 backdrop-blur-xl rounded-3xl p-8 border border-green-400/30 shadow-2xl">
-              <div className="flex items-center justify-center mb-4 gap-2">
-                <Clock className="w-6 h-6 text-green-400 animate-pulse" />
-                <h3 className="text-2xl font-bold text-white">Early Bird Ends In</h3>
-              </div>
-              <div className="grid grid-cols-4 gap-4 md:gap-8">
-                {[
-                  { value: timeLeft.days, label: "Days" },
-                  { value: timeLeft.hours, label: "Hours" },
-                  { value: timeLeft.minutes, label: "Minutes" },
-                  { value: timeLeft.seconds, label: "Seconds" }
-                ].map((item, index) => (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-4 md:p-6 min-w-[70px] md:min-w-[100px] shadow-xl">
-                      <span className="text-3xl md:text-5xl font-bold text-white">
-                        {item.value.toString().padStart(2, '0')}
-                      </span>
-                    </div>
-                    <span className="text-gray-400 text-sm md:text-base mt-2 font-medium uppercase tracking-wider">
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
           {/* Event details */}
           <div
             className={`flex flex-col lg:flex-row items-center justify-center gap-6 mb-16 transform transition-all duration-1000 delay-1100 ${
@@ -214,7 +155,7 @@ const Hero = ({currentLocale}: HeroProps) => {
               <Calendar className="w-6 h-6 text-yellow-400 mr-3 group-hover:rotate-12 transition-transform" />
               <div>
                 <span className="text-white font-medium text-lg">
-                  {getTranslation(currentLocale, 'hero.event.date')}
+                  November 28-29, 2025
                 </span>
                 <div className="text-xs text-gray-400">
                   {getTranslation(currentLocale, 'hero.event.mark')}
@@ -245,7 +186,7 @@ const Hero = ({currentLocale}: HeroProps) => {
             </div>
           </div>
 
-          {/* CTA buttons - ticket focused */}
+          {/* CTA buttons */}
           <div
             className={`flex flex-col sm:flex-row gap-6 justify-center mb-20 transform transition-all duration-1000 delay-1300 ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
@@ -257,7 +198,7 @@ const Hero = ({currentLocale}: HeroProps) => {
             >
               <span className="relative z-10 flex items-center">
                 <Ticket className="w-7 h-7 mr-3 group-hover:rotate-12 transition-transform" />
-                Get Early Bird Tickets
+                Get Your Tickets
                 <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -281,7 +222,7 @@ const Hero = ({currentLocale}: HeroProps) => {
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
             }`}
           >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {stats.map((stat, index) => (
                 <div
                   key={index}
@@ -310,4 +251,4 @@ const Hero = ({currentLocale}: HeroProps) => {
   );
 };
 
-export default Hero;
+export default Hero

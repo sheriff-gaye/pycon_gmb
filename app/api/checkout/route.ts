@@ -119,7 +119,7 @@ export async function POST(req: Request): Promise<NextResponse> {
         
         const returnUrl = `${baseUrl}/${locale}/order/success?orderId=${order.id}`;
         const cancelUrl = `${baseUrl}/${locale}/order/cancelled?orderId=${order.id}`;
-        const callbackUrl = `${baseUrl}/api/webhook/modempay/ecommerce`;
+        const callbackUrl = `${baseUrl}/api/webhook/modempay`;
 
         // Debug log to verify URLs
         console.log('🔍 ModemPay URLs:', {
@@ -150,13 +150,13 @@ export async function POST(req: Request): Promise<NextResponse> {
             cancel_url: cancelUrl
         };
 
-        // Only add callback_url if using HTTPS (production/ngrok)
-        if (baseUrl.startsWith('https://')) {
-            paymentData.callback_url = callbackUrl;
-            console.log('✅ Using callback URL (HTTPS detected)');
-        } else {
-            console.log('⚠️ Skipping callback URL (localhost detected - webhooks won\'t work)');
-        }
+        // // Only add callback_url if using HTTPS (production/ngrok)
+        // if (baseUrl.startsWith('https://')) {
+        //     paymentData.callback_url = callbackUrl;
+        //     console.log('✅ Using callback URL (HTTPS detected)');
+        // } else {
+        //     console.log('⚠️ Skipping callback URL (localhost detected - webhooks won\'t work)');
+        // }
 
         // Create Payment Intent with ModemPay
         const paymentIntent = await modempay.paymentIntents.create(paymentData);

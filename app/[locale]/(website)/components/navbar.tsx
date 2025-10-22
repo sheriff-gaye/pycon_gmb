@@ -12,7 +12,7 @@ import RegistrationModal from "./register_modal";
 const Navbar = ({currentLocale}: HeroProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false); // Add modal state
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false); 
   const router = useRouter();
   const pathname = usePathname();
 
@@ -51,7 +51,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
             <div className="flex justify-between items-center h-20">
               <div className="flex items-center">
                 <div className="flex-shrink-0 flex items-center overflow-hidden">
-                  <Link href="/">
+                  <Link href="/" >
                     <Image
                       src="/images/logo.png"
                       alt="logo"
@@ -99,7 +99,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
                
-                <Link
+                <Link aria-label="about"
                   href={`/${locale}/about`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
@@ -107,6 +107,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 </Link>
 
                 <Link
+                aria-label="sponsorship"
                   href={`/${locale}/sponsorship`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
@@ -114,12 +115,14 @@ const Navbar = ({currentLocale}: HeroProps) => {
                   {getTranslation(locale, 'nav.sponsorship')}
                 </Link>
                 <Link
+                aria-label="visas"
                   href={`/${locale}/visas`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   {getTranslation(locale, 'nav.visas')}
                 </Link>
                 <Link
+                aria-label="blog"
                   href={`/${locale}/blog`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
@@ -134,18 +137,21 @@ const Navbar = ({currentLocale}: HeroProps) => {
                   {/* Shop */}
                 {/* </Link>  */} 
                 <Link
+                  aria-label="speakers"
                   href={`/${locale}/speakers`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   {getTranslation(locale, 'nav.speakers')}
                 </Link>
                 <Link
+                  aria-label="proposal"
                   href={`/${locale}/proposal`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   {getTranslation(locale, 'nav.proposal')}
                 </Link>
                 <Link
+                  aria-label="volunteers"
                   href={`/${locale}/volunteers`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
@@ -158,6 +164,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
             <div className="hidden md:flex items-center space-x-4">
               {/* Changed from Link to button */}
               <button
+              aria-label="register"
                 onClick={openRegistrationModal}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105"
               >
@@ -167,6 +174,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
               {/* Language Switcher */}
               <div className="relative">
                 <button
+                  aria-label="language"
                   onClick={toggleLangDropdown}
                   className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 px-3 py-2 rounded-lg transition-colors"
                 >
@@ -179,6 +187,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                     {languages.map((lang) => (
                       <button
+                        aria-label="lang"
                         key={lang.code}
                         onClick={() => handleLanguageChange(lang.code)}
                         className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 flex items-center space-x-3 ${
@@ -197,6 +206,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
             
             <div className="md:hidden">
               <button
+                aria-label="menu"
                 onClick={toggleMenu}
                 className="text-gray-600 hover:text-gray-900 inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
               >
@@ -212,6 +222,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
               
               <Link
+                  aria-label="about"
                 href={`/${locale}/about`}
                 className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                 onClick={closeMenu}
@@ -219,6 +230,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 {getTranslation(locale, 'nav.about')}
               </Link>
               <Link
+              aria-label="sponsorship"
                   href={`/${locale}/sponsorship`}
                   className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                   onClick={closeMenu}
@@ -227,6 +239,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                   {getTranslation(locale, 'nav.sponsorship')}
                 </Link>
               <Link
+              aria-label="visas"
                 href={`/${locale}/visas`}
                 className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                 onClick={closeMenu}
@@ -234,6 +247,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 {getTranslation(locale, 'nav.visas')}
               </Link>
               <Link
+              aria-label="blog"
                 href={`/${locale}/blog`}
                 className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                 onClick={closeMenu}
@@ -241,6 +255,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 {getTranslation(locale, 'nav.blog')}
               </Link>
               <Link
+              aria-label="shop"
                 href={`/${locale}/speakers`}
                 className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                 onClick={closeMenu}
@@ -248,6 +263,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 {getTranslation(locale, 'nav.speakers')}
               </Link>
               <Link
+              aria-label="shop"
                 href={`/${locale}/proposal`}
                 className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                 onClick={closeMenu}
@@ -255,6 +271,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 {getTranslation(locale, 'nav.proposal')}
               </Link>
               <Link
+              aria-label="shop"
                 href={`/${locale}/volunteers`}
                 className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
                 onClick={closeMenu}
@@ -265,6 +282,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
               <div className="px-3 py-2">
                 {/* Changed from Link to button */}
                 <button
+                  aria-label="language"
                   onClick={openRegistrationModal}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105 inline-block"
                 >
@@ -278,6 +296,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                 <div className="space-y-1">
                   {languages.map((lang) => (
                     <button
+                      aria-label="flag"
                       key={lang.code}
                       onClick={() => handleLanguageChange(lang.code)}
                       className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center space-x-3 ${

@@ -223,10 +223,11 @@ const Contact = ({currentLocale}:HeroProps) => {
                 </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="question-select">
                     {getTranslation(currentLocale, 'contact.form_inquiry_label')}
                     </label>
                     <select
+                     id="question-select"
                       name="type"
                       value={formData.type}
                       onChange={handleInputChange}

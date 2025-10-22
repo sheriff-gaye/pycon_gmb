@@ -164,7 +164,7 @@ const Shop = () => {
 
       const data = await response.json();
 
-      console.log("test here", data);
+      console.log("test here",data);
 
       if (data.success) {
         window.location.href = data.data.paymentLink;

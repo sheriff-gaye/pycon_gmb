@@ -1,0 +1,11 @@
+# Invalid (duplicate)
+User-agent: *
+Disallow: /private/
+
+User-agent: *
+Disallow: /temp/
+
+# Valid (merged)
+User-agent: *
+Disallow: /private/
+Disallow: /temp/

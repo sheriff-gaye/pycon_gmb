@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { Resend } from "resend";
@@ -7,6 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 type PaymentStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
 type TicketType = 'STUDENTS' | 'INDIVIDUAL' | 'CORPORATE';
+type OrderStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'PROCESSING';
 
 interface PaymentMetadata {
   os?: string;
@@ -16,6 +16,8 @@ interface PaymentMetadata {
   deviceType?: string;
   urlIPAddress?: string;
   screenResolution?: string;
+  orderId?: string; // For ecommerce orders
+  type?: 'ticket' | 'order'; // To distinguish payment types
 }
 
 interface ModemPayWebhookPayload {
@@ -69,6 +71,10 @@ interface TicketPurchase {
   updatedAt: Date;
 }
 
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
 function mapPaymentMethod(method: string): string {
   const methodMap: Record<string, string> = {
     'qmoney': 'QMoney',
@@ -78,6 +84,39 @@ function mapPaymentMethod(method: string): string {
   };
   return methodMap[method] || method;
 }
+
+function determinePaymentType(payload: ModemPayWebhookPayload): 'ticket' | 'order' {
+  // Check metadata first
+  if (payload.metadata?.type === 'order' || payload.metadata?.orderId) {
+    console.log('🛍️ Detected ECOMMERCE payment from metadata');
+    return 'order';
+  }
+
+  if (payload.metadata?.type === 'ticket') {
+    console.log('🎫 Detected TICKET payment from metadata');
+    return 'ticket';
+  }
+
+  // Check custom fields
+  if (payload.custom_fields_values?.orderId) {
+    console.log('🛍️ Detected ECOMMERCE payment from custom fields');
+    return 'order';
+  }
+
+  // Check payment link ID patterns (if you use different links)
+  if (payload.payment_link_id?.includes('store') || payload.payment_link_id?.includes('shop')) {
+    console.log('🛍️ Detected ECOMMERCE payment from payment link');
+    return 'order';
+  }
+
+  // Default to ticket for backward compatibility
+  console.log('🎫 Defaulting to TICKET payment');
+  return 'ticket';
+}
+
+// ============================================
+// TICKET-SPECIFIC FUNCTIONS
+// ============================================
 
 function determineTicketType(
   metadata: Record<string, unknown> | null, 
@@ -123,13 +162,13 @@ function determineTicketType(
 
   const amountInMainCurrency = amount / 100; 
   
-  if (amountInMainCurrency === 3) { // 300 cents = 3 units
+  if (amountInMainCurrency === 3) {
     console.log('💡 Determined STUDENTS ticket by amount:', amountInMainCurrency);
     return 'STUDENTS';
-  } else if (amountInMainCurrency === 10) { // 1000 cents = 10 units
+  } else if (amountInMainCurrency === 10) {
     console.log('💡 Determined CORPORATE ticket by amount:', amountInMainCurrency);
     return 'CORPORATE';
-  } else if (amountInMainCurrency === 5) { // 500 cents = 5 units
+  } else if (amountInMainCurrency === 5) {
     console.log('💡 Determined INDIVIDUAL ticket by amount:', amountInMainCurrency);
     return 'INDIVIDUAL';
   }
@@ -148,7 +187,6 @@ function determineTicketType(
 
 async function generateQRCodeDataURL(data: string): Promise<string> {
   try {
-   
     const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data)}`;
     console.log('✅ Generated QR code URL:', qrCodeUrl);
     return qrCodeUrl;
@@ -163,7 +201,6 @@ async function getEmbeddedLogo(): Promise<string> {
   console.log('✅ Using logo URL:', logoUrl);
   return logoUrl;
 }
-
 
 async function generateTicketEmailHTML(ticketPurchase: TicketPurchase): Promise<string> {
   const ticketTypeEmoji: Record<TicketType, string> = {
@@ -255,10 +292,6 @@ async function generateTicketEmailHTML(ticketPurchase: TicketPurchase): Promise<
                     </div>
                 </div>
 
-                <div style="text-align: center;">
-                    <a href="#" style="display: inline-block; background: #10B981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View Conference Schedule 📅</a>
-                </div>
-
                 <div style="background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 3px solid #f59e0b; margin: 20px 0;">
                     <h4 style="margin: 0 0 10px; color: #92400e;">📝 Important Information</h4>
                     <ul style="margin: 0; padding-left: 20px; color: #92400e; font-size: 12px;">
@@ -288,7 +321,7 @@ async function generateTicketEmailHTML(ticketPurchase: TicketPurchase): Promise<
 
 async function sendTicketConfirmationEmail(ticketPurchase: TicketPurchase): Promise<void> {
   try {
-    console.log('📧 Preparing to send confirmation email:', {
+    console.log('📧 Preparing to send ticket confirmation email:', {
       customerEmail: ticketPurchase.customerEmail,
       ticketType: ticketPurchase.ticketType,
       transactionReference: ticketPurchase.transactionReference,
@@ -300,14 +333,13 @@ async function sendTicketConfirmationEmail(ticketPurchase: TicketPurchase): Prom
     }
 
     const emailHTML = await generateTicketEmailHTML(ticketPurchase);
-    console.log('📄 Generated email HTML length:', emailHTML.length);
 
     const { data, error } = await resend.emails.send({
       from: 'PyCon Senegambia <noreply@pyconsenegambia.org>',
       to: [ticketPurchase.customerEmail],
       subject: `🎉 Your PyCon Senegambia 2025 Ticket is Confirmed! - ${ticketPurchase.ticketType}`,
       html: emailHTML,
-      text: `Dear ${ticketPurchase.customerName},\n\nYour ${ticketPurchase.ticketType} ticket for PyCon Senegambia 2025 is confirmed!\n\nTicket ID: ${ticketPurchase.transactionReference}\nAmount Paid: ${ticketPurchase.currency} ${ticketPurchase.amount.toFixed(2)}\nPayment Method: ${ticketPurchase.paymentMethod}\nPurchase Date: ${new Date(ticketPurchase.createdAt).toLocaleString()}\n\nPlease bring a valid ID and this ticket ID to the conference. For questions, contact info@pyconsenegambia.org.\n\nPyCon Senegambia 2025`, // Plain-text fallback
+      text: `Dear ${ticketPurchase.customerName},\n\nYour ${ticketPurchase.ticketType} ticket for PyCon Senegambia 2025 is confirmed!\n\nTicket ID: ${ticketPurchase.transactionReference}\nAmount Paid: ${ticketPurchase.currency} ${ticketPurchase.amount.toFixed(2)}\nPayment Method: ${ticketPurchase.paymentMethod}\nPurchase Date: ${new Date(ticketPurchase.createdAt).toLocaleString()}\n\nPlease bring a valid ID and this ticket ID to the conference. For questions, contact info@pyconsenegambia.org.\n\nPyCon Senegambia 2025`,
     });
 
     if (error) {
@@ -318,54 +350,227 @@ async function sendTicketConfirmationEmail(ticketPurchase: TicketPurchase): Prom
     console.log('✅ Email sent successfully:', data);
 
   } catch (error) {
-    console.error('💥 Error sending confirmation email:', error);
+    console.error('💥 Error sending ticket confirmation email:', error);
     throw error;
   }
 }
+
+// ============================================
+// ECOMMERCE-SPECIFIC FUNCTIONS
+// ============================================
+
+async function generateOrderEmailHTML(order: any): Promise<string> {
+  const orderItems = await db.orderItem.findMany({
+    where: { orderId: order.id },
+    include: { product: true }
+  });
+
+  const itemsHTML = orderItems.map(item => `
+    <tr>
+      <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="${item.product.image}" alt="${item.productName}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;" />
+          <div>
+            <strong>${item.productName}</strong><br/>
+            <span style="color: #64748b; font-size: 14px;">Qty: ${item.quantity}</span>
+          </div>
+        </div>
+      </td>
+      <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">
+        D${item.price.toFixed(2)}
+      </td>
+      <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: bold;">
+        D${item.subtotal.toFixed(2)}
+      </td>
+    </tr>
+  `).join('');
+
+  const shippingAddress = order.shippingAddress 
+    ? JSON.parse(order.shippingAddress) 
+    : null;
+
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Order Confirmation - PyCon Senegambia Store</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8fafc;">
+        <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center;">
+                <h1 style="margin: 0; font-size: 28px;">Order Confirmed!</h1>
+                <p style="margin: 10px 0 0 0; font-size: 16px;">Thank you for your purchase</p>
+            </div>
+            
+            <div style="padding: 30px;">
+                <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h2 style="margin: 0 0 10px; font-size: 18px;">Order #${order.id.substring(0, 8).toUpperCase()}</h2>
+                    <p style="margin: 5px 0; color: #64748b;">
+                        <strong>Date:</strong> ${new Date(order.createdAt).toLocaleDateString()}
+                    </p>
+                    <p style="margin: 5px 0; color: #64748b;">
+                        <strong>Status:</strong> <span style="background: #10B981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">${order.status}</span>
+                    </p>
+                </div>
+
+                <h3 style="margin: 20px 0 10px; font-size: 18px;">Order Items</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="background: #f8fafc;">
+                      <th style="padding: 10px; text-align: left; border-bottom: 2px solid #e2e8f0;">Item</th>
+                      <th style="padding: 10px; text-align: right; border-bottom: 2px solid #e2e8f0;">Price</th>
+                      <th style="padding: 10px; text-align: right; border-bottom: 2px solid #e2e8f0;">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${itemsHTML}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="2" style="padding: 15px 10px; text-align: right; font-weight: bold; font-size: 18px;">
+                        Total:
+                      </td>
+                      <td style="padding: 15px 10px; text-align: right; font-weight: bold; font-size: 18px; color: #667eea;">
+                        ${order.currency} ${order.totalAmount.toFixed(2)}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+                ${shippingAddress ? `
+                  <div style="background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 3px solid #f59e0b; margin: 20px 0;">
+                    <h4 style="margin: 0 0 10px; color: #92400e;">Shipping Address</h4>
+                    <p style="margin: 5px 0; color: #92400e; font-size: 14px;">
+                      ${shippingAddress.street}<br/>
+                      ${shippingAddress.city}, ${shippingAddress.state}<br/>
+                      ${shippingAddress.country} ${shippingAddress.postalCode}
+                    </p>
+                  </div>
+                ` : ''}
+
+                <div style="background: #e0e7ff; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                  <h4 style="margin: 0 0 10px; color: #3730a3;">Payment Information</h4>
+                  <p style="margin: 5px 0; color: #3730a3; font-size: 14px;">
+                    <strong>Transaction ID:</strong> ${order.transactionReference}<br/>
+                    <strong>Payment Status:</strong> Completed
+                  </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                  <p style="color: #64748b; font-size: 14px;">
+                    Questions about your order? Contact us at<br/>
+                    <a href="mailto:shop@pyconsenegambia.org" style="color: #667eea;">shop@pyconsenegambia.org</a>
+                  </p>
+                </div>
+            </div>
+
+            <div style="background: #1e293b; color: white; padding: 20px; text-align: center; font-size: 12px;">
+                <p style="margin: 0;">
+                    <strong>PyCon Senegambia Store</strong><br/>
+                    Official Conference Merchandise
+                </p>
+            </div>
+        </div>
+    </body>
+    </html>
+  `;
+}
+
+async function sendOrderConfirmationEmail(order: any): Promise<void> {
+  try {
+    console.log('📧 Preparing to send order confirmation email:', {
+      customerEmail: order.customerEmail,
+      orderId: order.id,
+    });
+
+    const emailHTML = await generateOrderEmailHTML(order);
+
+    const { data, error } = await resend.emails.send({
+      from: 'PyCon Senegambia Store <shop@pyconsenegambia.org>',
+      to: [order.customerEmail],
+      subject: `Order Confirmation #${order.id.substring(0, 8).toUpperCase()} - PyCon Senegambia Store`,
+      html: emailHTML,
+    });
+
+    if (error) {
+      throw new Error(`Failed to send email: ${error.message}`);
+    }
+
+    console.log('✅ Order confirmation email sent:', data);
+  } catch (error) {
+    console.error('❌ Error sending order confirmation email:', error);
+    throw error;
+  }
+}
+
+// ============================================
+// MAIN WEBHOOK HANDLER
+// ============================================
+
 export async function POST(req: Request): Promise<NextResponse> {
   try {
-    console.log('🚀 Webhook received');
+    console.log('🚀 Global Webhook received');
     
     const body = await req.text();
     console.log('📄 Raw body length:', body.length);
+    
     let event: ModemPayWebhookEvent;
     try {
       event = JSON.parse(body) as ModemPayWebhookEvent;
       console.log('✅ Parsed event type:', event.event);
       console.log('💰 Amount:', event.payload?.amount);
       console.log('📋 Metadata:', event.payload?.metadata);
-      console.log('📝 Custom fields:', event.payload?.custom_fields_values);
     } catch (error) {
       console.error('❌ Invalid JSON payload:', error);
       return new NextResponse('Invalid JSON payload', { status: 400 });
     }
 
-    console.log(`🎯 Processing event: ${event.event}`);
+    // Determine payment type (ticket or order)
+    const paymentType = determinePaymentType(event.payload);
+    console.log(`🎯 Payment type detected: ${paymentType.toUpperCase()}`);
 
-    // Handle different event types
+    // Route to appropriate handler based on event and payment type
     switch (event.event) {
       case 'charge.succeeded':
-        await handleSuccessfulPayment(event.payload);
+        if (paymentType === 'ticket') {
+          await handleSuccessfulTicketPayment(event.payload);
+        } else {
+          await handleSuccessfulOrderPayment(event.payload);
+        }
         console.log('✅ Successfully processed charge.succeeded');
         break;
         
       case 'charge.failed':
-        await handleFailedPayment(event.payload);
+        if (paymentType === 'ticket') {
+          await handleFailedTicketPayment(event.payload);
+        } else {
+          await handleFailedOrderPayment(event.payload);
+        }
         console.log('⚠️ Successfully processed charge.failed');
         break;
         
       case 'charge.cancelled':
-        await handleCancelledPayment(event.payload);
+        if (paymentType === 'ticket') {
+          await handleCancelledTicketPayment(event.payload);
+        } else {
+          await handleCancelledOrderPayment(event.payload);
+        }
         console.log('⚠️ Successfully processed charge.cancelled');
         break;
         
       case 'charge.created':
-        await handlePendingPayment(event.payload);
+        if (paymentType === 'ticket') {
+          await handlePendingTicketPayment(event.payload);
+        }
         console.log('⏳ Successfully processed charge.created');
         break;
         
       case 'charge.updated':
-        await handleUpdatedPayment(event.payload);
+        if (paymentType === 'ticket') {
+          await handleUpdatedTicketPayment(event.payload);
+        }
         console.log('🔄 Successfully processed charge.updated');
         break;
         
@@ -387,41 +592,40 @@ export async function POST(req: Request): Promise<NextResponse> {
   }
 }
 
-async function handleSuccessfulPayment(payload: ModemPayWebhookPayload): Promise<void> {
+// ============================================
+// TICKET PAYMENT HANDLERS
+// ============================================
+
+async function handleSuccessfulTicketPayment(payload: ModemPayWebhookPayload): Promise<void> {
   try {
-    console.log('💰 Handling successful payment:', payload.id);
+    console.log('🎫 Handling successful ticket payment:', payload.id);
+    
     const existingPurchase = await db.ticketPurchase.findUnique({
-      where: {
-        modemPayChargeId: payload.id
-      }
+      where: { modemPayChargeId: payload.id }
     });
 
     if (existingPurchase) {
-      console.log(`🔄 Transaction ${payload.id} already exists, updating status`);
+      console.log(`🔄 Ticket transaction ${payload.id} already exists, updating status`);
       
       if (existingPurchase.paymentStatus !== 'COMPLETED') {
         const updatedPurchase = await db.ticketPurchase.update({
-          where: {
-            modemPayChargeId: payload.id
-          },
+          where: { modemPayChargeId: payload.id },
           data: {
             paymentStatus: 'COMPLETED',
             updatedAt: new Date()
           }
         });
-        console.log(`✅ Updated transaction ${payload.id} to COMPLETED`);
+        console.log(`✅ Updated ticket transaction ${payload.id} to COMPLETED`);
         
-        // Send email for newly completed payments
         try {
           await sendTicketConfirmationEmail(updatedPurchase as TicketPurchase);
         } catch (emailError) {
-          console.error('⚠️ Failed to send email, but payment processed:', emailError);
+          console.error('⚠️ Failed to send ticket email:', emailError);
         }
       }
       return;
     }
 
-    // Determine ticket type with enhanced detection
     const ticketType = determineTicketType(
       payload.metadata, 
       payload.custom_fields_values, 
@@ -430,11 +634,10 @@ async function handleSuccessfulPayment(payload: ModemPayWebhookPayload): Promise
     );
     console.log('🎫 Determined ticket type:', ticketType);
 
-    // Create new ticket purchase record
     const ticketPurchase = await db.ticketPurchase.create({
       data: {
         ticketType: ticketType,
-        amount: payload.amount, // Convert from cents to main currency
+        amount: payload.amount,
         currency: payload.currency,
         customerName: payload.customer_name,
         customerEmail: payload.customer_email,
@@ -452,37 +655,30 @@ async function handleSuccessfulPayment(payload: ModemPayWebhookPayload): Promise
 
     console.log(`🎉 Successfully created ticket purchase: ${ticketPurchase.id}`);
 
-    // Send confirmation email
     try {
       await sendTicketConfirmationEmail(ticketPurchase as TicketPurchase);
-      console.log('📧 Confirmation email sent successfully');
+      console.log('📧 Ticket confirmation email sent successfully');
     } catch (emailError) {
-      console.error('⚠️ Failed to send confirmation email:', emailError);
-      // Don't throw error - payment is still successful
+      console.error('⚠️ Failed to send ticket confirmation email:', emailError);
     }
 
   } catch (error) {
-    console.error('💥 Error handling successful payment:', error);
+    console.error('💥 Error handling successful ticket payment:', error);
     throw error;
   }
 }
 
-// ... (rest of your handler functions remain the same)
-async function handleFailedPayment(payload: ModemPayWebhookPayload): Promise<void> {
+async function handleFailedTicketPayment(payload: ModemPayWebhookPayload): Promise<void> {
   try {
-    console.log('❌ Handling failed payment:', payload.id);
+    console.log('❌ Handling failed ticket payment:', payload.id);
     
     const existingPurchase = await db.ticketPurchase.findUnique({
-      where: {
-        modemPayChargeId: payload.id
-      }
+      where: { modemPayChargeId: payload.id }
     });
 
     if (existingPurchase) {
       await db.ticketPurchase.update({
-        where: {
-          modemPayChargeId: payload.id
-        },
+        where: { modemPayChargeId: payload.id },
         data: {
           paymentStatus: 'FAILED',
           updatedAt: new Date()
@@ -510,37 +706,31 @@ async function handleFailedPayment(payload: ModemPayWebhookPayload): Promise<voi
           modemPayChargeId: payload.id,
           paymentMethod: mapPaymentMethod(payload.payment_method),
           testMode: payload.test_mode,
-          // paymentMetadata: payload.payment_metadata,
-          // customFields: payload.custom_fields_values,
           createdAt: new Date(payload.createdAt),
           updatedAt: new Date(payload.updatedAt)
         }
       });
     }
 
-    console.log(`⚠️ Handled failed payment: ${payload.id}`);
+    console.log(`⚠️ Handled failed ticket payment: ${payload.id}`);
     
   } catch (error) {
-    console.error('💥 Error handling failed payment:', error);
+    console.error('💥 Error handling failed ticket payment:', error);
     throw error;
   }
 }
 
-async function handleCancelledPayment(payload: ModemPayWebhookPayload): Promise<void> {
+async function handleCancelledTicketPayment(payload: ModemPayWebhookPayload): Promise<void> {
   try {
-    console.log('🚫 Handling cancelled payment:', payload.id);
+    console.log('🚫 Handling cancelled ticket payment:', payload.id);
     
     const existingPurchase = await db.ticketPurchase.findUnique({
-      where: {
-        modemPayChargeId: payload.id
-      }
+      where: { modemPayChargeId: payload.id }
     });
 
     if (existingPurchase) {
       await db.ticketPurchase.update({
-        where: {
-          modemPayChargeId: payload.id
-        },
+        where: { modemPayChargeId: payload.id },
         data: {
           paymentStatus: 'CANCELLED',
           updatedAt: new Date()
@@ -548,29 +738,25 @@ async function handleCancelledPayment(payload: ModemPayWebhookPayload): Promise<
       });
     }
 
-    console.log(`🚫 Handled cancelled payment: ${payload.id}`);
+    console.log(`🚫 Handled cancelled ticket payment: ${payload.id}`);
     
   } catch (error) {
-    console.error('💥 Error handling cancelled payment:', error);
+    console.error('💥 Error handling cancelled ticket payment:', error);
     throw error;
   }
 }
 
-async function handlePendingPayment(payload: ModemPayWebhookPayload): Promise<void> {
+async function handlePendingTicketPayment(payload: ModemPayWebhookPayload): Promise<void> {
   try {
-    console.log('⏳ Handling pending payment:', payload.id);
+    console.log('⏳ Handling pending ticket payment:', payload.id);
     
     const existingPurchase = await db.ticketPurchase.findUnique({
-      where: {
-        modemPayChargeId: payload.id
-      }
+      where: { modemPayChargeId: payload.id }
     });
 
     if (existingPurchase) {
       await db.ticketPurchase.update({
-        where: {
-          modemPayChargeId: payload.id
-        },
+        where: { modemPayChargeId: payload.id },
         data: {
           paymentStatus: 'PENDING',
           updatedAt: new Date()
@@ -598,30 +784,26 @@ async function handlePendingPayment(payload: ModemPayWebhookPayload): Promise<vo
           modemPayChargeId: payload.id,
           paymentMethod: mapPaymentMethod(payload.payment_method),
           testMode: payload.test_mode,
-          // paymentMetadata: payload.payment_metadata,
-          // customFields: payload.custom_fields_values,
           createdAt: new Date(payload.createdAt),
           updatedAt: new Date(payload.updatedAt)
         }
       });
     }
 
-    console.log(`⏳ Handled pending payment: ${payload.id}`);
+    console.log(`⏳ Handled pending ticket payment: ${payload.id}`);
     
   } catch (error) {
-    console.error('💥 Error handling pending payment:', error);
+    console.error('💥 Error handling pending ticket payment:', error);
     throw error;
   }
 }
 
-async function handleUpdatedPayment(payload: ModemPayWebhookPayload): Promise<void> {
+async function handleUpdatedTicketPayment(payload: ModemPayWebhookPayload): Promise<void> {
   try {
-    console.log('🔄 Handling updated payment:', payload.id);
+    console.log('🔄 Handling updated ticket payment:', payload.id);
     
     const existingPurchase = await db.ticketPurchase.findUnique({
-      where: {
-        modemPayChargeId: payload.id
-      }
+      where: { modemPayChargeId: payload.id }
     });
 
     if (existingPurchase) {
@@ -642,13 +824,9 @@ async function handleUpdatedPayment(payload: ModemPayWebhookPayload): Promise<vo
       }
 
       const updatedPurchase = await db.ticketPurchase.update({
-        where: {
-          modemPayChargeId: payload.id
-        },
+        where: { modemPayChargeId: payload.id },
         data: {
           paymentStatus: paymentStatus,
-          // paymentMetadata: payload.payment_metadata || {},
-          // customFields: payload.custom_fields_values || {},
           updatedAt: new Date(payload.updatedAt)
         }
       });
@@ -656,16 +834,149 @@ async function handleUpdatedPayment(payload: ModemPayWebhookPayload): Promise<vo
       if (paymentStatus === 'COMPLETED' && existingPurchase.paymentStatus !== 'COMPLETED') {
         try {
           await sendTicketConfirmationEmail(updatedPurchase as TicketPurchase);
-          console.log('📧 Confirmation email sent for updated payment');
+          console.log('📧 Confirmation email sent for updated ticket payment');
         } catch (emailError) {
-          console.error('⚠️ Failed to send email for updated payment:', emailError);
+          console.error('⚠️ Failed to send email for updated ticket payment:', emailError);
         }
       }
     }
 
-    console.log(`🔄 Handled updated payment: ${payload.id}`);
+    console.log(`🔄 Handled updated ticket payment: ${payload.id}`);
     
   } catch (error) {
-    console.error('errror')
+    console.error('💥 Error handling updated ticket payment:', error);
+    throw error;
+  }
+}
+
+// ============================================
+// ECOMMERCE ORDER HANDLERS
+// ============================================
+
+async function handleSuccessfulOrderPayment(payload: ModemPayWebhookPayload): Promise<void> {
+  try {
+    console.log('🛍️ Handling successful order payment:', payload.id);
+    
+    const orderId = payload.metadata?.orderId as string;
+
+    if (!orderId) {
+      throw new Error('Order ID not found in metadata');
+    }
+
+    console.log(`🔍 Looking up order ${orderId}`);
+
+    const order = await db.order.findUnique({
+      where: { id: orderId },
+      include: { items: true }
+    });
+
+    if (!order) {
+      throw new Error(`Order ${orderId} not found`);
+    }
+
+    if (order.status === 'COMPLETED') {
+      console.log(`⚠️ Order ${orderId} already completed - skipping`);
+      return;
+    }
+
+    const existingOrder = await db.order.findFirst({
+      where: {
+        modemPayChargeId: payload.id,
+        status: 'COMPLETED'
+      }
+    });
+
+    if (existingOrder) {
+      console.log(`⚠️ Charge ${payload.id} already processed - skipping`);
+      return;
+    }
+
+    const updatedOrder = await db.order.update({
+      where: { id: orderId },
+      data: {
+        status: 'COMPLETED',
+        modemPayChargeId: payload.id,
+        transactionReference: payload.transaction_reference,
+        paymentMethod: payload.payment_method,
+        paidAt: new Date()
+      }
+    });
+
+    console.log(`✅ Order ${orderId} marked as COMPLETED`);
+
+    for (const item of order.items) {
+      await db.product.update({
+        where: { id: item.productId },
+        data: {
+          // Uncomment if you track inventory
+          // stock: { decrement: item.quantity }
+        }
+      });
+    }
+
+    try {
+      await sendOrderConfirmationEmail(updatedOrder);
+      console.log(`📧 Confirmation email sent for order ${orderId}`);
+    } catch (emailError) {
+      console.error('❌ Failed to send order confirmation email:', emailError);
+    }
+
+  } catch (error) {
+    console.error('❌ Error handling successful order payment:', error);
+    throw error;
+  }
+}
+
+async function handleFailedOrderPayment(payload: ModemPayWebhookPayload): Promise<void> {
+  try {
+    console.log('❌ Handling failed order payment:', payload.id);
+    
+    const orderId = payload.metadata?.orderId as string;
+
+    if (!orderId) {
+      console.log('⚠️ Order ID not found in metadata');
+      return;
+    }
+
+    await db.order.update({
+      where: { id: orderId },
+      data: {
+        status: 'FAILED',
+        modemPayChargeId: payload.id,
+        transactionReference: payload.transaction_reference
+      }
+    });
+
+    console.log(`❌ Order ${orderId} marked as FAILED`);
+  } catch (error) {
+    console.error('❌ Error handling failed order payment:', error);
+    throw error;
+  }
+}
+
+async function handleCancelledOrderPayment(payload: ModemPayWebhookPayload): Promise<void> {
+  try {
+    console.log('🚫 Handling cancelled order payment:', payload.id);
+    
+    const orderId = payload.metadata?.orderId as string;
+
+    if (!orderId) {
+      console.log('⚠️ Order ID not found in metadata');
+      return;
+    }
+
+    await db.order.update({
+      where: { id: orderId },
+      data: {
+        status: 'CANCELLED',
+        modemPayChargeId: payload.id,
+        transactionReference: payload.transaction_reference
+      }
+    });
+
+    console.log(`🚫 Order ${orderId} marked as CANCELLED`);
+  } catch (error) {
+    console.error('❌ Error handling cancelled order payment:', error);
+    throw error;
   }
 }

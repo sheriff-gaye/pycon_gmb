@@ -8,6 +8,7 @@ import {
   Ticket,
   Handshake,
   ListCheckIcon,
+  ShoppingBasket,
   
  
 } from "lucide-react";
@@ -45,6 +46,11 @@ const admin: Route[] = [
     icon:ListCheckIcon ,
     label: "Products",
     href: "/dashboard/products"
+  },
+   {
+    icon:ShoppingBasket ,
+    label: "Orders",
+    href: "/dashboard/orders"
   },
   {
     icon: Server,
