@@ -8,28 +8,8 @@ import { X, Package, Pencil, PlusCircle, ImageIcon, Upload } from "lucide-react"
 import { useProductModal, productSchema, ProductFormData } from "@/hooks/products";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-// Mock toast for demo
-const toast = {
-  success: (msg: string) => console.log("Success:", msg),
-  error: (msg: string) => console.error("Error:", msg)
-};
-
-// Mock Button component
-const Button = ({ children, onClick, variant = "default", disabled = false, type = "button" }: any) => (
-  <button
-    type={type}
-    onClick={onClick}
-    disabled={disabled}
-    className={`px-4 py-2 rounded-md font-medium transition-colors ${
-      variant === "ghost" 
-        ? "hover:bg-gray-100" 
-        : "bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-300"
-    }`}
-  >
-    {children}
-  </button>
-);
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 interface ModalProps {
   isOpen: boolean;

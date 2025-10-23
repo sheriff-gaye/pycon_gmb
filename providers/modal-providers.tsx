@@ -1,6 +1,7 @@
 "use client";
 
-import ConfirmActionModal from "@/modals/confirm-action";
+import ConfirmActionModal, { ConfirmAction } from "@/modals/confirm-action";
+import { SpeakerModal } from "@/modals/speakers";
 import { SponsorModal } from "@/modals/sponsors-modal";
 import { useEffect, useState } from "react";
 
@@ -17,6 +18,9 @@ export const ModalProvider = () => {
   return (
     <>
       <SponsorModal />
+    
+      <SpeakerModal/>
+      
      
     </>
   );

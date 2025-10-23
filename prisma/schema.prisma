@@ -202,3 +202,36 @@ enum ProductCategory {
   BOOKS
   STICKERS
 }
+
+
+
+model Speaker {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  company     String
+  location    String
+  image       String   @db.Text
+  bio         String   @db.Text
+  expertise   String[] // Array of strings for expertise
+  isKeynote   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  
+  // Session details
+  sessionTitle       String
+  sessionDescription String   @db.Text
+  sessionDuration    String
+  sessionTrack       String
+  sessionLevel       String
+  
+  // Social links (optional)
+  linkedin    String?
+  twitter     String?
+  github      String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("speakers")
+}

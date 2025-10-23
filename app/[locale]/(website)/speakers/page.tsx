@@ -7,7 +7,7 @@ const Speakers = () => {
   const currentLocale = pathname.split("/")[1] || "en";
   return (
     <div>
-      <CallForSpeakers currentLocale={currentLocale} />
+      <CallForSpeakers  />
     </div>
   );
 };

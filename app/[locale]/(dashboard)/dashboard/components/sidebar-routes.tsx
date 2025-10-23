@@ -9,6 +9,7 @@ import {
   Handshake,
   ListCheckIcon,
   ShoppingBasket,
+  MicVocalIcon,
   
  
 } from "lucide-react";
@@ -42,16 +43,22 @@ const admin: Route[] = [
     label: "Sponsors",
     href: "/dashboard/sponsors"
   },
+
    {
-    icon:ListCheckIcon ,
-    label: "Products",
-    href: "/dashboard/products"
+    icon: MicVocalIcon,
+    label: "Speakers",
+    href: "/dashboard/speakers"
   },
-   {
-    icon:ShoppingBasket ,
-    label: "Orders",
-    href: "/dashboard/orders"
-  },
+  //  {
+  //   icon:ListCheckIcon ,
+  //   label: "Products",
+  //   href: "/dashboard/products"
+  // },
+  //  {
+  //   icon:ShoppingBasket ,
+  //   label: "Orders",
+  //   href: "/dashboard/orders"
+  // },
   {
     icon: Server,
     label: "System Logs",
