@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { speakerSchema } from '@/hooks/speakers';
 
-// Define the context interface for the dynamic route
 interface Context {
   params: Promise<{
     id: string;
