@@ -24,8 +24,13 @@ model TicketPurchase {
   testMode             Boolean       @default(false)
   paymentMetadata      Json? // Store additional payment metadata
   customFields         Json? // Store custom field values
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
+
+  isCheckedIn Boolean   @default(false)
+  checkedInAt DateTime?
+  checkedInBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("ticket_purchases")
 }
@@ -62,7 +67,7 @@ model Sponsor {
   name        String
   logo        String  @db.Text
   website     String?
-  description String? 
+  description String?
   isActive    Boolean @default(true)
   order       Int     @default(0)
 
@@ -105,36 +110,34 @@ model BlogPost {
   @@map("blog_posts")
 }
 
-
-
 // Add these models to your existing schema.prisma file
 
 model Order {
-  id                   String      @id @default(cuid())
-  customerName         String
-  customerEmail        String
-  customerPhone        String
-  totalAmount          Float
-  currency             String      @default("GMD")
-  status               OrderStatus @default(PENDING)
-  
+  id            String      @id @default(cuid())
+  customerName  String
+  customerEmail String
+  customerPhone String
+  totalAmount   Float
+  currency      String      @default("GMD")
+  status        OrderStatus @default(PENDING)
+
   // Payment Details
-  paymentIntentId      String?     @unique
+  paymentIntentId      String?   @unique
   paymentLink          String?
-  modemPayChargeId     String?     @unique
+  modemPayChargeId     String?   @unique
   transactionReference String?
   paymentMethod        String?
   expiresAt            DateTime?
   paidAt               DateTime?
-  
+
   // Shipping
-  shippingAddress      String?     // JSON string
-  
+  shippingAddress String? // JSON string
+
   // Relations
-  items                OrderItem[]
-  
-  createdAt            DateTime    @default(now())
-  updatedAt            DateTime    @updatedAt
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([customerEmail])
   @@index([status])
@@ -142,19 +145,19 @@ model Order {
 }
 
 model OrderItem {
-  id          String   @id @default(cuid())
+  id          String @id @default(cuid())
   orderId     String
   productId   String
   productName String
   quantity    Int
   price       Float
   subtotal    Float
-  
-  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product     Product  @relation(fields: [productId], references: [id])
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([orderId])
   @@index([productId])
@@ -183,12 +186,12 @@ model Product {
   featured      Boolean         @default(false)
   isActive      Boolean         @default(true)
   order         Int             @default(0)
-  
+
   // Add this relation
-  orderItems    OrderItem[]
-  
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([category])
   @@index([featured])
@@ -203,35 +206,33 @@ enum ProductCategory {
   STICKERS
 }
 
-
-
 model Speaker {
-  id          String   @id @default(cuid())
-  name        String
-  title       String
-  company     String
-  location    String
-  image       String   @db.Text
-  bio         String   @db.Text
-  expertise   String[] // Array of strings for expertise
-  isKeynote   Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  order       Int      @default(0)
-  
+  id        String   @id @default(cuid())
+  name      String
+  title     String
+  company   String
+  location  String
+  image     String   @db.Text
+  bio       String   @db.Text
+  expertise String[] // Array of strings for expertise
+  isKeynote Boolean  @default(false)
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+
   // Session details
   sessionTitle       String
-  sessionDescription String   @db.Text
+  sessionDescription String @db.Text
   sessionDuration    String
   sessionTrack       String
   sessionLevel       String
-  
+
   // Social links (optional)
-  linkedin    String?
-  twitter     String?
-  github      String?
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  linkedin String?
+  twitter  String?
+  github   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("speakers")
 }
