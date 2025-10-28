@@ -8,11 +8,12 @@ interface Context {
   }>;
 }
 
-// PUT: Update a speaker by ID
 export async function PUT(req: NextRequest, context: Context) {
   try {
     const params = await context.params;
     const body = await req.json();
+
+    // Validate the incoming data
     const validatedData = speakerSchema.parse(body);
 
     // Check if speaker exists
@@ -27,12 +28,13 @@ export async function PUT(req: NextRequest, context: Context) {
       );
     }
 
+    // Update the speaker
     const speaker = await db.speaker.update({
       where: { id: params.id },
       data: {
         name: validatedData.name,
         title: validatedData.title,
-        company: validatedData.company!,
+        company: validatedData.company || '',
         location: validatedData.location,
         image: validatedData.image,
         bio: validatedData.bio,
@@ -51,19 +53,33 @@ export async function PUT(req: NextRequest, context: Context) {
       },
     });
 
-    return NextResponse.json({ success: true, data: speaker });
+    console.log(`Speaker updated successfully: ${speaker.id}`);
+
+    return NextResponse.json({ 
+      success: true, 
+      data: speaker 
+    });
+
   } catch (error: any) {
     console.error('Error updating speaker:', error);
 
     if (error.name === 'ZodError') {
       return NextResponse.json(
-        { success: false, error: 'Validation failed', details: error.errors },
+        { 
+          success: false, 
+          error: 'Validation failed', 
+          details: error.errors 
+        },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { success: false, error: 'Failed to update speaker', message: error.message },
+      { 
+        success: false, 
+        error: 'Failed to update speaker', 
+        message: error.message 
+      },
       { status: 500 }
     );
   }
@@ -90,6 +106,8 @@ export async function DELETE(req: NextRequest, context: Context) {
       where: { id: params.id },
     });
 
+    console.log(`Speaker deleted successfully: ${params.id}`);
+
     return NextResponse.json({
       success: true,
       message: 'Speaker deleted successfully',
@@ -97,7 +115,11 @@ export async function DELETE(req: NextRequest, context: Context) {
   } catch (error: any) {
     console.error('Error deleting speaker:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to delete speaker', message: error.message },
+      { 
+        success: false, 
+        error: 'Failed to delete speaker', 
+        message: error.message 
+      },
       { status: 500 }
     );
   }

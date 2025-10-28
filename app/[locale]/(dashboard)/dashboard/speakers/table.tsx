@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Image from 'next/image';
 import ConfirmActionModal from '@/modals/confirm-action';
 import { SpeakerModal } from '@/modals/speakers';
+import { useRouter } from 'next/navigation';
 
 interface Speaker {
   id: string;
@@ -53,6 +54,8 @@ const SpeakersTable: React.FC<SpeakersTableProps> = ({ speakers: initialSpeakers
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const { onOpen } = useSpeakerModal();
   const confirmModal = useConfirmModal();
+
+  const router = useRouter();
 
   useEffect(() => {
     setSpeakers(initialSpeakers);
@@ -189,6 +192,7 @@ const SpeakersTable: React.FC<SpeakersTableProps> = ({ speakers: initialSpeakers
 
       if (response.ok) {
         toast.success(`Speaker ${shouldActivate ? 'activated' : 'deactivated'} successfully`);
+        
         setSpeakers(speakers.map(s => s.id === id ? { ...s, isActive: shouldActivate } : s));
       } else {
         const errorData = await response.json();
@@ -199,6 +203,7 @@ const SpeakersTable: React.FC<SpeakersTableProps> = ({ speakers: initialSpeakers
     }
   };
 
+  
   const handleAdd = () => {
     onOpen();
   };

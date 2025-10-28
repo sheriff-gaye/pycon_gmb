@@ -49,26 +49,3 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const isActive = searchParams.get('isActive');
-    
-    const speakers = await db.speaker.findMany({
-      where: isActive ? { isActive: true } : {},
-      orderBy: [
-        { isKeynote: 'desc' },
-        { order: 'asc' },
-        { createdAt: 'desc' }
-      ]
-    });
-
-    return NextResponse.json({ success: true, data: speakers });
-  } catch (error: any) {
-    console.error('Error fetching speakers:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch speakers' },
-      { status: 500 }
-    );
-  }
-}

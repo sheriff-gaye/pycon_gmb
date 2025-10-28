@@ -1,4 +1,3 @@
-"use server";
 
 import { getAllSpeakers } from "@/app/actions/speakers";
 import SpeakersTable from "./table";
@@ -26,6 +25,9 @@ interface Speaker {
   createdAt: Date;
   updatedAt: Date;
 }
+
+
+
 
 const SpeakersPage = async () => {
   const result = await getAllSpeakers();

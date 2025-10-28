@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -10,19 +10,22 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
-
-
-
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  isLoading?: boolean;
 }
 
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+const Modal = ({ isOpen, onClose, title, children, isLoading = false }: ModalProps) => {
   if (!isOpen) return null;
+
+  const handleClose = () => {
+    if (!isLoading) {
+      onClose();
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -32,7 +35,11 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             <User className="h-5 w-5" />
             {title}
           </h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button 
+            onClick={handleClose} 
+            className="text-gray-500 hover:text-gray-700"
+            disabled={isLoading}
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -46,13 +53,23 @@ interface ImageFormProps {
   value: string;
   onChange: (dataUrl: string) => void;
   error?: string;
+  isSubmitting?: boolean;
 }
 
-const ImageForm = ({ value, onChange, error }: ImageFormProps) => {
+const ImageForm = ({ value, onChange, error, isSubmitting = false }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(value);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  useEffect(() => {
+    setPreviewUrl(value);
+  }, [value]);
+
+  const toggleEdit = () => {
+    if (!isSubmitting && !isUploading) {
+      setIsEditing((current) => !current);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -73,10 +90,11 @@ const ImageForm = ({ value, onChange, error }: ImageFormProps) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
+      setPreviewUrl(dataUrl);
       onChange(dataUrl);
-      toast.success('Image uploaded successfully');
       setIsUploading(false);
-      toggleEdit();
+      setIsEditing(false);
+      toast.success('Image uploaded successfully');
     };
 
     reader.onerror = () => {
@@ -87,19 +105,26 @@ const ImageForm = ({ value, onChange, error }: ImageFormProps) => {
     reader.readAsDataURL(file);
   };
 
+  const isDisabled = isSubmitting || isUploading;
+
   return (
     <div className="mt-6 border rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Speaker Image *
-        <Button onClick={toggleEdit} variant="ghost" disabled={isUploading}>
+        <Button 
+          onClick={toggleEdit} 
+          type="button"
+          variant="ghost" 
+          disabled={isDisabled}
+        >
           {isEditing && <>Cancel</>}
-          {!isEditing && !value && (
+          {!isEditing && !previewUrl && (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
               Add image
             </>
           )}
-          {!isEditing && value && (
+          {!isEditing && previewUrl && (
             <>
               <Pencil className="h-4 w-4 mr-2" />
               Edit image
@@ -109,7 +134,7 @@ const ImageForm = ({ value, onChange, error }: ImageFormProps) => {
       </div>
       
       {!isEditing && (
-        !value ? (
+        !previewUrl ? (
           <div className="flex items-center justify-center h-48 bg-slate-200 rounded-md mt-2">
             <ImageIcon className="h-10 w-10 text-slate-500" />
           </div>
@@ -118,7 +143,7 @@ const ImageForm = ({ value, onChange, error }: ImageFormProps) => {
             <img
               alt="Speaker preview"
               className="object-cover rounded-md mx-auto max-h-48 w-full"
-              src={value}
+              src={previewUrl}
             />
           </div>
         )
@@ -173,7 +198,7 @@ export const SpeakerModal = () => {
 
   const form = useForm({
     resolver: zodResolver(speakerSchema),
-    mode: "onSubmit" as const,
+    mode: "onSubmit",
     defaultValues: {
       name: "",
       title: "",
@@ -243,6 +268,7 @@ export const SpeakerModal = () => {
   }, [isOpen, data, form]);
 
   const expertise = form.watch("expertise") || [];
+  const imageValue = form.watch("image");
 
   const addExpertise = () => {
     if (expertiseInput.trim() && !expertise.includes(expertiseInput.trim())) {
@@ -257,47 +283,94 @@ export const SpeakerModal = () => {
     form.setValue("expertise", newExpertise);
   };
 
+  const handleImageChange = (dataUrl: string) => {
+    form.setValue('image', dataUrl, { 
+      shouldValidate: true, 
+      shouldDirty: true,
+      shouldTouch: true
+    });
+    form.clearErrors('image');
+  };
+
   const onSubmit = async (formData: SpeakerFormData) => {
     if (!formData.image || formData.image.trim() === "") {
       toast.error("Please upload a speaker image before submitting");
       return;
     }
 
+    if (!formData.image.startsWith('data:image/')) {
+      toast.error("Please ensure the image is properly uploaded");
+      return;
+    }
+
     setIsLoading(true);
     try {
       if (isEditing && data?.id) {
-        await axios.put(`/api/speakers/${data.id}`, formData);
-        toast.success("Speaker updated successfully");
+        const response = await axios.put(`/api/speakers/${data.id}`, formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          maxContentLength: Infinity,
+          maxBodyLength: Infinity,
+          timeout: 30000, // 30 second timeout
+        });
+        
+        if (response.data.success) {
+          toast.success("Speaker updated successfully");
+          router.refresh();
+          // Wait a bit for the refresh to process before closing
+          setTimeout(() => {
+            form.reset();
+            onClose();
+          }, 1000);
+        } else {
+          throw new Error(response.data.error || "Failed to update speaker");
+        }
       } else {
-        await axios.post('/api/speakers', formData);
-        toast.success("Speaker created successfully");
+        const response = await axios.post('/api/speakers', formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          maxContentLength: Infinity,
+          maxBodyLength: Infinity,
+          timeout: 30000,
+        });
+        
+        if (response.data.success) {
+          toast.success("Speaker created successfully");
+          router.refresh();
+          setTimeout(() => {
+            form.reset();
+            onClose();
+          }, 1000);
+        } else {
+          throw new Error(response.data.error || "Failed to create speaker");
+        }
       }
-      onClose();
-      form.reset();
-      router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting form:', error);
-      toast.error("Something went wrong");
+      const errorMessage = error.response?.data?.error || error.message || "Something went wrong";
+      toast.error(errorMessage);
+      
+      // Don't close modal on error - let user fix issues
     } finally {
       setIsLoading(false);
     }
   };
 
-  const imageValue = form.watch("image");
-
-  const handleImageChange = (dataUrl: string) => {
-    form.setValue('image', dataUrl, { 
-      shouldValidate: true, 
-      shouldDirty: true 
-    });
-    form.clearErrors('image');
+  const handleClose = () => {
+    if (!isLoading) {
+      form.reset();
+      onClose();
+    }
   };
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={isEditing ? "Edit Speaker" : "Add New Speaker"}
+      isLoading={isLoading}
     >
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
@@ -308,7 +381,8 @@ export const SpeakerModal = () => {
             <input
               type="text"
               {...form.register("name")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="Dr. Amara Kamara"
             />
             {form.formState.errors.name && (
@@ -325,7 +399,8 @@ export const SpeakerModal = () => {
             <input
               type="text"
               {...form.register("title")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="Senior Machine Learning Engineer"
             />
             {form.formState.errors.title && (
@@ -344,7 +419,8 @@ export const SpeakerModal = () => {
             <input
               type="text"
               {...form.register("company")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="TechAfrica Solutions"
             />
             {form.formState.errors.company && (
@@ -361,7 +437,8 @@ export const SpeakerModal = () => {
             <input
               type="text"
               {...form.register("location")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="Dakar, Senegal"
             />
             {form.formState.errors.location && (
@@ -379,7 +456,8 @@ export const SpeakerModal = () => {
           <textarea
             {...form.register("bio")}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isLoading}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
             placeholder="Speaker biography..."
           />
           {form.formState.errors.bio && (
@@ -393,9 +471,9 @@ export const SpeakerModal = () => {
           value={imageValue}
           onChange={handleImageChange}
           error={form.formState.errors.image?.message}
+          isSubmitting={isLoading}
         />
 
-        {/* Expertise */}
         <div className="border rounded-md p-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Expertise *
@@ -406,10 +484,16 @@ export const SpeakerModal = () => {
               value={expertiseInput}
               onChange={(e) => setExpertiseInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addExpertise())}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="Add expertise (e.g., Machine Learning)"
             />
-            <Button type="button" onClick={addExpertise} variant="ghost">
+            <Button 
+              type="button" 
+              onClick={addExpertise} 
+              variant="ghost" 
+              disabled={isLoading}
+            >
               Add
             </Button>
           </div>
@@ -423,7 +507,8 @@ export const SpeakerModal = () => {
                 <button
                   type="button"
                   onClick={() => removeExpertise(index)}
-                  className="ml-2 text-blue-500 hover:text-blue-700"
+                  disabled={isLoading}
+                  className="ml-2 text-blue-500 hover:text-blue-700 disabled:text-blue-300"
                 >
                   ×
                 </button>
@@ -437,7 +522,6 @@ export const SpeakerModal = () => {
           )}
         </div>
 
-        {/* Session Details */}
         <div className="border rounded-md p-4">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
             <Mic className="h-5 w-5 text-blue-600" />
@@ -451,7 +535,8 @@ export const SpeakerModal = () => {
             <input
               type="text"
               {...form.register("sessionTitle")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="Building Ethical AI Systems for African Markets"
             />
             {form.formState.errors.sessionTitle && (
@@ -468,7 +553,8 @@ export const SpeakerModal = () => {
             <textarea
               {...form.register("sessionDescription")}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="Session description..."
             />
             {form.formState.errors.sessionDescription && (
@@ -487,7 +573,8 @@ export const SpeakerModal = () => {
               <input
                 type="text"
                 {...form.register("sessionDuration")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 placeholder="45 minutes"
               />
             </div>
@@ -500,7 +587,8 @@ export const SpeakerModal = () => {
               <input
                 type="text"
                 {...form.register("sessionTrack")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 placeholder="Data Science & AI"
               />
             </div>
@@ -512,7 +600,8 @@ export const SpeakerModal = () => {
               </label>
               <select
                 {...form.register("sessionLevel")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               >
                 <option value="Beginner">Beginner</option>
                 <option value="Intermediate">Intermediate</option>
@@ -523,7 +612,6 @@ export const SpeakerModal = () => {
           </div>
         </div>
 
-        {/* Social Links */}
         <div className="border rounded-md p-4">
           <h3 className="text-lg font-medium mb-4">Social Links (Optional)</h3>
           <div className="grid grid-cols-3 gap-4">
@@ -534,7 +622,8 @@ export const SpeakerModal = () => {
               <input
                 type="text"
                 {...form.register("linkedin")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 placeholder="username"
               />
             </div>
@@ -546,7 +635,8 @@ export const SpeakerModal = () => {
               <input
                 type="text"
                 {...form.register("twitter")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 placeholder="username"
               />
             </div>
@@ -558,7 +648,8 @@ export const SpeakerModal = () => {
               <input
                 type="text"
                 {...form.register("github")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 placeholder="username"
               />
             </div>
@@ -570,7 +661,8 @@ export const SpeakerModal = () => {
             <input
               type="checkbox"
               {...form.register("isKeynote")}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              disabled={isLoading}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:bg-gray-100"
             />
             <label className="ml-2 block text-sm text-gray-900">
               Keynote Speaker
@@ -581,7 +673,8 @@ export const SpeakerModal = () => {
             <input
               type="checkbox"
               {...form.register("isActive")}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              disabled={isLoading}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:bg-gray-100"
             />
             <label className="ml-2 block text-sm text-gray-900">
               Active (visible on website)
@@ -598,17 +691,27 @@ export const SpeakerModal = () => {
               type="number"
               min="0"
               {...form.register("order", { valueAsNumber: true })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
               placeholder="0"
             />
           </div>
         </div>
 
         <div className="flex justify-end space-x-2 pt-4">
-          <Button type="button" onClick={onClose} variant="ghost" disabled={isLoading}>
+          <Button 
+            type="button" 
+            onClick={handleClose} 
+            variant="ghost" 
+            disabled={isLoading}
+          >
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading || !imageValue}>
+          <Button 
+            type="submit" 
+            disabled={isLoading || !imageValue}
+            className="min-w-20"
+          >
             {isLoading ? "Saving..." : isEditing ? "Update" : "Create"}
           </Button>
         </div>
