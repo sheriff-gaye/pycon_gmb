@@ -46,7 +46,7 @@ const DEFAULT_DAYS_LOOKBACK = 7;
 // Email template configuration
 const EMAIL_CONFIG = {
   logoUrl: 'https://www.pyconsenegambia.org/images/logo.png',
-  fromEmail: 'PyCon Senegambia <noreply@pyconsenegambia.org>',
+  fromEmail: 'PyCon Senegambia <info@pyconsenegambia.org>',
   supportEmail: 'info@pyconsenegambia.org',
   ticketTypeEmoji: {
     STUDENTS: '🎓',
@@ -241,7 +241,7 @@ PyCon Senegambia 2025`;
   const { data, error } = await resend.emails.send({
     from: EMAIL_CONFIG.fromEmail,
     to: [ticket.customerEmail],
-    subject: `⚠️ Complete Your PyCon Senegambia 2025 Ticket Purchase - ${ticket.ticketType}`,
+    subject: `Complete Your PyCon Senegambia 2025 Ticket Purchase - ${ticket.ticketType}`,
     html: emailHTML,
     text: textContent,
   });

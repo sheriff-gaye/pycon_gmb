@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 // Types
-interface QRCodeData {
+export interface QRCodeData {
   ticketId: string;
   type: string;
   name: string;
@@ -10,7 +10,7 @@ interface QRCodeData {
   conference: string;
 }
 
-interface VerificationResponse {
+export interface VerificationResponse {
   success: boolean;
   message: string;
   ticket?: {

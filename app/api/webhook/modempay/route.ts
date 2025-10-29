@@ -160,7 +160,6 @@ async function generateQRCodeDataURL(data: string): Promise<string> {
 
 async function getEmbeddedLogo(): Promise<string> {
   const logoUrl = 'https://www.pyconsenegambia.org/images/logo.png';
-  console.log('✅ Using logo URL:', logoUrl);
   return logoUrl;
 }
 
@@ -303,9 +302,9 @@ async function sendTicketConfirmationEmail(ticketPurchase: TicketPurchase): Prom
     console.log('📄 Generated email HTML length:', emailHTML.length);
 
     const { data, error } = await resend.emails.send({
-      from: 'PyCon Senegambia <noreply@pyconsenegambia.org>',
+      from: 'PyCon Senegambia <info@pyconsenegambia.org>',
       to: [ticketPurchase.customerEmail],
-      subject: `🎉 Your PyCon Senegambia 2025 Ticket is Confirmed! - ${ticketPurchase.ticketType}`,
+      subject: `Your PyCon Senegambia 2025 Ticket is Confirmed! - ${ticketPurchase.ticketType}`,
       html: emailHTML,
       text: `Dear ${ticketPurchase.customerName},\n\nYour ${ticketPurchase.ticketType} ticket for PyCon Senegambia 2025 is confirmed!\n\nTicket ID: ${ticketPurchase.transactionReference}\nAmount Paid: ${ticketPurchase.currency} ${ticketPurchase.amount.toFixed(2)}\nPayment Method: ${ticketPurchase.paymentMethod}\nPurchase Date: ${new Date(ticketPurchase.createdAt).toLocaleString()}\n\nPlease bring a valid ID and this ticket ID to the conference. For questions, contact info@pyconsenegambia.org.\n\nPyCon Senegambia 2025`, // Plain-text fallback
     });

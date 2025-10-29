@@ -43,9 +43,9 @@ export async function POST(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: 'PyConSeneGambia <noreply@pyconsenegambia.org>',
+        from: 'PyConSeneGambia <info@pyconsenegambia.org>',
         to: [email],
-        subject: 'Welcome to PyConSeneGambia Newsletter!',
+        subject: 'Welcome to PyConSeneGambia Newsletter',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; color: white;">
