@@ -10,8 +10,7 @@ import {
   ListCheckIcon,
   ShoppingBasket,
   MicVocalIcon,
-  
- 
+  HelpCircleIcon
 } from "lucide-react";
 import SiderBarItem from "./sidebar-item";
 
@@ -38,16 +37,22 @@ const admin: Route[] = [
     label: "Members",
     href: "/dashboard/members"
   },
-    {
+  {
     icon: Handshake,
     label: "Sponsors",
     href: "/dashboard/sponsors"
   },
 
-   {
+  {
     icon: MicVocalIcon,
     label: "Speakers",
     href: "/dashboard/speakers"
+  },
+
+  {
+    icon: HelpCircleIcon,
+    label: "Front Desk",
+    href: "/dashboard/frontdesk"
   },
   //  {
   //   icon:ListCheckIcon ,
@@ -63,29 +68,18 @@ const admin: Route[] = [
     icon: Server,
     label: "System Logs",
     href: "/dashboard/logs"
-  },
-
+  }
 ];
 
-
-
-
-const SideBarRoutes= () => {
- 
-
-  
-
+const SideBarRoutes = () => {
   return (
     <div className="flex flex-col w-full">
-    
-     
       {admin.map((route) => (
         <SiderBarItem
           key={route.href}
           icon={route.icon}
           label={route.label}
           href={route.href}
-        
         />
       ))}
     </div>

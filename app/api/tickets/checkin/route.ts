@@ -1,11 +1,26 @@
+import { authenticateRequest } from "@/lib/auth-check";
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { QRCodeData, VerificationResponse } from "../verify/route";
+import { db } from "@/lib/db";
 
 export async function PUT(req: NextRequest): Promise<NextResponse<VerificationResponse>> {
   try {
+    // Authenticate request
+    const auth = await authenticateRequest(req);
+    
+    if (!auth.authenticated) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Authentication required",
+          error: auth.error || "UNAUTHORIZED"
+        },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
-    const { qrData, checkedInBy } = body;
+    const { qrData } = body;
 
     if (!qrData) {
       return NextResponse.json(
@@ -51,7 +66,6 @@ export async function PUT(req: NextRequest): Promise<NextResponse<VerificationRe
       );
     }
 
-    // Check payment status
     if (ticket.paymentStatus !== 'COMPLETED') {
       return NextResponse.json(
         {
@@ -63,12 +77,11 @@ export async function PUT(req: NextRequest): Promise<NextResponse<VerificationRe
       );
     }
 
-    // Check if already checked in
     if (ticket.isCheckedIn) {
       return NextResponse.json(
         {
           success: false,
-          message: `Ticket already checked in on ${ticket.checkedInAt?.toLocaleString()}`,
+          message: `Ticket already checked in on ${ticket.checkedInAt?.toLocaleString()} by ${ticket.checkedInBy}`,
           error: "ALREADY_CHECKED_IN",
           ticket: {
             id: ticket.id,
@@ -90,7 +103,9 @@ export async function PUT(req: NextRequest): Promise<NextResponse<VerificationRe
       );
     }
 
-    // Perform check-in
+    // Perform check-in with staff info
+    const checkedInByName = `${auth.staff!.firstName} ${auth.staff!.lastName}`;
+    
     const updatedTicket = await db.ticketPurchase.update({
       where: {
         transactionReference: ticketData.ticketId
@@ -98,7 +113,8 @@ export async function PUT(req: NextRequest): Promise<NextResponse<VerificationRe
       data: {
         isCheckedIn: true,
         checkedInAt: new Date(),
-        checkedInBy: checkedInBy || 'Staff'
+        checkedInBy: checkedInByName,
+        staffId: auth.staff!.staffId
       }
     });
 

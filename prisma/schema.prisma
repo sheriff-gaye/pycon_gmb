@@ -22,16 +22,19 @@ model TicketPurchase {
   modemPayChargeId     String        @unique
   paymentMethod        String
   testMode             Boolean       @default(false)
-  paymentMetadata      Json? // Store additional payment metadata
-  customFields         Json? // Store custom field values
+  paymentMetadata      Json?
+  customFields         Json?
 
   isCheckedIn Boolean   @default(false)
   checkedInAt DateTime?
-  checkedInBy String?
+  checkedInBy String?   // Can store staff email or name
+  staffId     String?   // NEW: Reference to Staff who checked in
+  staff       Staff?    @relation(fields: [staffId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([staffId])
   @@map("ticket_purchases")
 }
 
@@ -235,4 +238,39 @@ model Speaker {
   updatedAt DateTime @updatedAt
 
   @@map("speakers")
+}
+
+
+
+enum StaffRole {
+  ADMIN
+  FRONTDESK
+  SECURITY
+  
+  @@map("staff_role")
+}
+
+
+model Staff {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  password     String
+  firstName    String
+  lastName     String
+  role         StaffRole  @default(FRONTDESK)
+  isActive     Boolean    @default(true)
+  
+  resetToken       String?   @unique
+  resetTokenExpiry DateTime?
+  lastLogin    DateTime?
+  
+  // Add this relation
+  checkedInTickets TicketPurchase[]
+  
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([email])
+  @@index([isActive])
+  @@map("staff")
 }

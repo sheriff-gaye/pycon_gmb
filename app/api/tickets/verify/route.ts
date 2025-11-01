@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { authenticateRequest } from "@/lib/auth-check";
 
-// Types
 export interface QRCodeData {
   ticketId: string;
   type: string;
@@ -31,12 +31,22 @@ export interface VerificationResponse {
   error?: string;
 }
 
-// ============================================
-// 1. VERIFY TICKET (Check if valid without checking in)
-// POST /api/tickets/verify
-// ============================================
 export async function POST(req: NextRequest): Promise<NextResponse<VerificationResponse>> {
   try {
+    // Authenticate request
+    const auth = await authenticateRequest(req);
+    
+    if (!auth.authenticated) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Authentication required",
+          error: auth.error || "UNAUTHORIZED"
+        },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { qrData } = body;
 
@@ -66,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<VerificationR
       );
     }
 
-    // Find ticket by transaction reference
+    // Find ticket
     const ticket = await db.ticketPurchase.findUnique({
       where: {
         transactionReference: ticketData.ticketId
@@ -84,7 +94,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<VerificationR
       );
     }
 
-    // Check if payment is completed
+    // Check payment status
     if (ticket.paymentStatus !== 'COMPLETED') {
       return NextResponse.json(
         {
@@ -137,7 +147,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<VerificationR
       );
     }
 
-    // Valid ticket, ready for check-in
+    // Valid ticket
     return NextResponse.json(
       {
         success: true,
@@ -173,3 +183,4 @@ export async function POST(req: NextRequest): Promise<NextResponse<VerificationR
     );
   }
 }
+
