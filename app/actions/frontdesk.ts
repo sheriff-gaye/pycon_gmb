@@ -109,3 +109,21 @@ export async function getActiveStaffCount() {
     return 0;
   }
 }
+
+
+
+export async function getFrontdeskStaffCount() {
+  try {
+    const count = await db.staff.count({
+      where: {
+        role: 'FRONTDESK',
+        isActive: true
+      }
+    });
+
+    return count;
+  } catch (error) {
+    console.error("Error counting frontdesk staff:", error);
+    return 0;
+  }
+}

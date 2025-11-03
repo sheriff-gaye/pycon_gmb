@@ -7,28 +7,26 @@ import { UserButton } from "@clerk/nextjs";
 const NavBarRoutes = () => {
   const { theme, setTheme } = useTheme();
 
-
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
-    <div className="flex gap-x-2 ml-auto z-[100]">
-      <Button 
-      variant="ghost"
+    <div className="flex gap-x-2 ml-auto items-center z-[100] bg-background">
+       <Button 
+        variant="ghost"
         size="icon" 
         onClick={handleThemeToggle}
         aria-label="Toggle theme"
       >
         {theme === "dark" ? (
-          <Sun className="h-4 w-4" />
+          <Sun className="h-4 w-4 text-yellow-600" />
         ) : (
           <Moon className="h-4 w-4" />
         )}
       </Button>
 
       <UserButton/>
-      
     </div>
   );
 };

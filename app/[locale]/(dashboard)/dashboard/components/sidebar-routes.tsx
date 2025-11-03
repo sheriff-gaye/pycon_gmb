@@ -54,11 +54,11 @@ const admin: Route[] = [
     label: "Front Desk",
     href: "/dashboard/frontdesk"
   },
-  //  {
-  //   icon:ListCheckIcon ,
-  //   label: "Products",
-  //   href: "/dashboard/products"
-  // },
+    {
+    icon:ListCheckIcon ,
+    label: "Products",
+    href: "/dashboard/products"
+  },
   //  {
   //   icon:ShoppingBasket ,
   //   label: "Orders",

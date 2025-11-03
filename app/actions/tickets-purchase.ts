@@ -51,3 +51,78 @@ export async function getTotalSuccessfulAmount() {
         return 0;
     }
 }
+
+
+
+export async function getRecentTickets(limit: number = 5) {
+  try {
+    const tickets = await db.ticketPurchase.findMany({
+      where: {
+        paymentStatus: 'COMPLETED'
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: limit,
+      select: {
+        id: true,
+        customerName: true,
+        customerEmail: true,
+        ticketType: true,
+        amount: true,
+        currency: true,
+        createdAt: true,
+        isCheckedIn: true
+      }
+    });
+
+    return {
+      success: true,
+      data: tickets.map(ticket => ({
+        ...ticket,
+        createdAt: ticket.createdAt.toISOString()
+      }))
+    };
+  } catch (error) {
+    console.error("Error fetching recent tickets:", error);
+    return {
+      success: false,
+      data: [],
+      error: "Failed to fetch recent tickets"
+    };
+  }
+}
+
+// Get ticket type distribution for pie chart
+export async function getTicketTypeDistribution() {
+  try {
+    const distribution = await db.ticketPurchase.groupBy({
+      by: ['ticketType'],
+      where: {
+        paymentStatus: 'COMPLETED'
+      },
+      _count: {
+        ticketType: true
+      },
+      _sum: {
+        amount: true
+      }
+    });
+
+    return {
+      success: true,
+      data: distribution.map(item => ({
+        type: item.ticketType,
+        count: item._count.ticketType,
+        revenue: item._sum.amount || 0
+      }))
+    };
+  } catch (error) {
+    console.error("Error fetching ticket distribution:", error);
+    return {
+      success: false,
+      data: [],
+      error: "Failed to fetch ticket distribution"
+    };
+  }
+}
