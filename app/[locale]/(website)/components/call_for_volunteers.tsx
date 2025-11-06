@@ -313,18 +313,18 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section className="py-20 bg-linear-to-br from-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-linear-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <HandHeart className="w-4 h-4 text-yellow-600 mr-2" />
             <span className="text-sm font-semibold text-yellow-800">{getTranslation(currentLocale, 'call_for_volunteers.badge')}</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            {getTranslation(currentLocale, 'call_for_volunteers.title_part1')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{getTranslation(currentLocale, 'call_for_volunteers.title_part2')}</span>
+            {getTranslation(currentLocale, 'call_for_volunteers.title_part1')} <span className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{getTranslation(currentLocale, 'call_for_volunteers.title_part2')}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
             {getTranslation(currentLocale, 'call_for_volunteers.subtitle')}
@@ -347,7 +347,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
         </div>
 
         {/* Why Volunteer */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-white">
+        <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-white">
           <div className="text-center mb-8">
             <h3 className="text-3xl font-bold mb-4">{getTranslation(currentLocale, 'call_for_volunteers.why_volunteer_title')}</h3>
             <p className="text-blue-100 text-lg">{getTranslation(currentLocale, 'call_for_volunteers.why_volunteer_subtitle')}</p>
@@ -372,7 +372,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
               onClick={() => setSelectedCategory(category.id)}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 selectedCategory === category.id
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                  ? 'bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                   : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
               }`}
             >
@@ -387,7 +387,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
             <div key={position.id} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center">
-                  <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-3 mr-4">
+                  <div className="bg-linear-to-br from-blue-500 to-purple-600 rounded-xl p-3 mr-4">
                     <position.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -411,7 +411,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
                   <ul className="space-y-1">
                     {position.responsibilities.slice(0, 3).map((resp, index) => (
                       <li key={index} className="flex items-start text-sm text-gray-600">
-                        <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 shrink-0" />
                         {resp}
                       </li>
                     ))}
@@ -444,7 +444,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
                   href="https://docs.google.com/forms/d/e/1FAIpQLSeIOD8hC_MxuAyHPcpry7lQwemPypDQVZn2sJ-90yqYo8LtEA/viewform"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                  className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                 >
                   {getTranslation(currentLocale, 'call_for_volunteers.apply_button')}
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -460,7 +460,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-linear-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">1</span>
               </div>
               <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_1_title')}</h4>
@@ -468,7 +468,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-linear-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">2</span>
               </div>
               <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_2_title')}</h4>
@@ -476,7 +476,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-linear-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">3</span>
               </div>
               <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_3_title')}</h4>
@@ -484,7 +484,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-linear-to-br from-blue-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold text-xl">4</span>
               </div>
               <h4 className="font-semibold text-gray-900 mb-2">{getTranslation(currentLocale, 'call_for_volunteers.application_step_4_title')}</h4>
@@ -494,7 +494,7 @@ const CallForVolunteers = ({currentLocale}:HeroProps) => {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-2xl p-8 shadow-lg">
+        <div className="text-center bg-linear-to-r from-yellow-400 to-yellow-500 rounded-2xl p-8 shadow-lg">
           <h3 className="text-3xl font-bold text-gray-900 mb-4">{getTranslation(currentLocale, 'call_for_volunteers.cta_title')}</h3>
           <p className="text-gray-800 mb-6 text-lg">
             {getTranslation(currentLocale, 'call_for_volunteers.cta_subtitle')}

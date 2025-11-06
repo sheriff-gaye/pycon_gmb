@@ -4,15 +4,20 @@
     "subtitle": "Merci à nos formidables sponsors qui rendent PyCon Senegambia possible"
   },
   "nav": {
-    "about": "À propos",
-    "visas": "Visas",
-    "blog": "Blog",
-    "speakers": "Orateurs",
-    "proposal": "Proposition",
-    "volunteers": "Bénévoles",
-    "register": "S'inscrire maintenant",
-    "sponsorship": "Parrainage"
-  },
+  "about": "À propos",
+  "visas": "Visas",
+  "blog": "Blog",
+  "speakers": "Orateurs",
+  "proposal": "Proposition",
+  "volunteers": "Bénévoles",
+  "register": "S'inscrire maintenant",
+  "sponsorship": "Parrainage",
+  "events": "Événements",
+  "resources": "Ressources",
+  "more": "Plus",
+  "participate": "Participer"
+}
+,
   "common": {
     "language": "Langue"
   },

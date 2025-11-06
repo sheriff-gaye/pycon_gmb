@@ -29,7 +29,7 @@ const CTA = ({currentLocale}:HeroProps) => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-linear-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <Star className="w-4 h-4 text-yellow-600 mr-2" />
             <span className="text-sm font-semibold text-yellow-800">
               {getTranslation(currentLocale, "cta.badge")}
@@ -39,7 +39,7 @@ const CTA = ({currentLocale}:HeroProps) => {
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
             <span className="text-slate-800">{getTranslation(currentLocale, "cta.title_part1")}</span>
             <br />
-            <span className="bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
               {getTranslation(currentLocale, "cta.title_part2")}
             </span>
           </h2>
@@ -50,9 +50,9 @@ const CTA = ({currentLocale}:HeroProps) => {
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          <div className="group text-center bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200 hover:border-yellow-300">
+          <div className="group text-center bg-linear-to-br from-slate-50 to-slate-100 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200 hover:border-yellow-300">
             <div className="relative mb-6">
-              <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <div className="bg-linear-to-br from-slate-700 to-slate-900 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <Users className="w-10 h-10 text-white" />
               </div>
             </div>
@@ -64,9 +64,9 @@ const CTA = ({currentLocale}:HeroProps) => {
             </p>
           </div>
 
-          <div className="group text-center bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border border-yellow-200 hover:border-yellow-400">
+          <div className="group text-center bg-linear-to-br from-yellow-50 to-yellow-100 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border border-yellow-200 hover:border-yellow-400">
             <div className="relative mb-6">
-              <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <div className="bg-linear-to-br from-yellow-500 to-yellow-600 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <Zap className="w-10 h-10 text-white" />
               </div>
             </div>
@@ -78,9 +78,9 @@ const CTA = ({currentLocale}:HeroProps) => {
             </p>
           </div>
 
-          <div className="group text-center bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200 hover:border-yellow-300">
+          <div className="group text-center bg-linear-to-br from-slate-50 to-slate-100 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200 hover:border-yellow-300">
             <div className="relative mb-6">
-              <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <div className="bg-linear-to-br from-slate-700 to-slate-900 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <Globe className="w-10 h-10 text-white" />
               </div>
             </div>
@@ -95,10 +95,10 @@ const CTA = ({currentLocale}:HeroProps) => {
 
         {/* Early Bird Pricing Card */}
         <div className="relative max-w-5xl mx-auto mb-16">
-          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-3xl transform rotate-1"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-yellow-400 to-yellow-500 rounded-3xl transform rotate-1"></div>
           <div className="relative bg-white border-2 border-yellow-400 rounded-3xl p-10 shadow-2xl">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 font-bold text-lg mb-6 shadow-lg">
+              <div className="inline-flex items-center px-6 py-3 rounded-full bg-linear-to-r from-yellow-400 to-yellow-500 text-slate-900 font-bold text-lg mb-6 shadow-lg">
                 <Gift className="w-5 h-5 mr-2" />
                 {getTranslation(currentLocale, "cta.early_bird_badge")}
               </div>
@@ -142,13 +142,13 @@ const CTA = ({currentLocale}:HeroProps) => {
         {/* CTA Buttons */}
         <div className="text-center mb-12">
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
-            <button className="group relative bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-12 py-5 rounded-2xl text-xl font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:from-yellow-400 hover:to-yellow-500 shadow-lg">
+            <button className="group relative bg-linear-to-r from-yellow-500 to-yellow-600 text-white px-12 py-5 rounded-2xl text-xl font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:from-yellow-400 hover:to-yellow-500 shadow-lg">
               <div className="flex items-center justify-center">
                 <Ticket className="w-6 h-6 mr-3" />
                 {getTranslation(currentLocale, "cta.button_get_ticket")}
                 <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-linear-to-r from-yellow-400 to-yellow-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
 
             <button className="group bg-transparent border-3 border-slate-800 text-slate-800 px-12 py-5 rounded-2xl text-xl font-bold hover:bg-slate-800 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl">

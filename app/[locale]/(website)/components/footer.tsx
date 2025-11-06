@@ -69,7 +69,7 @@ const Footer = ({ currentLocale }: HeroProps) => {
 
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-12">
+      <div className="bg-linear-to-r from-blue-600 to-purple-600 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
@@ -289,7 +289,7 @@ const Footer = ({ currentLocale }: HeroProps) => {
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <Mail
-                    className="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0"
+                    className="w-5 h-5 text-blue-400 mr-3 mt-0.5 shrink-0"
                     aria-label="mail"
                   />
                   <div>
@@ -299,7 +299,7 @@ const Footer = ({ currentLocale }: HeroProps) => {
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <Phone className="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
+                  <Phone className="w-5 h-5 text-green-400 mr-3 mt-0.5 shrink-0" />
                   <div>
                     <div className="text-gray-400">
                       {getTranslation(currentLocale, "footer.contact_phone1")}
@@ -311,7 +311,7 @@ const Footer = ({ currentLocale }: HeroProps) => {
                 </li>
                 <li className="flex items-start">
                   <MapPin
-                    className="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0"
+                    className="w-5 h-5 text-red-400 mr-3 mt-0.5 shrink-0"
                     aria-label="map pin"
                   />
                   <div className="text-gray-400 whitespace-pre-line">

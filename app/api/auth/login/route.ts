@@ -17,13 +17,6 @@ interface LoginResponse {
   message: string;
   data?: {
     token: string;
-    staff: {
-      id: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-      role: string;
-    };
   };
   error?: string;
 }
@@ -110,13 +103,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<LoginResponse
         message: "Login successful",
         data: {
           token,
-          staff: {
-            id: staff.id,
-            email: staff.email,
-            firstName: staff.firstName,
-            lastName: staff.lastName,
-            role: staff.role
-          }
+         
         }
       },
       { status: 200 }

@@ -79,7 +79,7 @@ const SiderBarItem = ({
           <span 
             className={cn(
               "inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none rounded-full",
-              "min-w-[1.25rem] h-5",
+              "min-w-5 h-5",
               isActive
                 ? "bg-white text-blue-600"
                 : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"

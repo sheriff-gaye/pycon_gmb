@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
@@ -9,25 +9,56 @@ import { getTranslation } from "@/lib/i18n";
 import { HeroProps } from "./interfaces/interface";
 import RegistrationModal from "./register_modal";
 
+interface DropdownItem {
+  href: string;
+  label: string;
+  badge: 'new' | 'coming' | null;
+  disabled?: boolean;
+}
+
+interface DropdownMenu {
+  label: string;
+  items: DropdownItem[];
+}
+
+interface Language {
+  code: string;
+  name: string;
+  flag: string;
+}
+
 const Navbar = ({currentLocale}: HeroProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false); 
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileDropdowns, setMobileDropdowns] = useState<{[key: string]: boolean}>({});
+  
   const router = useRouter();
   const pathname = usePathname();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleLangDropdown = () => setLangDropdownOpen(!langDropdownOpen);
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => {
+    setIsOpen(false);
+    setMobileDropdowns({});
+  };
   const openRegistrationModal = () => {
     setIsRegistrationModalOpen(true);
-    setIsOpen(false); // Close mobile menu if open
+    setIsOpen(false);
   };
   const closeRegistrationModal = () => setIsRegistrationModalOpen(false);
 
+  const toggleMobileDropdown = (key: string) => {
+    setMobileDropdowns(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
   const locale = currentLocale || 'en';
 
-  const languages = [
+  const languages: Language[] = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
   ];
@@ -43,6 +74,50 @@ const Navbar = ({currentLocale}: HeroProps) => {
 
   const currentLang = languages.find(lang => lang.code === locale) || languages[0];
 
+  // Define dropdown menus
+  const dropdownMenus: {[key: string]: DropdownMenu} = {
+    events: {
+      label: getTranslation(locale, 'nav.events') || 'Events',
+      items: [
+        { href: `/${locale}/speakers`, label: getTranslation(locale, 'nav.speakers') || 'Speakers', badge: null },
+        { href: `/${locale}/tech-events`, label: 'Tech Events', badge: 'coming', disabled: true },
+      ]
+    },
+    resources: {
+      label: getTranslation(locale, 'nav.resources') || 'Resources',
+      items: [
+        { href: `/${locale}/blog`, label: getTranslation(locale, 'nav.blog') || 'Blog', badge: null },
+        { href: `/${locale}/visas`, label: getTranslation(locale, 'nav.visas') || 'Visas', badge: null },
+        { href: `/${locale}/podcast`, label: 'Podcast', badge: 'coming', disabled: true },
+      ]
+    },
+    participate: {
+      label: getTranslation(locale, 'nav.participate') || 'Participate',
+      items: [
+        { href: `/${locale}/sponsorship`, label: getTranslation(locale, 'nav.sponsorship') || 'Sponsorship', badge: null },
+        { href: `/${locale}/proposal`, label: getTranslation(locale, 'nav.proposal') || 'Proposal', badge: null },
+        { href: `/${locale}/volunteers`, label: getTranslation(locale, 'nav.volunteers') || 'Volunteers', badge: null },
+      ]
+    },
+    more: {
+      label: getTranslation(locale, 'nav.more') || 'More',
+      items: [
+        { href: `/${locale}/shop`, label: 'Shop', badge: 'coming', disabled: true },
+        { href: `/${locale}/careers`, label: 'Careers', badge: 'new' },
+      ]
+    }
+  };
+
+  const Badge = ({ type }: { type: 'new' | 'coming' }) => (
+    <span className={`ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded ${
+      type === 'new' 
+        ? 'bg-green-100 text-green-700' 
+        : 'bg-blue-100 text-blue-700'
+    }`}>
+      {type === 'new' ? 'NEW' : 'COMING'}
+    </span>
+  );
+
   if (!currentLocale) {
     return (
       <>
@@ -50,27 +125,26 @@ const Navbar = ({currentLocale}: HeroProps) => {
           <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-20">
               <div className="flex items-center">
-                <div className="flex-shrink-0 flex items-center overflow-hidden">
+                <div className="shrink-0 flex items-center overflow-hidden">
                   <Link href="/" >
                     <Image
                       src="/images/logo.png"
                       alt="logo"
                       height={80}
                       width={80}
+                      className="object-contain"
                     />
                   </Link>
                 </div>
-              </div>
+              </div>  
             </div>
           </div>
         </nav>
         
-      
-         <RegistrationModal 
+        <RegistrationModal 
           isOpen={isRegistrationModalOpen}
           onClose={closeRegistrationModal}
           currentLocale={locale}
-         
         />
       </>
     );
@@ -83,90 +157,84 @@ const Navbar = ({currentLocale}: HeroProps) => {
           <div className="flex justify-between items-center h-20">
           
             <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center overflow-hidden">
-                  <Link href="/">
-                <Image
-                  src="/images/logo.png"
-                  alt="logo"
-                  height={80}
-                  width={80}
-                />
+              <div className="shrink-0 flex items-center overflow-hidden">
+                <Link href={`/${locale}`}>
+                  <Image
+                    src="/images/logo.png"
+                    alt="logo"
+                    height={80}
+                    width={80}
+                    className="object-contain"
+                  />
                 </Link>
               </div>
             </div>
 
-           
+            {/* Desktop Navigation */}
             <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-               
-                <Link aria-label="about"
+              <div className="ml-10 flex items-baseline space-x-1">
+                <Link
+                  aria-label="about"
                   href={`/${locale}/about`}
                   className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   {getTranslation(locale, 'nav.about')}
                 </Link>
+                
+                {Object.entries(dropdownMenus).map(([key, menu]) => (
+                  <div 
+                    key={key}
+                    className="relative"
+                    onMouseEnter={() => setActiveDropdown(key)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    <button
+                      aria-label={menu.label}
+                      className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors flex items-center"
+                    >
+                      {menu.label}
+                      <ChevronDown size={16} className="ml-1" />
+                    </button>
 
-                <Link
-                aria-label="sponsorship"
-                  href={`/${locale}/sponsorship`}
-                  className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                 
-                  {getTranslation(locale, 'nav.sponsorship')}
-                </Link>
-                <Link
-                aria-label="visas"
-                  href={`/${locale}/visas`}
-                  className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  {getTranslation(locale, 'nav.visas')}
-                </Link>
-                <Link
-                aria-label="blog"
-                  href={`/${locale}/blog`}
-                  className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  {getTranslation(locale, 'nav.blog')}
-                </Link>
-
-                 {/* /* <Link
-                  href={`/${locale}/shop`}
-                  className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  {/* {getTranslation(locale, 'nav.proposal')} */}
-                  {/* Shop */}
-                {/* </Link>  */} 
-                <Link
-                  aria-label="speakers"
-                  href={`/${locale}/speakers`}
-                  className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  {getTranslation(locale, 'nav.speakers')}
-                </Link>
-                <Link
-                  aria-label="proposal"
-                  href={`/${locale}/proposal`}
-                  className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  {getTranslation(locale, 'nav.proposal')}
-                </Link>
-                <Link
-                  aria-label="volunteers"
-                  href={`/${locale}/volunteers`}
-                  className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  {getTranslation(locale, 'nav.volunteers')}
-                </Link>
+                    {activeDropdown === key && (
+                      <div className="absolute left-0 mt-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                        {menu.items.map((item) => (
+                          item.disabled ? (
+                            <div
+                              key={item.href}
+                              className="block px-4 py-2 text-sm text-gray-400 cursor-not-allowed"
+                            >
+                              <span className="flex items-center justify-between">
+                                <span>{item.label}</span>
+                                {item.badge && <Badge type={item.badge} />}
+                              </span>
+                            </div>
+                          ) : (
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                            >
+                              <span className="flex items-center justify-between">
+                                <span>{item.label}</span>
+                                {item.badge && <Badge type={item.badge} />}
+                              </span>
+                            </Link>
+                          )
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 
-            
+            {/* Desktop CTA & Language */}
             <div className="hidden md:flex items-center space-x-4">
-              {/* Changed from Link to button */}
               <button
-              aria-label="register"
+                aria-label="register"
                 onClick={openRegistrationModal}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm font-medium"
               >
                 {getTranslation(locale, 'nav.register')}
               </button>
@@ -187,7 +255,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                     {languages.map((lang) => (
                       <button
-                        aria-label="lang"
+                        aria-label={lang.name}
                         key={lang.code}
                         onClick={() => handleLanguageChange(lang.code)}
                         className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 flex items-center space-x-3 ${
@@ -203,7 +271,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
               </div>
             </div>
 
-            
+            {/* Mobile menu button */}
             <div className="md:hidden">
               <button
                 aria-label="menu"
@@ -220,83 +288,78 @@ const Navbar = ({currentLocale}: HeroProps) => {
         {isOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
-              
               <Link
-                  aria-label="about"
+                aria-label="about"
                 href={`/${locale}/about`}
-                className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
+                className="text-gray-600 hover:text-blue-600 px-3 py-2 text-base font-medium block"
                 onClick={closeMenu}
               >
                 {getTranslation(locale, 'nav.about')}
               </Link>
-              <Link
-              aria-label="sponsorship"
-                  href={`/${locale}/sponsorship`}
-                  className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-                  onClick={closeMenu}
-                >
-                 
-                  {getTranslation(locale, 'nav.sponsorship')}
-                </Link>
-              <Link
-              aria-label="visas"
-                href={`/${locale}/visas`}
-                className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-                onClick={closeMenu}
-              >
-                {getTranslation(locale, 'nav.visas')}
-              </Link>
-              <Link
-              aria-label="blog"
-                href={`/${locale}/blog`}
-                className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-                onClick={closeMenu}
-              >
-                {getTranslation(locale, 'nav.blog')}
-              </Link>
-              <Link
-              aria-label="shop"
-                href={`/${locale}/speakers`}
-                className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-                onClick={closeMenu}
-              >
-                {getTranslation(locale, 'nav.speakers')}
-              </Link>
-              <Link
-              aria-label="shop"
-                href={`/${locale}/proposal`}
-                className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-                onClick={closeMenu}
-              >
-                {getTranslation(locale, 'nav.proposal')}
-              </Link>
-              <Link
-              aria-label="shop"
-                href={`/${locale}/volunteers`}
-                className="text-gray-600 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-                onClick={closeMenu}
-              >
-                {getTranslation(locale, 'nav.volunteers')}
-              </Link>
               
-              <div className="px-3 py-2">
-                {/* Changed from Link to button */}
+              {Object.entries(dropdownMenus).map(([key, menu]) => (
+                <div key={key}>
+                  <button
+                    aria-label={menu.label}
+                    onClick={() => toggleMobileDropdown(key)}
+                    className="w-full text-left text-gray-600 hover:text-blue-600 px-3 py-2 text-base font-medium flex items-center justify-between"
+                  >
+                    {menu.label}
+                    <ChevronDown 
+                      size={16} 
+                      className={`transform transition-transform ${mobileDropdowns[key] ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  
+                  {mobileDropdowns[key] && (
+                    <div className="pl-4 space-y-1">
+                      {menu.items.map((item) => (
+                        item.disabled ? (
+                          <div
+                            key={item.href}
+                            className="block px-3 py-2 text-sm text-gray-400 cursor-not-allowed"
+                          >
+                            <span className="flex items-center justify-between">
+                              <span>{item.label}</span>
+                              {item.badge && <Badge type={item.badge} />}
+                            </span>
+                          </div>
+                        ) : (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded"
+                            onClick={closeMenu}
+                          >
+                            <span className="flex items-center justify-between">
+                              <span>{item.label}</span>
+                              {item.badge && <Badge type={item.badge} />}
+                            </span>
+                          </Link>
+                        )
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              
+              <div className="px-3 py-2 pt-4">
                 <button
-                  aria-label="language"
+                  aria-label="register mobile"
                   onClick={openRegistrationModal}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105 inline-block"
+                  className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                 >
                   {getTranslation(locale, 'nav.register')}
                 </button>
               </div>
 
               {/* Mobile Language Switcher */}
-              <div className="px-3 py-2 border-t border-gray-200">
-                <div className="text-gray-600 text-sm font-medium mb-2">{getTranslation(locale, 'common.language')}</div>
+              <div className="px-3 py-2 border-t border-gray-200 mt-2">
+                <div className="text-gray-600 text-sm font-medium mb-2">{getTranslation(locale, 'common.language') || 'Language'}</div>
                 <div className="space-y-1">
                   {languages.map((lang) => (
                     <button
-                      aria-label="flag"
+                      aria-label={lang.name}
                       key={lang.code}
                       onClick={() => handleLanguageChange(lang.code)}
                       className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center space-x-3 ${
@@ -321,7 +384,6 @@ const Navbar = ({currentLocale}: HeroProps) => {
         isOpen={isRegistrationModalOpen}
         onClose={closeRegistrationModal}
         currentLocale={locale}
-       
       />
     </>
   );
