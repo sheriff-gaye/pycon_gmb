@@ -44,7 +44,7 @@ type Category = {
 };
 
 interface BlogPostFormProps {
-  post: BlogPost | null;
+  post: BlogPost | null | undefined;
   categories: Category[];
 }
 
