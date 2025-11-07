@@ -9,7 +9,8 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "setup:payment-links": "npx tsx scripts/paymentLinks.ts",
-    "sync:payment-links": "curl -X POST http://localhost:3000/api/payment-links/sync"
+    "sync:payment-links": "curl -X POST http://localhost:3000/api/payment-links/sync",
+    "seed:blog-categories": "npx tsx scripts/seed-blog-categories.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.31.3",

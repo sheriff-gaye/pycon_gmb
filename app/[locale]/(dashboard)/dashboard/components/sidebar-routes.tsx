@@ -10,7 +10,8 @@ import {
   ListCheckIcon,
   ShoppingBasket,
   MicVocalIcon,
-  HelpCircleIcon
+  HelpCircleIcon,
+  Newspaper
 } from "lucide-react";
 import SiderBarItem from "./sidebar-item";
 
@@ -47,6 +48,12 @@ const admin: Route[] = [
     icon: MicVocalIcon,
     label: "Speakers",
     href: "/dashboard/speakers"
+  },
+
+  {
+    icon: Newspaper,
+    label: "Blog",
+    href: "/dashboard/blog"
   },
 
   {

@@ -6,23 +6,75 @@ import Image from 'next/image';
 import { ArrowRight, Calendar, User, Tag, Clock, Eye, MessageCircle, Star, Zap, BookOpen } from 'lucide-react';
 import { HeroProps } from './interfaces/interface';
 import { getTranslation } from '@/lib/i18n';
-import { getBlogData } from '../blog/blog_data';
 
-const BlogSection = ({ currentLocale }: HeroProps) => {
+type BlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  authorRole?: string | null;
+  date: Date;
+  readTime: number;
+  image?: string | null;
+  views: number;
+  comments: number;
+  isFeatured: boolean;
+  tags: string[];
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+};
+
+type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  _count?: {
+    posts: number;
+  };
+};
+
+interface BlogSectionProps extends HeroProps {
+  posts: BlogPost[];
+  categories: Category[];
+}
+
+const BlogSection = ({ currentLocale, posts, categories }: BlogSectionProps) => {
   const [activeCategory, setActiveCategory] = useState('all');
-  const { featuredPost, blogPosts } = getBlogData(currentLocale);
+  
+  // Check if there are any posts at all
+  const hasNoPosts = posts.length === 0;
+  
+  // Filter ALL posts by category first (if not 'all')
+  const categoryFilteredPosts = activeCategory === 'all'
+    ? posts
+    : posts.filter(post => post.category.id === activeCategory);
+  
+  // Find featured post from filtered posts
+  const featuredPost = categoryFilteredPosts.find((post) => post.isFeatured) || categoryFilteredPosts[0];
+  
+  // Get remaining posts (excluding the featured one if it exists)
+  const blogPosts = categoryFilteredPosts.filter((post) => post.id !== featuredPost?.id);
 
-  const categories = [
-    { id: 'all', name: getTranslation(currentLocale, 'blog.category_1_name'), count: 24 },
-    { id: 'python', name: getTranslation(currentLocale, 'blog.category_2_name'), count: 12 },
-    { id: 'community', name: getTranslation(currentLocale, 'blog.category_3_name'), count: 8 },
-    { id: 'tutorials', name: getTranslation(currentLocale, 'blog.category_4_name'), count: 6 },
-    { id: 'events', name: getTranslation(currentLocale, 'blog.category_5_name'), count: 4 }
+  // Build category filter options with post counts
+  const categoryFilters = [
+    { id: 'all', name: getTranslation(currentLocale, 'blog.category_1_name'), count: posts.length },
+    ...categories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      count: cat._count?.posts || 0
+    }))
   ];
-
-  const filteredPosts = activeCategory === 'all'
-    ? blogPosts
-    : blogPosts.filter(post => post.category.toLowerCase() === getTranslation(currentLocale, `blog.category_${categories.findIndex(c => c.id === activeCategory) + 1}_name`).toLowerCase());
+  
+  // Check if filter returned no results (but posts exist overall)
+  // This should show empty state when:
+  // 1. Database has posts (not completely empty)
+  // 2. The filtered result is empty
+  // 3. User has selected a specific category (not 'all')
+  const hasNoFilteredResults = !hasNoPosts && categoryFilteredPosts.length === 0 && activeCategory !== 'all';
 
   
     const [email, setEmail] = useState('');
@@ -109,24 +161,48 @@ const BlogSection = ({ currentLocale }: HeroProps) => {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 ${
-                activeCategory === category.id
-                  ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white shadow-lg transform scale-105'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:scale-105'
-              }`}
-            >
-              {category.name} ({category.count})
-            </button>
-          ))}
-        </div>
+        {!hasNoPosts && (
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
+            {categoryFilters.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setActiveCategory(category.id)}
+                className={`px-6 py-3 rounded-2xl font-semibold transition-all duration-300 ${
+                  activeCategory === category.id
+                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white shadow-lg transform scale-105'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:scale-105'
+                }`}
+              >
+                {category.name} ({category.count})
+              </button>
+            ))}
+          </div>
+        )}
 
-        <div className="mb-20">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-yellow-200 shadow-2xl hover:shadow-3xl transition-all duration-500 group">
+        {hasNoPosts ? (
+          <div className="max-w-2xl mx-auto text-center py-20">
+            <div className="mb-8">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-full flex items-center justify-center mb-6">
+                <BookOpen className="w-12 h-12 text-yellow-600" />
+              </div>
+              <h3 className="text-3xl font-bold text-slate-800 mb-4">
+                No Blog Posts Yet
+              </h3>
+              <p className="text-lg text-slate-600 mb-8">
+                We're working on bringing you amazing content about Python, community events, tutorials, and more. Check back soon!
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-8 border border-slate-200">
+              <p className="text-slate-700 mb-4">
+                In the meantime, subscribe to our newsletter to be notified when we publish new articles.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <>
+            {featuredPost && (
+              <div className="mb-20">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-yellow-200 shadow-2xl hover:shadow-3xl transition-all duration-500 group">
             <div className="absolute top-6 left-6 z-10">
               <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 px-4 py-2 rounded-full font-bold text-sm shadow-lg flex items-center">
                 <Star className="w-4 h-4 mr-1" />
@@ -152,18 +228,24 @@ const BlogSection = ({ currentLocale }: HeroProps) => {
                     </div>
                     <div>
                       <div className="font-semibold text-slate-800">{featuredPost.author}</div>
-                      <div className="text-sm text-slate-500">{featuredPost.authorRole}</div>
+                      {featuredPost.authorRole && (
+                        <div className="text-sm text-slate-500">{featuredPost.authorRole}</div>
+                      )}
                     </div>
                   </div>
                   
                   <div className="flex items-center text-slate-500 text-sm space-x-4">
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {featuredPost.date}
+                      {new Date(featuredPost.date).toLocaleDateString(currentLocale, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
                     </div>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
-                      {featuredPost.readTime}
+                      {featuredPost.readTime} min
                     </div>
                   </div>
                 </div>
@@ -193,35 +275,67 @@ const BlogSection = ({ currentLocale }: HeroProps) => {
               
               <div className="lg:w-1/2 bg-gradient-to-br from-yellow-100 to-yellow-200 p-8 flex items-center justify-center">
                 <div className="w-full h-64 lg:h-full relative rounded-2xl overflow-hidden">
-                  <Image
-                    src={featuredPost.image}
-                    alt={featuredPost.title}
-                    fill
-                    className="object-cover"
-                  />
+                  {featuredPost.image ? (
+                    <Image
+                      src={featuredPost.image}
+                      alt={featuredPost.title}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-200">
+                      <span className="text-slate-400 text-lg">No Image</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-        </div>
+              </div>
+            )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {filteredPosts.map((post) => (
+          {hasNoFilteredResults ? (
+            <div className="col-span-full text-center py-16">
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center mb-6">
+                <BookOpen className="w-10 h-10 text-slate-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-700 mb-3">
+                No Posts in This Category
+              </h3>
+              <p className="text-slate-500 mb-6">
+                Try selecting a different category to see more posts.
+              </p>
+              <button
+                onClick={() => setActiveCategory('all')}
+                className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-2xl font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300"
+              >
+                View All Posts
+              </button>
+            </div>
+          ) : (
+            blogPosts.map((post) => (
             <article key={post.id} className="group bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl overflow-hidden border border-slate-200 hover:border-yellow-300 hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
               <div className="aspect-video relative bg-gradient-to-br from-yellow-100 to-yellow-200">
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  fill
-                  className="w-full h-full object-cover"
-                />
+                {post.image ? (
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span className="text-slate-400">No Image</span>
+                  </div>
+                )}
               </div>
               
               <div className="p-8">
                 <div className="mb-4">
                   <div className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm font-medium mb-3">
                     <Tag className="w-3 h-3 mr-1" />
-                    {post.category}
+                    {post.category.name}
                   </div>
                   <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-yellow-600 transition-colors duration-300 line-clamp-2">
                     {post.title}
@@ -243,7 +357,7 @@ const BlogSection = ({ currentLocale }: HeroProps) => {
                   
                   <div className="text-slate-500 text-sm flex items-center">
                     <Clock className="w-3 h-3 mr-1" />
-                    {post.readTime}
+                    {post.readTime} min
                   </div>
                 </div>
 
@@ -270,8 +384,11 @@ const BlogSection = ({ currentLocale }: HeroProps) => {
                 </div>
               </div>
             </article>
-          ))}
+          ))
+          )}
         </div>
+        </>
+        )}
 
         <div className="relative max-w-4xl mx-auto">
           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-3xl transform rotate-1"></div>
