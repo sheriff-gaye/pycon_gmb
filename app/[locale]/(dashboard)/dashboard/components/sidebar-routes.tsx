@@ -59,11 +59,11 @@ const admin: Route[] = [
     label: "Products",
     href: "/dashboard/products"
   },
-  //  {
-  //   icon:ShoppingBasket ,
-  //   label: "Orders",
-  //   href: "/dashboard/orders"
-  // },
+   {
+    icon:ShoppingBasket ,
+    label: "Orders",
+    href: "/dashboard/orders"
+  },
   {
     icon: Server,
     label: "System Logs",

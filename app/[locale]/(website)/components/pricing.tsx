@@ -100,7 +100,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-linear-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <Gift className="w-4 h-4 text-yellow-600 mr-2" />
             <span className="text-sm font-semibold text-yellow-800"> {getTranslation(currentLocale, 'pricing.early_bird_badge')}</span>
           </div>
@@ -108,7 +108,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
             <span className="text-slate-800">{getTranslation(currentLocale, 'pricing.title_part1')}</span>
             <br />
-            <span className="bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
             {getTranslation(currentLocale, 'pricing.title_part2')}
             </span>
           </h2>
@@ -122,11 +122,11 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
           {tickets.map((ticket, index) => {
             const IconComponent = ticket.icon;
             return (
-              <div key={index} className={`group relative text-center bg-gradient-to-br ${ticket.bgGradient} rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border-2 ${ticket.borderColor} ${ticket.hoverBorder} ${ticket.popular ? 'scale-105 shadow-xl' : ''}`}>
+              <div key={index} className={`group relative text-center bg-linear-to-br ${ticket.bgGradient} rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 border-2 ${ticket.borderColor} ${ticket.hoverBorder} ${ticket.popular ? 'scale-105 shadow-xl' : ''}`}>
                 {/* Popular Badge */}
                 {ticket.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 px-6 py-2 rounded-full font-bold text-sm shadow-lg flex items-center">
+                    <div className="bg-linear-to-r from-yellow-400 to-yellow-500 text-slate-900 px-6 py-2 rounded-full font-bold text-sm shadow-lg flex items-center">
                       <Star className="w-4 h-4 mr-1" />
                       MOST POPULAR
                     </div>
@@ -135,7 +135,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
 
                 {/* Icon */}
                 <div className="relative mb-6">
-                  <div className={`bg-gradient-to-br ${ticket.iconBg} rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  <div className={`bg-linear-to-br ${ticket.iconBg} rounded-2xl w-20 h-20 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <IconComponent className={`w-10 h-10 ${ticket.iconColor}`} />
                   </div>
                  
@@ -158,7 +158,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
                 <div className="text-left space-y-3 mb-8">
                   {ticket.features.map((feature, featureIndex) => (
                     <div key={featureIndex} className="flex items-center">
-                      <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                      <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-3 shrink-0">
                         <Check className="w-3 h-3 text-white" />
                       </div>
                       <span className="text-slate-600">{feature}</span>
@@ -171,7 +171,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
                   href={ticket.paymentUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group w-full ${ticket.popular ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500' : 'bg-transparent border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white'} px-8 py-4 rounded-2xl text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block text-center`}
+                  className={`group w-full ${ticket.popular ? 'bg-linear-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500' : 'bg-transparent border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white'} px-8 py-4 rounded-2xl text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block text-center`}
                 >
                   <div className="flex items-center justify-center">
                     Select {ticket.type}
@@ -185,24 +185,24 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
 
         {/* Additional Information */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="text-center bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-slate-200">
-            <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
+          <div className="text-center bg-linear-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-slate-200">
+            <div className="bg-linear-to-br from-slate-700 to-slate-900 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
               <Zap className="w-6 h-6 text-white" />
             </div>
             <h4 className="font-bold text-slate-800 mb-2">  {getTranslation(currentLocale, 'pricing.instant_access_title')}</h4>
             <p className="text-sm text-slate-600"> {getTranslation(currentLocale, 'pricing.instant_access_description')}</p>
           </div>
 
-          <div className="text-center bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border border-yellow-200">
-            <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
+          <div className="text-center bg-linear-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border border-yellow-200">
+            <div className="bg-linear-to-br from-yellow-500 to-yellow-600 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
               <Globe className="w-6 h-6 text-white" />
             </div>
             <h4 className="font-bold text-slate-800 mb-2"> {getTranslation(currentLocale, 'pricing.group_discounts_title')}</h4>
             <p className="text-sm text-slate-600"> {getTranslation(currentLocale, 'pricing.group_discounts_description')}</p>
           </div>
 
-          <div className="text-center bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-slate-200">
-            <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
+          <div className="text-center bg-linear-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-slate-200">
+            <div className="bg-linear-to-br from-slate-700 to-slate-900 rounded-xl w-12 h-12 flex items-center justify-center mx-auto mb-4">
               <Award className="w-6 h-6 text-white" />
             </div>
             <h4 className="font-bold text-slate-800 mb-2">{getTranslation(currentLocale, 'pricing.money_back_title')}</h4>
@@ -212,7 +212,7 @@ const TicketPricing = ({currentLocale}:HeroProps) => {
 
         {/* Bottom CTA */}
         <div className="text-center">
-          <div className="inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-200 shadow-lg mb-8">
+          <div className="inline-flex items-center px-8 py-4 rounded-2xl bg-linear-to-r from-green-50 to-green-100 border-2 border-green-200 shadow-lg mb-8">
             <div className="flex items-center">
               <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
               <span className="font-bold text-green-700 text-lg">{getTranslation(currentLocale, 'pricing.early_bird_expires')}</span>

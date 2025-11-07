@@ -26,13 +26,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             disableTransitionOnChange
           >
       <div className="h-full">
-        <div className="h-[80px] md:pl-56 fixed inset-y-0 w-full z-[100]">
+        <div className="h-20 md:pl-56 fixed inset-y-0 w-full z-100">
           <NavBar  />
         </div>
         <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50 ">
           <SideBar />
         </div>
-        <main className="md:pl-56 pt-[80px] h-full">
+        <main className="md:pl-56 pt-20 h-full">
           <ModalProvider/>
          
           
