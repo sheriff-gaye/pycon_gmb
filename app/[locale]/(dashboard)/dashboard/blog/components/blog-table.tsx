@@ -39,7 +39,7 @@ type BlogPost = {
   id: string;
   title: string;
   slug: string;
-  author: string;
+  author: string | null;
   isPublished: boolean;
   isFeatured: boolean;
   views: number;
@@ -71,11 +71,11 @@ export function BlogTable({ posts, categories }: BlogTableProps) {
   const [isToggling, setIsToggling] = useState<string | null>(null);
   const confirmModal = useBlogConfirmModal();
 
-  // Filter posts
+
   const filteredPosts = posts.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.author.toLowerCase().includes(searchQuery.toLowerCase());
+      (post.author && post.author.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesStatus =
       statusFilter === "all" ||
       (statusFilter === "published" && post.isPublished) ||

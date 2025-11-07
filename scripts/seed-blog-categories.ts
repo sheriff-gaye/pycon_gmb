@@ -1,6 +1,7 @@
+import { db } from "@/lib/db";
 import { PrismaClient } from "../app/generated/prisma";
 
-const prisma = new PrismaClient();
+
 
 async function main() {
   console.log("Starting blog categories seed...");
@@ -13,7 +14,7 @@ async function main() {
   ];
 
   for (const category of categories) {
-    const existing = await prisma.category.findUnique({
+    const existing = await db.category.findUnique({
       where: { slug: category.slug },
     });
 
@@ -22,7 +23,7 @@ async function main() {
       continue;
     }
 
-    const created = await prisma.category.create({
+    const created = await db.category.create({
       data: category,
     });
 
@@ -38,6 +39,6 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    await db.$disconnect();
   });
 

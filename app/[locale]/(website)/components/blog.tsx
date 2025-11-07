@@ -11,8 +11,8 @@ type BlogPost = {
   id: string;
   slug: string;
   title: string;
-  excerpt: string;
-  author: string;
+  excerpt: string | null;
+  author: string | null;
   authorRole?: string | null;
   date: Date;
   readTime: number;

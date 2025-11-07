@@ -98,7 +98,7 @@ model BlogPost {
   id         String   @id @default(cuid())
   slug       String   @unique // For SEO-friendly URLs
   title      String
-  excerpt    String   @db.Text // Short description for previews
+  excerpt    String?   @db.Text // Short description for previews
   content    String   @db.Text // Using Text for longer content
   image      String? // Optional image URL
   readTime   Int // Read time in minutes
@@ -110,7 +110,7 @@ model BlogPost {
   publishedAt DateTime?
 
   // Author fields
-  author          String
+  author          String?
   authorRole      String?
   authorBio       String?   @db.Text
   authorFacebook  String?

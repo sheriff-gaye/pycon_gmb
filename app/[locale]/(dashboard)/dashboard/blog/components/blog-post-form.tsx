@@ -22,11 +22,11 @@ type BlogPost = {
   id: string;
   title: string;
   slug: string;
-  excerpt: string;
-  content: string;
+  excerpt: string | null;  
+  content: string | null; 
   image?: string | null;
   readTime: number;
-  author: string;
+  author: string | null;  
   authorRole?: string | null;
   authorBio?: string | null;
   authorFacebook?: string | null;

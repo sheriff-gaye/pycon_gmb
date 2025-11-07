@@ -15,9 +15,9 @@ interface BlogPost {
   id: string;
   slug: string;
   title: string;
-  excerpt: string;
-  content: string;
-  author: string;
+  excerpt: string | null;  
+  content: string | null; 
+  author: string | null;   
   authorRole?: string | null;
   authorBio?: string | null;
   authorFacebook?: string | null;
@@ -145,7 +145,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
   const handleNativeShare = async () => {
     const url = window.location.href;
     const title = post.title;
-    const text = post.excerpt;
+    const text = post.excerpt ?? '';
 
     // Check if Web Share API is supported
     if (navigator.share) {
@@ -332,7 +332,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
 
         <div 
           className="prose prose-lg max-w-none mb-12"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: post.content ?? "" }}
         />
 
         <div className="mb-8">
@@ -400,15 +400,15 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
           <div className="flex items-start space-x-6">
             <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-white text-2xl font-bold">
-                {post.author.charAt(0).toUpperCase()}
+              {post.author ?? 'Unknown Author'}
               </span>
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-slate-800 mb-3">
-                {getTranslation(currentLocale, 'blog.about_author').replace('{author}', post.author)}
+                {getTranslation(currentLocale, 'blog.about_author').replace('{author}', post.author ?? 'Unknown Author')}
               </h3>
               <p className="text-slate-600 mb-4">
-                {post.authorBio || getTranslation(currentLocale, 'blog.author_bio').replace('{author}', post.author)}
+                {post.authorBio || getTranslation(currentLocale, 'blog.author_bio').replace('{author}', post.author ?? 'the author')}
               </p>
               {(post.authorFacebook || post.authorTwitter || post.authorLinkedin) && (
                 <div className="flex space-x-3">
