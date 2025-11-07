@@ -96,21 +96,65 @@ model Category {
 
 model BlogPost {
   id         String   @id @default(cuid())
+  slug       String   @unique // For SEO-friendly URLs
   title      String
+  excerpt    String   @db.Text // Short description for previews
   content    String   @db.Text // Using Text for longer content
   image      String? // Optional image URL
   readTime   Int // Read time in minutes
   date       DateTime @default(now())
   isFeatured Boolean  @default(false)
 
+  // Publish status
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+
+  // Author fields
+  author          String
+  authorRole      String?
+  authorBio       String?   @db.Text
+  authorFacebook  String?
+  authorTwitter   String?
+  authorLinkedin  String?
+
+  // Engagement metrics
+  views      Int      @default(0)
+  comments   Int      @default(0)
+  likes      Int      @default(0)
+
+  // Tags
+  tags       String[]
+
   // Category relationship
   categoryId String
   category   Category @relation("BlogPostCategory", fields: [categoryId], references: [id])
 
+  // Comments relationship
+  postComments Comment[] @relation("BlogPostComments")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([slug])
+  @@index([isFeatured])
+  @@index([isPublished])
+  @@index([categoryId])
   @@map("blog_posts")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  author    String   @default("Anonymous")
+  postId    String
+  post      BlogPost @relation("BlogPostComments", fields: [postId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([postId])
+  @@index([createdAt])
+  @@map("comments")
 }
 
 // Add these models to your existing schema.prisma file

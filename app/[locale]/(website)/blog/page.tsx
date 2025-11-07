@@ -1,19 +1,39 @@
-"use client"
-
-import { usePathname } from "next/navigation";
 import BlogSection from "../components/blog";
+import { getBlogPosts, getCategories } from "@/app/actions/blog";
+import { notFound } from "next/navigation";
 
-
-const Blog=()=>{
-     const pathname = usePathname();
-      const currentLocale = pathname.split("/")[1] || "en";
-    return(
-        <div>
-            <BlogSection currentLocale={currentLocale} />
-        </div>
-        
-
-    )
+interface BlogPageProps {
+  params: Promise<{
+    locale: string;
+  }>;
 }
 
-export default Blog;
+export const dynamic = "force-dynamic";
+
+export default async function Blog({ params }: BlogPageProps) {
+  const { locale } = await params;
+  const currentLocale = locale || "en";
+
+  // Fetch only published posts
+  const [postsResult, categoriesResult] = await Promise.all([
+    getBlogPosts({ isPublished: true }),
+    getCategories(),
+  ]);
+
+  if (!postsResult.success || !categoriesResult.success) {
+    notFound();
+  }
+
+  const posts = postsResult.data || [];
+  const categories = categoriesResult.data || [];
+
+  return (
+    <div>
+      <BlogSection 
+        currentLocale={currentLocale} 
+        posts={posts}
+        categories={categories}
+      />
+    </div>
+  );
+}
