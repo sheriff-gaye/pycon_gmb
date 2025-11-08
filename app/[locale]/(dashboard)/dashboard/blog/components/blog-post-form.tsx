@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { createBlogPost, updateBlogPost, getAuthorDetails } from "@/app/actions/blog";
 import { toast } from "sonner";
 import { Loader2, Save, Eye } from "lucide-react";
@@ -565,18 +566,15 @@ export function BlogPostForm({ post, categories }: BlogPostFormProps) {
           <Label htmlFor="content">
             Content <span className="text-red-500">*</span>
           </Label>
-          <Textarea
-            id="content"
+          <RichTextEditor
             value={formData.content}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, content: e.target.value }))
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, content: value }))
             }
-            placeholder="Write your blog post content here..."
-            rows={15}
-            required
+            placeholder="Write your blog post content here... Use the toolbar to format your text."
           />
           <p className="text-sm text-muted-foreground">
-            {formData.content.length} characters
+            Use the formatting toolbar to style your content with headings, lists, bold, italic, links, and more.
           </p>
         </div>
 

@@ -400,7 +400,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
           <div className="flex items-start space-x-6">
             <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-white text-2xl font-bold">
-              {post.author ?? 'Unknown Author'}
+                {post.author?.split(' ').map(n => n[0]).join('').toUpperCase() || 'UA'}
               </span>
             </div>
             <div className="flex-1">
