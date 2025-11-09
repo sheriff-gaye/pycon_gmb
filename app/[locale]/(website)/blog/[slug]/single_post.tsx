@@ -31,6 +31,11 @@ interface BlogPost {
   likes: number;
   tags: string[];
   isFeatured?: boolean;
+  // French translations
+  title_fr?: string | null;
+  excerpt_fr?: string | null;
+  content_fr?: string | null;
+  authorBio_fr?: string | null;
   category: {
     id: string;
     name: string;
@@ -62,6 +67,19 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
   const [comments, setComments] = useState<CommentType[]>(initialComments);
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
+  // Helper functions for localized content
+  const getLocalizedTitle = () => {
+    return currentLocale === 'fr' && post.title_fr ? post.title_fr : post.title;
+  };
+
+  const getLocalizedContent = () => {
+    return currentLocale === 'fr' && post.content_fr ? post.content_fr : post.content;
+  };
+
+  const getLocalizedAuthorBio = () => {
+    return currentLocale === 'fr' && post.authorBio_fr ? post.authorBio_fr : post.authorBio;
+  };
+
   // Check localStorage for liked state on mount
   useEffect(() => {
     const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
@@ -74,7 +92,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
 
   const handleShare = (platform: string) => {
     const url = window.location.href;
-    const title = post.title;
+    const title = getLocalizedTitle();
     
     switch(platform) {
       case 'twitter':
@@ -144,7 +162,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
 
   const handleNativeShare = async () => {
     const url = window.location.href;
-    const title = post.title;
+    const title = getLocalizedTitle();
     const text = post.excerpt ?? '';
 
     // Check if Web Share API is supported
@@ -254,7 +272,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
           {post.image ? (
             <Image
               src={post.image}
-              alt={post.title}
+              alt={getLocalizedTitle()}
               fill
               className="object-cover"
               priority
@@ -295,7 +313,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-8 leading-tight">
-            {post.title}
+            {getLocalizedTitle()}
           </h1>
 
           <div className="flex items-center justify-between flex-wrap gap-6 pb-8 border-b border-slate-200">
@@ -332,7 +350,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
 
         <div 
           className="prose prose-lg max-w-none mb-12"
-          dangerouslySetInnerHTML={{ __html: post.content ?? "" }}
+          dangerouslySetInnerHTML={{ __html: getLocalizedContent() ?? "" }}
         />
 
         <div className="mb-8">
@@ -408,7 +426,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
                 {getTranslation(currentLocale, 'blog.about_author').replace('{author}', post.author ?? 'Unknown Author')}
               </h3>
               <p className="text-slate-600 mb-4">
-                {post.authorBio || getTranslation(currentLocale, 'blog.author_bio').replace('{author}', post.author ?? 'the author')}
+                {getLocalizedAuthorBio() || getTranslation(currentLocale, 'blog.author_bio').replace('{author}', post.author ?? 'the author')}
               </p>
               {(post.authorFacebook || post.authorTwitter || post.authorLinkedin) && (
                 <div className="flex space-x-3">
