@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { BlogPost, Category } from "@/app/generated/prisma";
+import { translateBlogPost } from "@/lib/translate-blog";
 
 // ============ BLOG POST ACTIONS ============
 
@@ -109,6 +110,14 @@ export async function createBlogPost(data: {
       return { success: false, error: "A blog post with this slug already exists" };
     }
 
+    // Translate content to French (only for new posts)
+    const translations = await translateBlogPost({
+      title: data.title,
+      excerpt: data.excerpt,
+      content: data.content,
+      authorBio: data.authorBio,
+    });
+
     const post = await db.blogPost.create({
       data: {
         title: data.title,
@@ -128,6 +137,11 @@ export async function createBlogPost(data: {
         isFeatured: data.isFeatured || false,
         isPublished: data.isPublished || false,
         publishedAt: data.isPublished ? new Date() : null,
+        // Add French translations
+        title_fr: translations.title_fr,
+        excerpt_fr: translations.excerpt_fr,
+        content_fr: translations.content_fr,
+        authorBio_fr: translations.authorBio_fr,
       },
       include: {
         category: true,
@@ -177,13 +191,31 @@ export async function updateBlogPost(
       }
     }
 
-    // Get current post to check publish status change
+    // Get current post to check publish status change and content changes
     const currentPost = await db.blogPost.findUnique({
       where: { id },
     });
 
     if (!currentPost) {
       return { success: false, error: "Blog post not found" };
+    }
+
+    // Check if any translatable content has changed
+    const contentChanged =
+      (data.title && data.title !== currentPost.title) ||
+      (data.excerpt && data.excerpt !== currentPost.excerpt) ||
+      (data.content && data.content !== currentPost.content) ||
+      (data.authorBio && data.authorBio !== currentPost.authorBio);
+
+    // Re-translate if content has changed
+    let translations = {};
+    if (contentChanged) {
+      translations = await translateBlogPost({
+        title: data.title || currentPost.title,
+        excerpt: data.excerpt || currentPost.excerpt || undefined,
+        content: data.content || currentPost.content,
+        authorBio: data.authorBio || currentPost.authorBio || undefined,
+      });
     }
 
     // Determine if we need to update publishedAt
@@ -202,6 +234,7 @@ export async function updateBlogPost(
       where: { id },
       data: {
         ...data,
+        ...translations, // Include French translations if content changed
         publishedAt,
       },
       include: {

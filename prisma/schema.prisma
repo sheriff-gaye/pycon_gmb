@@ -109,6 +109,12 @@ model BlogPost {
   isPublished Boolean  @default(false)
   publishedAt DateTime?
 
+  // French translations
+  title_fr     String?
+  excerpt_fr   String?   @db.Text
+  content_fr   String?   @db.Text
+  authorBio_fr String?   @db.Text
+
   // Author fields
   author          String?
   authorRole      String?

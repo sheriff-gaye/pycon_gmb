@@ -21,6 +21,9 @@ type BlogPost = {
   comments: number;
   isFeatured: boolean;
   tags: string[];
+  // French translations
+  title_fr?: string | null;
+  excerpt_fr?: string | null;
   category: {
     id: string;
     name: string;
@@ -44,6 +47,15 @@ interface BlogSectionProps extends HeroProps {
 
 const BlogSection = ({ currentLocale, posts, categories }: BlogSectionProps) => {
   const [activeCategory, setActiveCategory] = useState('all');
+  
+  // Helper function to get localized content
+  const getLocalizedTitle = (post: BlogPost) => {
+    return currentLocale === 'fr' && post.title_fr ? post.title_fr : post.title;
+  };
+  
+  const getLocalizedExcerpt = (post: BlogPost) => {
+    return currentLocale === 'fr' && post.excerpt_fr ? post.excerpt_fr : post.excerpt;
+  };
   
   // Check if there are any posts at all
   const hasNoPosts = posts.length === 0;
@@ -214,10 +226,10 @@ const BlogSection = ({ currentLocale, posts, categories }: BlogSectionProps) => 
               <div className="lg:w-1/2 p-12">
                 <div className="mb-6">
                   <h3 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4 mt-5 group-hover:text-yellow-600 transition-colors duration-300">
-                    {featuredPost.title}
+                    {getLocalizedTitle(featuredPost)}
                   </h3>
                   <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                    {featuredPost.excerpt}
+                    {getLocalizedExcerpt(featuredPost)}
                   </p>
                 </div>
 
@@ -278,7 +290,7 @@ const BlogSection = ({ currentLocale, posts, categories }: BlogSectionProps) => 
                   {featuredPost.image ? (
                     <Image
                       src={featuredPost.image}
-                      alt={featuredPost.title}
+                      alt={getLocalizedTitle(featuredPost)}
                       fill
                       className="object-cover"
                     />
@@ -320,7 +332,7 @@ const BlogSection = ({ currentLocale, posts, categories }: BlogSectionProps) => 
                 {post.image ? (
                   <Image
                     src={post.image}
-                    alt={post.title}
+                    alt={getLocalizedTitle(post)}
                     fill
                     className="w-full h-full object-cover"
                   />
@@ -338,10 +350,10 @@ const BlogSection = ({ currentLocale, posts, categories }: BlogSectionProps) => 
                     {post.category.name}
                   </div>
                   <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-yellow-600 transition-colors duration-300 line-clamp-2">
-                    {post.title}
+                    {getLocalizedTitle(post)}
                   </h3>
                   <p className="text-slate-600 mb-6 line-clamp-3">
-                    {post.excerpt}
+                    {getLocalizedExcerpt(post)}
                   </p>
                 </div>
 

@@ -1,18 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
     icons: {
@@ -22,7 +10,7 @@ export const metadata: Metadata = {
   description: "Pycon Senegambia",
 };
 
-export default async function RootLayout({
+export default async function WebsiteLayout({
   children,
   params,
 }: {
@@ -32,17 +20,10 @@ export default async function RootLayout({
   const { locale } = await params;
 
   return (
-    <html lang={locale}  suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-       
-        <Navbar currentLocale={locale} />
-
-        {children}
-        <Footer currentLocale={locale} />
-      
-      </body>
-    </html>
+    <>
+      <Navbar currentLocale={locale} />
+      {children}
+      <Footer currentLocale={locale} />
+    </>
   );
 }
