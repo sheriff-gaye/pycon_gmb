@@ -17,7 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import { RichTextEditor } from "@/components/rich-text-editor";
 import { createBlogPost, updateBlogPost, getAuthorDetails } from "@/app/actions/blog";
 import { toast } from "sonner";
-import { Loader2, Save, Eye } from "lucide-react";
+import { Loader2, Save, Eye, PlusCircle, Pencil, ImageIcon, Upload } from "lucide-react";
 
 type BlogPost = {
   id: string;
@@ -49,12 +49,151 @@ interface BlogPostFormProps {
   categories: Category[];
 }
 
+interface ImageFormProps {
+  value: string;
+  onChange: (dataUrl: string) => void;
+  error?: string;
+  isSubmitting?: boolean;
+}
+
+const ImageForm = ({ value, onChange, error, isSubmitting = false }: ImageFormProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(value);
+
+  useEffect(() => {
+    setPreviewUrl(value);
+  }, [value]);
+
+  const toggleEdit = () => {
+    if (!isSubmitting && !isUploading) {
+      setIsEditing((current) => !current);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      setPreviewUrl(dataUrl);
+      onChange(dataUrl);
+      setIsUploading(false);
+      setIsEditing(false);
+      toast.success('Image uploaded successfully');
+    };
+
+    reader.onerror = () => {
+      toast.error('Failed to read the image file');
+      setIsUploading(false);
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  const isDisabled = isSubmitting || isUploading;
+
+  return (
+    <div className="mt-6 border rounded-md p-4">
+      <div className="font-medium flex items-center justify-between">
+        Featured Image
+        <Button 
+          onClick={toggleEdit} 
+          type="button"
+          variant="ghost" 
+          disabled={isDisabled}
+        >
+          {isEditing && <>Cancel</>}
+          {!isEditing && !previewUrl && (
+            <>
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Add image
+            </>
+          )}
+          {!isEditing && previewUrl && (
+            <>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit image
+            </>
+          )}
+        </Button>
+      </div>
+      
+      {!isEditing && (
+        !previewUrl ? (
+          <div className="flex items-center justify-center h-48 bg-slate-200 rounded-md mt-2">
+            <ImageIcon className="h-10 w-10 text-slate-500" />
+          </div>
+        ) : (
+          <div className="relative mt-2">
+            <img
+              alt="Blog post preview"
+              className="object-cover rounded-md mx-auto max-h-48 w-full"
+              src={previewUrl}
+            />
+          </div>
+        )
+      )}
+      
+      {isEditing && (
+        <div className="mt-4">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+            <div className="flex flex-col items-center gap-4">
+              <Upload className="h-8 w-8 text-gray-400" />
+              <div>
+                <label htmlFor="image-upload" className="cursor-pointer">
+                  <span className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors inline-block">
+                    {isUploading ? 'Uploading...' : 'Choose Image'}
+                  </span>
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    disabled={isUploading}
+                    className="sr-only"
+                  />
+                </label>
+                <p className="text-sm text-gray-500 mt-2">
+                  PNG, JPG, GIF up to 5MB
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          {isUploading && (
+            <div className="text-sm text-blue-600 mt-2 text-center">
+              Processing image... Please wait.
+            </div>
+          )}
+        </div>
+      )}
+      
+      {error && !isUploading && (
+        <p className="text-red-500 text-sm mt-1">{error}</p>
+      )}
+    </div>
+  );
+};
+
 export function BlogPostForm({ post, categories }: BlogPostFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [autoGenerateSlug, setAutoGenerateSlug] = useState(!post);
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(post?.image || null);
   const [loadingAuthorDetails, setLoadingAuthorDetails] = useState(false);
   const [hasLoadedAuthorDetails, setHasLoadedAuthorDetails] = useState(false);
 
@@ -126,54 +265,8 @@ export function BlogPostForm({ post, categories }: BlogPostFormProps) {
     setFormData((prev) => ({ ...prev, slug }));
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please select an image file");
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image size should be less than 5MB");
-      return;
-    }
-
-    setUploadingImage(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload image");
-      }
-
-      const data = await response.json();
-      const imageUrl = data.url;
-
-      setFormData((prev) => ({ ...prev, image: imageUrl }));
-      setImagePreview(imageUrl);
-      toast.success("Image uploaded successfully");
-    } catch (error) {
-      console.error("Image upload error:", error);
-      toast.error("Failed to upload image. Please try again.");
-    } finally {
-      setUploadingImage(false);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setFormData((prev) => ({ ...prev, image: "" }));
-    setImagePreview(null);
+  const handleImageChange = (dataUrl: string) => {
+    setFormData((prev) => ({ ...prev, image: dataUrl }));
   };
 
   const handleSubmit = async (e: React.FormEvent, publish: boolean) => {
@@ -425,104 +518,12 @@ export function BlogPostForm({ post, categories }: BlogPostFormProps) {
         </div>
 
         {/* Featured Image */}
-        <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="image">Featured Image</Label>
-          
-          {imagePreview && (
-            <div className="relative w-full h-48 rounded-lg overflow-hidden border-2 border-slate-200 mb-4">
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-full h-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={handleRemoveImage}
-                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <label
-              htmlFor="image-upload"
-              className={`flex-1 flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
-                uploadingImage
-                  ? "border-slate-300 bg-slate-50 cursor-not-allowed"
-                  : "border-slate-300 hover:border-yellow-400 hover:bg-yellow-50"
-              }`}
-            >
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={uploadingImage}
-                className="hidden"
-              />
-              <div className="flex items-center space-x-2">
-                {uploadingImage ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin text-slate-500" />
-                    <span className="text-sm text-slate-500">Uploading...</span>
-                  </>
-                ) : (
-                  <>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-slate-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span className="text-sm font-medium text-slate-700">
-                      Upload from device
-                    </span>
-                  </>
-                )}
-              </div>
-            </label>
-
-            <div className="flex items-center text-slate-500">
-              <span className="text-sm">or</span>
-            </div>
-
-            <Input
-              id="image-url"
-              value={formData.image}
-              onChange={(e) => {
-                setFormData((prev) => ({ ...prev, image: e.target.value }));
-                if (e.target.value) {
-                  setImagePreview(e.target.value);
-                }
-              }}
-              placeholder="Enter image URL"
-              className="flex-1"
-            />
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Upload an image or enter a URL. Max file size: 5MB
-          </p>
+        <div className="md:col-span-2">
+          <ImageForm
+            value={formData.image}
+            onChange={handleImageChange}
+            isSubmitting={isSubmitting}
+          />
         </div>
 
         {/* Tags */}
