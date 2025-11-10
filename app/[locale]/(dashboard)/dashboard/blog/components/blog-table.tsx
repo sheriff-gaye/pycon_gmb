@@ -185,11 +185,13 @@ export function BlogTable({ posts, categories }: BlogTableProps) {
             ) : (
               filteredPosts.map((post) => (
                 <TableRow key={post.id}>
-                  <TableCell className="font-medium">
+                  <TableCell className="font-medium max-w-xs">
                     <div className="flex items-center gap-2">
-                      {post.title}
+                      <span className="truncate" title={post.title}>
+                        {post.title}
+                      </span>
                       {post.isFeatured && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge variant="secondary" className="text-xs shrink-0">
                           Featured
                         </Badge>
                       )}
@@ -207,7 +209,7 @@ export function BlogTable({ posts, categories }: BlogTableProps) {
                     )}
                   </TableCell>
                   <TableCell>
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-row gap-1">
                       <div className="flex items-center gap-1">
                         <Eye className="w-4 h-4 text-blue-500" />
                         <span className="text-sm">{(post.views ?? 0).toLocaleString()}</span>

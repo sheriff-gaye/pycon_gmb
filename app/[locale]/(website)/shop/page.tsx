@@ -164,7 +164,7 @@ const Shop = () => {
 
       const data = await response.json();
 
-      console.log("test here",data);
+      
 
       if (data.success) {
         window.location.href = data.data.paymentLink;
@@ -215,7 +215,7 @@ const Shop = () => {
 
   if (error) {
     return (
-      <section className="relative py-24 bg-gradient-to-br from-slate-50 via-white to-slate-50">
+      <section className="relative py-24 bg-linear-to-br from-slate-50 via-white to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
@@ -228,7 +228,7 @@ const Shop = () => {
   }
 
   return (
-    <section className="relative py-24 bg-gradient-to-br from-slate-50 via-white to-slate-50 overflow-hidden">
+    <section className="relative py-24 bg-linear-to-br from-slate-50 via-white to-slate-50 overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-yellow-400/10 rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-blue-500/5 rounded-full filter blur-3xl"></div>
@@ -236,15 +236,14 @@ const Shop = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-linear-to-r from-yellow-100 to-yellow-200 border border-yellow-300 mb-6">
             <Package className="w-4 h-4 text-yellow-600 mr-2" />
             <span className="text-sm font-semibold text-yellow-800">Official PyCon Merchandise</span>
           </div>
           
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            <span className="text-slate-800">Shop</span>
-            <br />
-            <span className="bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
+           
+            <span className="bg-linear-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent">
               Conference Souvenirs
             </span>
           </h2>
@@ -298,7 +297,7 @@ const Shop = () => {
 
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-lg"
+              className="relative flex items-center gap-2 bg-linear-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-lg"
             >
               <ShoppingCart className="w-4 h-4" />
               <span className="font-semibold">Cart</span>
@@ -328,13 +327,8 @@ const Shop = () => {
           <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
             {filteredProducts.map((product) => (
               <div key={product.id} className={`group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-200 overflow-hidden ${viewMode === 'list' ? 'flex' : ''}`}>
-                {product.featured && (
-                  <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold">
-                    FEATURED
-                  </div>
-                )}
-
-                <div className={`${viewMode === 'list' ? 'w-48 flex-shrink-0' : 'aspect-square'} relative overflow-hidden`}>
+                
+                <div className={`${viewMode === 'list' ? 'w-48 shrink-0' : 'aspect-square'} relative overflow-hidden`}>
                   <img 
                     src={product.image} 
                     alt={product.name}
@@ -382,8 +376,8 @@ const Shop = () => {
                     className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
                       product.inStock
                         ? addedItems.has(product.id)
-                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
-                          : 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500 shadow-lg'
+                          ? 'bg-linear-to-r from-green-500 to-green-600 text-white'
+                          : 'bg-linear-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-400 hover:to-yellow-500 shadow-lg'
                         : 'bg-slate-300 text-slate-500 cursor-not-allowed'
                     }`}
                   >
@@ -483,7 +477,7 @@ const Shop = () => {
                       </div>
                       <button 
                         onClick={() => setShowCheckoutForm(true)}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-xl font-bold text-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-lg"
+                        className="w-full bg-linear-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-xl font-bold text-lg hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-lg"
                       >
                         Proceed to Checkout
                       </button>
@@ -522,7 +516,7 @@ const Shop = () => {
                         <button
                           onClick={handleCheckout}
                           disabled={isCheckingOut}
-                          className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="flex-1 bg-linear-to-r from-yellow-500 to-yellow-600 text-white py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isCheckingOut ? 'Processing...' : 'Complete Payment'}
                         </button>
