@@ -359,149 +359,149 @@ async function sendTicketConfirmationEmail(ticketPurchase: TicketPurchase): Prom
 // ECOMMERCE-SPECIFIC FUNCTIONS
 // ============================================
 
-async function generateOrderEmailHTML(order: any): Promise<string> {
+async function generateOptimizedOrderEmailHTML(order: any): Promise<string> {
   const orderItems = await db.orderItem.findMany({
     where: { orderId: order.id },
     include: { product: true }
   });
 
-  const itemsHTML = orderItems.map(item => `
-    <tr>
-      <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <img src="${item.product.image}" alt="${item.productName}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;" />
-          <div>
-            <strong>${item.productName}</strong><br/>
-            <span style="color: #64748b; font-size: 14px;">Qty: ${item.quantity}</span>
-          </div>
-        </div>
-      </td>
-      <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">
-        D${item.price.toFixed(2)}
-      </td>
-      <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: bold;">
-        D${item.subtotal.toFixed(2)}
-      </td>
-    </tr>
-  `).join('');
+  // Build simple text list instead of image-heavy HTML
+  const itemsList = orderItems.map(item => 
+    `• ${item.productName} x${item.quantity} - D${item.subtotal.toFixed(2)}`
+  ).join('\n');
 
   const shippingAddress = order.shippingAddress 
     ? JSON.parse(order.shippingAddress) 
     : null;
 
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Order Confirmation - PyCon Senegambia Store</title>
-    </head>
-    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8fafc;">
-        <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden;">
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center;">
-                <h1 style="margin: 0; font-size: 28px;">Order Confirmed!</h1>
-                <p style="margin: 10px 0 0 0; font-size: 16px;">Thank you for your purchase</p>
-            </div>
-            
-            <div style="padding: 30px;">
-                <div style="background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <h2 style="margin: 0 0 10px; font-size: 18px;">Order #${order.id.substring(0, 8).toUpperCase()}</h2>
-                    <p style="margin: 5px 0; color: #64748b;">
-                        <strong>Date:</strong> ${new Date(order.createdAt).toLocaleDateString()}
-                    </p>
-                    <p style="margin: 5px 0; color: #64748b;">
-                        <strong>Status:</strong> <span style="background: #10B981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">${order.status}</span>
-                    </p>
-                </div>
-
-                <h3 style="margin: 20px 0 10px; font-size: 18px;">Order Items</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                  <thead>
-                    <tr style="background: #f8fafc;">
-                      <th style="padding: 10px; text-align: left; border-bottom: 2px solid #e2e8f0;">Item</th>
-                      <th style="padding: 10px; text-align: right; border-bottom: 2px solid #e2e8f0;">Price</th>
-                      <th style="padding: 10px; text-align: right; border-bottom: 2px solid #e2e8f0;">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${itemsHTML}
-                  </tbody>
-                  <tfoot>
+  // Simplified, lightweight HTML - under 100KB
+  return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#f5f5f5">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;padding:20px 0">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;max-width:100%">
+                    
                     <tr>
-                      <td colspan="2" style="padding: 15px 10px; text-align: right; font-weight: bold; font-size: 18px;">
-                        Total:
-                      </td>
-                      <td style="padding: 15px 10px; text-align: right; font-weight: bold; font-size: 18px; color: #667eea;">
-                        ${order.currency} ${order.totalAmount.toFixed(2)}
-                      </td>
+                        <td style="background:linear-gradient(135deg,#667eea,#764ba2);padding:30px;text-align:center">
+                            <h1 style="margin:0;color:#fff;font-size:24px">Order Confirmed! 🎉</h1>
+                            <p style="margin:10px 0 0;color:#fff;font-size:14px">Thank you for your purchase</p>
+                        </td>
                     </tr>
-                  </tfoot>
+
+                    <tr>
+                        <td style="padding:30px">
+                            <div style="background:#f8f9fa;padding:15px;border-radius:6px;margin-bottom:20px">
+                                <p style="margin:0;font-size:16px;font-weight:bold">Order #${order.id.substring(0, 8).toUpperCase()}</p>
+                                <p style="margin:5px 0 0;color:#666;font-size:14px">
+                                    Date: ${new Date(order.createdAt).toLocaleDateString()}<br/>
+                                    Status: <span style="color:#10B981;font-weight:bold">Confirmed</span>
+                                </p>
+                            </div>
+
+                            <h3 style="margin:20px 0 10px;font-size:16px">Order Items:</h3>
+                            <div style="background:#f8f9fa;padding:15px;border-radius:6px;margin-bottom:20px">
+                                <pre style="margin:0;font-family:Arial,sans-serif;font-size:14px;line-height:1.8;white-space:pre-wrap">${itemsList}</pre>
+                            </div>
+
+                            <div style="border-top:2px solid #e5e7eb;padding-top:15px;margin-top:20px">
+                                <table width="100%" cellpadding="5">
+                                    <tr>
+                                        <td style="text-align:right;font-size:18px;font-weight:bold">Total:</td>
+                                        <td style="text-align:right;font-size:18px;font-weight:bold;color:#667eea">${order.currency} ${order.totalAmount.toFixed(2)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            ${shippingAddress ? `
+                            <div style="background:#fef3c7;padding:15px;border-radius:6px;border-left:3px solid #f59e0b;margin-top:20px">
+                                <h4 style="margin:0 0 10px;font-size:14px;color:#92400e">📦 Shipping Address</h4>
+                                <p style="margin:0;color:#92400e;font-size:13px;line-height:1.5">
+                                    ${shippingAddress.street}<br/>
+                                    ${shippingAddress.city}, ${shippingAddress.state}<br/>
+                                    ${shippingAddress.country} ${shippingAddress.postalCode}
+                                </p>
+                            </div>
+                            ` : ''}
+
+                            <div style="background:#e0e7ff;padding:15px;border-radius:6px;margin-top:20px">
+                                <p style="margin:0;color:#3730a3;font-size:13px">
+                                    <strong>Transaction ID:</strong> ${order.transactionReference || 'Processing'}<br/>
+                                    <strong>Payment Status:</strong> Completed
+                                </p>
+                            </div>
+
+                            <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #e5e7eb">
+                                <p style="margin:0;color:#666;font-size:13px">
+                                    Questions? Contact us at<br/>
+                                    <a href="mailto:shop@pyconsenegambia.org" style="color:#667eea;text-decoration:none">shop@pyconsenegambia.org</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="background:#1e293b;color:#fff;padding:20px;text-align:center;font-size:12px">
+                            <strong>PyCon Senegambia Store</strong><br/>
+                            Official Conference Merchandise
+                        </td>
+                    </tr>
+
                 </table>
-
-                ${shippingAddress ? `
-                  <div style="background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 3px solid #f59e0b; margin: 20px 0;">
-                    <h4 style="margin: 0 0 10px; color: #92400e;">Shipping Address</h4>
-                    <p style="margin: 5px 0; color: #92400e; font-size: 14px;">
-                      ${shippingAddress.street}<br/>
-                      ${shippingAddress.city}, ${shippingAddress.state}<br/>
-                      ${shippingAddress.country} ${shippingAddress.postalCode}
-                    </p>
-                  </div>
-                ` : ''}
-
-                <div style="background: #e0e7ff; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                  <h4 style="margin: 0 0 10px; color: #3730a3;">Payment Information</h4>
-                  <p style="margin: 5px 0; color: #3730a3; font-size: 14px;">
-                    <strong>Transaction ID:</strong> ${order.transactionReference}<br/>
-                    <strong>Payment Status:</strong> Completed
-                  </p>
-                </div>
-
-                <div style="text-align: center; margin-top: 30px;">
-                  <p style="color: #64748b; font-size: 14px;">
-                    Questions about your order? Contact us at<br/>
-                    <a href="mailto:shop@pyconsenegambia.org" style="color: #667eea;">shop@pyconsenegambia.org</a>
-                  </p>
-                </div>
-            </div>
-
-            <div style="background: #1e293b; color: white; padding: 20px; text-align: center; font-size: 12px;">
-                <p style="margin: 0;">
-                    <strong>PyCon Senegambia Store</strong><br/>
-                    Official Conference Merchandise
-                </p>
-            </div>
-        </div>
-    </body>
-    </html>
-  `;
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
 }
+
 
 async function sendOrderConfirmationEmail(order: any): Promise<void> {
   try {
-    console.log('📧 Preparing to send order confirmation email:', {
-      customerEmail: order.customerEmail,
-      orderId: order.id,
-    });
+    console.log('📧 Sending order confirmation:', order.id);
 
-    const emailHTML = await generateOrderEmailHTML(order);
+    const emailHTML = await generateOptimizedOrderEmailHTML(order);
+
+    // Check email size
+    const emailSize = Buffer.byteLength(emailHTML, 'utf8');
+    console.log(`📊 Email size: ${(emailSize / 1024).toFixed(2)}KB`);
+
+    if (emailSize > 100000) {
+      console.warn('⚠️ Email might be truncated (>100KB)');
+    }
 
     const { data, error } = await resend.emails.send({
       from: 'PyCon Senegambia Store <shop@pyconsenegambia.org>',
       to: [order.customerEmail],
-      subject: `Order Confirmation #${order.id.substring(0, 8).toUpperCase()} - PyCon Senegambia Store`,
+      subject: `Order Confirmation #${order.id.substring(0, 8).toUpperCase()} - PyCon Store`,
       html: emailHTML,
+      text: `Dear ${order.customerName},
+
+Your order #${order.id.substring(0, 8).toUpperCase()} has been confirmed!
+
+Order Total: ${order.currency} ${order.totalAmount.toFixed(2)}
+Payment Status: Completed
+Transaction ID: ${order.transactionReference || 'Processing'}
+
+For questions, contact shop@pyconsenegambia.org
+
+PyCon Senegambia Store`
     });
 
     if (error) {
-      throw new Error(`Failed to send email: ${error.message}`);
+      console.error('❌ Email error:', error);
+      throw error;
     }
 
-    console.log('✅ Order confirmation email sent:', data);
+    console.log('✅ Email sent:', data?.id);
   } catch (error) {
-    console.error('❌ Error sending order confirmation email:', error);
-    throw error;
+    console.error('❌ Email sending failed:', error);
+    // Don't throw - order is still valid
   }
 }
 
