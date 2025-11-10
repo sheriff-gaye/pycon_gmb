@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "www.codearmo.com",
+        pathname: "/**",
+      },
       
     ],
   },

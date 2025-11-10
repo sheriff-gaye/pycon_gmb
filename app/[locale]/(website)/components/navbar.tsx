@@ -102,7 +102,7 @@ const Navbar = ({currentLocale}: HeroProps) => {
     more: {
       label: getTranslation(locale, 'nav.more') || 'More',
       items: [
-        { href: `/${locale}/shop`, label: 'Shop', badge: 'coming', disabled: true },
+        { href: `/${locale}/shop`, label: 'Shop', badge: 'new'  },
         { href: `/${locale}/careers`, label: 'Careers', badge: 'new' },
       ]
     }
