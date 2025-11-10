@@ -250,7 +250,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
       </div>
 
       <div className="relative">
-        <div className="aspect-[2/1] relative bg-gradient-to-br from-slate-100 to-slate-200">
+        <div className="aspect-2/1 relative bg-linear-to-br from-slate-100 to-slate-200">
           {post.image ? (
             <Image
               src={post.image}
@@ -300,7 +300,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
 
           <div className="flex items-center justify-between flex-wrap gap-6 pb-8 border-b border-slate-200">
             <div className="flex items-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center mr-4">
+              <div className="w-16 h-16 bg-linear-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center mr-4">
                 <User className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -396,60 +396,6 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-8 mb-12">
-          <div className="flex items-start space-x-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-white text-2xl font-bold">
-              {post.author ?? 'Unknown Author'}
-              </span>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-slate-800 mb-3">
-                {getTranslation(currentLocale, 'blog.about_author').replace('{author}', post.author ?? 'Unknown Author')}
-              </h3>
-              <p className="text-slate-600 mb-4">
-                {post.authorBio || getTranslation(currentLocale, 'blog.author_bio').replace('{author}', post.author ?? 'the author')}
-              </p>
-              {(post.authorFacebook || post.authorTwitter || post.authorLinkedin) && (
-                <div className="flex space-x-3">
-                  {post.authorFacebook && (
-                    <a
-                      href={post.authorFacebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 transition-colors duration-300"
-                      title="Facebook"
-                    >
-                      <Facebook className="w-5 h-5" />
-                    </a>
-                  )}
-                  {post.authorTwitter && (
-                    <a
-                      href={post.authorTwitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-400 hover:text-blue-500 transition-colors duration-300"
-                      title="Twitter/X"
-                    >
-                      <Twitter className="w-5 h-5" />
-                    </a>
-                  )}
-                  {post.authorLinkedin && (
-                    <a
-                      href={post.authorLinkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-700 hover:text-blue-800 transition-colors duration-300"
-                      title="LinkedIn"
-                    >
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
 
         {showComments && (
           <div className="mb-12">
@@ -483,7 +429,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
                   <button
                     onClick={handleCommentSubmit}
                     disabled={isSubmittingComment || !comment.trim()}
-                    className="flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-xl font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center px-6 py-3 bg-linear-to-r from-yellow-500 to-yellow-600 text-white rounded-xl font-semibold hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmittingComment ? (
                       <>
@@ -516,7 +462,7 @@ const SingleBlogPost = ({ post, currentLocale, initialComments }: SingleBlogPost
                   return (
                     <div key={commentItem.id} className="bg-slate-50 rounded-2xl p-6">
                       <div className="flex items-start space-x-4">
-                        <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-linear-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center flex-shrink-0">
                           <span className="text-white font-semibold">{initials}</span>
                         </div>
                         <div className="flex-1">

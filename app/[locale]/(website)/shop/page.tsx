@@ -164,7 +164,7 @@ const Shop = () => {
 
       const data = await response.json();
 
-      console.log("test here",data);
+      
 
       if (data.success) {
         window.location.href = data.data.paymentLink;
@@ -327,12 +327,7 @@ const Shop = () => {
           <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
             {filteredProducts.map((product) => (
               <div key={product.id} className={`group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-200 overflow-hidden ${viewMode === 'list' ? 'flex' : ''}`}>
-                {product.featured && (
-                  <div className="absolute top-4 left-4 z-10 bg-linear-to-r from-yellow-400 to-yellow-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold">
-                    FEATURED
-                  </div>
-                )}
-
+                
                 <div className={`${viewMode === 'list' ? 'w-48 shrink-0' : 'aspect-square'} relative overflow-hidden`}>
                   <img 
                     src={product.image} 
