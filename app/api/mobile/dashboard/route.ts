@@ -9,7 +9,7 @@ interface DashboardStats {
     totalCheckins: number;
     totalTicketsScanned: number;
   };
-  
+
   // Overall Event Stats
   eventStats: {
     totalTicketsSold: number;
@@ -18,7 +18,7 @@ interface DashboardStats {
     checkInPercentage?: number; // Made optional
     totalRevenue?: number; // Made optional
   };
-  
+
   // Recent scanned tickets by this staff - UPDATED STRUCTURE
   myScannedTickets: Array<{
     ticketId: string;
@@ -29,7 +29,7 @@ interface DashboardStats {
     checkinTime: string;
     scannedBy: string;
   }>;
-  
+
   // Breakdown by Ticket Type (optional, keep if needed)
   ticketTypeBreakdown?: Array<{
     type: string;
@@ -38,7 +38,7 @@ interface DashboardStats {
     pending: number;
     percentage: number;
   }>;
-  
+
   // Top performing staff (optional, keep if needed)
   staffLeaderboard?: Array<{
     name: string;
@@ -47,10 +47,11 @@ interface DashboardStats {
   }>;
 }
 
+/** Extended response – now includes the logged-in staff name */
 interface DashboardResponse {
   success: boolean;
   message: string;
-  data?: DashboardStats;
+  data?: DashboardStats & { staffName: string };
   error?: string;
 }
 
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
   try {
     // Authenticate request
     const auth = await authenticateRequest(req);
-    
+
     if (!auth.authenticated) {
       return NextResponse.json(
         {
@@ -109,7 +110,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
         isCheckedIn: true
       },
       orderBy: { checkedInAt: 'desc' },
-      take: 20, // Get more recent tickets
+      take: 20,
       select: {
         id: true,
         customerName: true,
@@ -139,7 +140,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
     const ticketTypeBreakdown = ticketsByType.map(typeGroup => {
       const checkedInCount = checkedInByType.find(c => c.ticketType === typeGroup.ticketType)?._count.id || 0;
       const totalCount = typeGroup._count.id;
-      
+
       return {
         type: typeGroup.ticketType,
         total: totalCount,
@@ -181,11 +182,12 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
       .sort((a, b) => b.checkInCount - a.checkInCount)
       .slice(0, 5);
 
-    // Prepare response with UPDATED STRUCTURE
-    const dashboardData: DashboardStats = {
+    // Prepare response with UPDATED STRUCTURE + staffName
+    const dashboardData: DashboardStats & { staffName: string } = {
+      staffName,                                   // <-- NEW
       myStats: {
         totalCheckins: myTotalCheckins,
-        totalTicketsScanned: myTotalCheckins // Same value for both fields
+        totalTicketsScanned: myTotalCheckins
       },
       eventStats: {
         totalTicketsSold: totalTickets,
