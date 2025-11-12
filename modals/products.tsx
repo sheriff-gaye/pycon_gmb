@@ -88,7 +88,7 @@ const ImageForm = ({ value, onChange, error }: ImageFormProps) => {
     <div className="mt-6 border rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Product Image *
-        <Button onClick={toggleEdit} variant="ghost" disabled={isUploading}>
+        <Button onClick={toggleEdit} variant="ghost" disabled={isUploading} type="button">
           {isEditing && <>Cancel</>}
           {!isEditing && !value && (
             <>

@@ -4,22 +4,34 @@ import { db } from "@/lib/db";
 import { authenticateRequest } from "@/lib/auth-check";
 
 interface DashboardStats {
-  // Personal Stats (by this staff member)
-  myCheckins: {
-    total: number;
+  // Personal Stats (by this staff member) - UPDATED STRUCTURE
+  myStats: {
+    totalCheckins: number;
+    totalTicketsScanned: number;
   };
   
   // Overall Event Stats
   eventStats: {
     totalTicketsSold: number;
-    totalCheckedIn: number;
+    totalCheckedIn?: number; // Made optional to match frontend
     totalPending: number;
-    checkInPercentage: number;
-    totalRevenue: number;
+    checkInPercentage?: number; // Made optional
+    totalRevenue?: number; // Made optional
   };
   
-  // Breakdown by Ticket Type
-  ticketTypeBreakdown: Array<{
+  // Recent scanned tickets by this staff - UPDATED STRUCTURE
+  myScannedTickets: Array<{
+    ticketId: string;
+    attendeeFullName: string;
+    attendeeEmail: string;
+    ticketType: string;
+    purchaseDate: string;
+    checkinTime: string;
+    scannedBy: string;
+  }>;
+  
+  // Breakdown by Ticket Type (optional, keep if needed)
+  ticketTypeBreakdown?: Array<{
     type: string;
     total: number;
     checkedIn: number;
@@ -27,17 +39,8 @@ interface DashboardStats {
     percentage: number;
   }>;
   
-  // Recent check-ins by this staff
-  recentCheckins: Array<{
-    id: string;
-    customerName: string;
-    ticketType: string;
-    checkedInAt: string;
-    amount: number;
-  }>;
-  
-  // Top performing staff (for comparison)
-  staffLeaderboard: Array<{
+  // Top performing staff (optional, keep if needed)
+  staffLeaderboard?: Array<{
     name: string;
     checkInCount: number;
     isCurrentUser: boolean;
@@ -68,8 +71,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
     }
 
     const staffId = auth.staff!.staffId;
+    const staffName = `${auth.staff!.firstName} ${auth.staff!.lastName}`;
 
-    // 1. Get Personal Check-in Stats
+    // 1. Get Personal Check-in Stats - UPDATED
     const myTotalCheckins = await db.ticketPurchase.count({
       where: {
         staffId: staffId,
@@ -98,7 +102,25 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
     const pendingCheckins = totalTickets - checkedInTickets;
     const checkInPercentage = totalTickets > 0 ? (checkedInTickets / totalTickets) * 100 : 0;
 
-    // 3. Get Ticket Type Breakdown
+    // 3. Get Recent Scanned Tickets by this staff - UPDATED STRUCTURE
+    const myScannedTickets = await db.ticketPurchase.findMany({
+      where: {
+        staffId: staffId,
+        isCheckedIn: true
+      },
+      orderBy: { checkedInAt: 'desc' },
+      take: 20, // Get more recent tickets
+      select: {
+        id: true,
+        customerName: true,
+        customerEmail: true,
+        ticketType: true,
+        createdAt: true,
+        checkedInAt: true
+      }
+    });
+
+    // 4. Get Ticket Type Breakdown (optional)
     const ticketsByType = await db.ticketPurchase.groupBy({
       by: ['ticketType'],
       where: { paymentStatus: 'COMPLETED' },
@@ -127,24 +149,7 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
       };
     });
 
-    // 4. Get Recent Check-ins by this staff (last 10)
-    const recentCheckins = await db.ticketPurchase.findMany({
-      where: {
-        staffId: staffId,
-        isCheckedIn: true
-      },
-      orderBy: { checkedInAt: 'desc' },
-      take: 10,
-      select: {
-        id: true,
-        customerName: true,
-        ticketType: true,
-        checkedInAt: true,
-        amount: true
-      }
-    });
-
-    // 5. Get Staff Leaderboard
+    // 5. Get Staff Leaderboard (optional)
     const staffCheckIns = await db.ticketPurchase.groupBy({
       by: ['staffId'],
       where: {
@@ -174,12 +179,13 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
         };
       })
       .sort((a, b) => b.checkInCount - a.checkInCount)
-      .slice(0, 5); // Top 5 staff
+      .slice(0, 5);
 
-    // Prepare response
+    // Prepare response with UPDATED STRUCTURE
     const dashboardData: DashboardStats = {
-      myCheckins: {
-        total: myTotalCheckins
+      myStats: {
+        totalCheckins: myTotalCheckins,
+        totalTicketsScanned: myTotalCheckins // Same value for both fields
       },
       eventStats: {
         totalTicketsSold: totalTickets,
@@ -188,14 +194,16 @@ export async function GET(req: NextRequest): Promise<NextResponse<DashboardRespo
         checkInPercentage: Math.round(checkInPercentage * 100) / 100,
         totalRevenue: totalRevenue
       },
-      ticketTypeBreakdown,
-      recentCheckins: recentCheckins.map(ticket => ({
-        id: ticket.id,
-        customerName: ticket.customerName,
+      myScannedTickets: myScannedTickets.map(ticket => ({
+        ticketId: ticket.id,
+        attendeeFullName: ticket.customerName,
+        attendeeEmail: ticket.customerEmail || '',
         ticketType: ticket.ticketType,
-        checkedInAt: ticket.checkedInAt!.toISOString(),
-        amount: ticket.amount
+        purchaseDate: ticket.createdAt.toISOString(),
+        checkinTime: ticket.checkedInAt!.toISOString(),
+        scannedBy: staffName
       })),
+      ticketTypeBreakdown,
       staffLeaderboard
     };
 

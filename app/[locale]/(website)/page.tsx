@@ -6,6 +6,7 @@ import FAQ from "./components/faq";
 import Hero from "./components/hero";
 import TicketPricing from "./components/pricing";
 import Sponsors from "./components/sponsors";
+import ConferenceSchedule from "./components/schedule";
 
 export default function Home() {
 
@@ -19,6 +20,7 @@ export default function Home() {
       <Sponsors  currentLocale={currentLocale}/>
       <CTA currentLocale={currentLocale}/>
       <TicketPricing currentLocale={currentLocale}/>
+      {/* <ConferenceSchedule /> */}
       <FAQ currentLocale={currentLocale}/>
       <Contact currentLocale={currentLocale}/>
       
