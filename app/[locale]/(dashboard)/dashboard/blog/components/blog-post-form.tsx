@@ -126,7 +126,7 @@ export function BlogPostForm({ post, categories }: BlogPostFormProps) {
     setFormData((prev) => ({ ...prev, slug }));
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -144,31 +144,21 @@ export function BlogPostForm({ post, categories }: BlogPostFormProps) {
 
     setUploadingImage(true);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload image");
-      }
-
-      const data = await response.json();
-      const imageUrl = data.url;
-
-      setFormData((prev) => ({ ...prev, image: imageUrl }));
-      setImagePreview(imageUrl);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      setFormData((prev) => ({ ...prev, image: dataUrl }));
+      setImagePreview(dataUrl);
       toast.success("Image uploaded successfully");
-    } catch (error) {
-      console.error("Image upload error:", error);
-      toast.error("Failed to upload image. Please try again.");
-    } finally {
       setUploadingImage(false);
-    }
+    };
+
+    reader.onerror = () => {
+      toast.error("Failed to read the image file");
+      setUploadingImage(false);
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handleRemoveImage = () => {
