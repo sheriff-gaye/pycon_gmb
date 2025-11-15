@@ -1,23 +1,23 @@
 {
   "sponsors": {
-    "title": "Nos Sponsors",
+    "our": "Notre",
+    "title": "Sponsors",
     "subtitle": "Merci à nos formidables sponsors qui rendent PyCon Senegambia possible"
   },
   "nav": {
-  "about": "À propos",
-  "visas": "Visas",
-  "blog": "Blog",
-  "speakers": "Orateurs",
-  "proposal": "Proposition",
-  "volunteers": "Bénévoles",
-  "register": "S'inscrire maintenant",
-  "sponsorship": "Parrainage",
-  "events": "Événements",
-  "resources": "Ressources",
-  "more": "Plus",
-  "participate": "Participer"
-}
-,
+    "about": "À propos",
+    "visas": "Visas",
+    "blog": "Blog",
+    "speakers": "Orateurs",
+    "proposal": "Proposition",
+    "volunteers": "Bénévoles",
+    "register": "S'inscrire maintenant",
+    "sponsorship": "Parrainage",
+    "events": "Événements",
+    "resources": "Ressources",
+    "more": "Plus",
+    "participate": "Participer"
+  },
   "common": {
     "language": "Langue"
   },
@@ -34,7 +34,7 @@
       "date": "27-28 novembre 2025",
       "mark": "Marquez votre calendrier !",
       "location": "QCity, Banjul",
-  "venue_detail": "Lieu de conférence premium",
+      "venue_detail": "Lieu de conférence premium",
       "vision": "Deux nations, une vision",
       "attendees": "500+ Développeurs",
       "community": "Communauté grandissante"
